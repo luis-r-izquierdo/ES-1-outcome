@@ -1,0 +1,3247 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    143825,       3239]
+NotebookOptionsPosition[    143120,       3218]
+NotebookOutlinePosition[    143515,       3234]
+CellTagsIndexPosition[    143472,       3231]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Payoffs and dynamics in bimorphic populations", "Title",
+ CellChangeTimes->{{3.939807201726128*^9, 3.9398072092363997`*^9}, {
+  3.968576986093499*^9, 
+  3.9685770386007633`*^9}},ExpressionUUID->"9c3381b5-674f-4efe-ae3e-\
+93d5b51fcfad"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+    "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = "D", $CellContext`b5$$ =
+     "C", $CellContext`bName$$ = "leaver1", $CellContext`m$$ = Rational[
+    1, 20], $CellContext`o1$$ = "D", $CellContext`o2$$ = 
+    "D", $CellContext`o3$$ = "D", $CellContext`o4$$ = "D", $CellContext`o5$$ =
+     "D", $CellContext`oName$$ = "allD", $CellContext`P$$ = 
+    1, $CellContext`R$$ = 3, $CellContext`S$$ = 0, $CellContext`step$$ = 
+    Rational[1, 8], $CellContext`T$$ = 4, $CellContext`\[Delta]$$ = Rational[
+    19, 20], $CellContext`\[Epsilon]$$ = Rational[1, 20], Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`b1$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`b2$$], "C"}, ControlType -> None}, {{
+       Hold[$CellContext`b3$$], "L"}, ControlType -> None}, {{
+       Hold[$CellContext`b4$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`b5$$], "C"}, ControlType -> None}, {{
+       Hold[$CellContext`o1$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`o2$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`o3$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`o4$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`o5$$], "D"}, ControlType -> None}, {{
+       Hold[$CellContext`bName$$], "leaver1"}, ControlType -> None}, {{
+       Hold[$CellContext`oName$$], "allD"}, ControlType -> None}, {{
+       Hold[$CellContext`T$$], 4}, 0, 5, 
+      Rational[1, 100], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`T$$, 0.01]]}]& ], ControlType -> Automatic}, {{
+       Hold[$CellContext`R$$], 3}, 0, 5, 
+      Rational[1, 100], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`R$$, 0.01]]}]& ], ControlType -> Automatic}, {{
+       Hold[$CellContext`P$$], 1}, 0, 5, 
+      Rational[1, 100], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`P$$, 0.01]]}]& ], ControlType -> Automatic}, {{
+       Hold[$CellContext`S$$], 0}, 0, 5, 
+      Rational[1, 100], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`S$$, 0.01]]}]& ], ControlType -> Automatic}, {{
+       Hold[$CellContext`\[Epsilon]$$], 
+       Rational[1, 20]}, 0, 
+      Rational[1, 2], 
+      Rational[1, 10000], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`\[Epsilon]$$, 0.0001]]}]& ], ControlType -> 
+      Automatic}, {{
+       Hold[$CellContext`\[Delta]$$], 
+       Rational[19, 20]}, 
+      Rational[1, 100], 
+      Rational[99, 100], 
+      Rational[1, 100], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`\[Delta]$$, 0.0001]]}]& ], ControlType -> 
+      Automatic}, {{
+       Hold[$CellContext`m$$], 
+       Rational[1, 20], "\[Mu]"}, 0, 
+      Rational[1, 2], 
+      Rational[1, 10000], 
+      Dynamic[Row[{
+         Manipulator[
+          SlotSequence[1]], "  ", 
+         Dynamic[
+          Round[$CellContext`m$$, 0.0001]]}]& ], ControlType -> Automatic}, {{
+      
+       Hold[$CellContext`step$$], 
+       Rational[1, 8], "arrows"}, {
+      Rational[1, 32] -> "all", Rational[1, 16] -> "many", Rational[1, 8] -> 
+       "some", Rational[1, 4] -> "few", 2 -> "none"}, ControlType -> 
+      SetterBar}, {{
+       Hold[$CellContext`b1$$], "D", 
+       Style["Blue      ", 
+        RGBColor[0, 0, 1]]}, {"C", "D"}, ControlType -> PopupMenu}, {{
+       Hold[$CellContext`b2$$], "C", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`b3$$], "L", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`b4$$], "D", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`b5$$], "C", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`o1$$], "D", 
+       Style["Orange ", 
+        RGBColor[1, 0.5, 0]]}, {"C", "D"}, ControlType -> PopupMenu}, {{
+       Hold[$CellContext`o2$$], "D", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`o3$$], "D", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`o4$$], "D", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {{
+       Hold[$CellContext`o5$$], "D", ""}, {"C", "D", "L"}, ControlType -> 
+      PopupMenu}, {
+      Hold[
+       Grid[{{
+          Row[{"Color        initial        "}], "  After CC", "  After CD", 
+          "  After DC", "  After DD", "\tnames"}, {" ", SpanFromLeft}, {
+          Manipulate`Place[1], 
+          Manipulate`Place[2], 
+          Manipulate`Place[3], 
+          Manipulate`Place[4], 
+          Manipulate`Place[5], 
+          Row[{
+            ActionMenu[
+             Dynamic[$CellContext`bName$$], {
+             "c0a" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "L", $CellContext`b5$$ = "C", $CellContext`bName$$ = "c0a"}, 
+              "c0b" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "L", $CellContext`b5$$ = "L", $CellContext`bName$$ = "c0b"}, 
+              "leaver1" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                "leaver1"}, 
+              "leaver2" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "L", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                "leaver2"}, 
+              "leaver3" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "C", $CellContext`b5$$ = "C", $CellContext`oName$$ = 
+                "leaver3"}, 
+              "allD" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "D", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "allD"}, 
+              "allC" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "C", $CellContext`b4$$ = 
+                "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = "allC"}, 
+              "hitrun" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "L", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "L", $CellContext`b5$$ = "L", $CellContext`bName$$ = 
+                "hitrun"}, 
+              "WSLS" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = "WSLS"}, 
+              "nWSLS" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = "nWSLS"},
+               "grim" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "grim"}, 
+              "grim2" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = "grim2"},
+               "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "C", $CellContext`b5$$ = "D", $CellContext`bName$$ = "TFT"}, 
+              "TFTlike" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                "TFTlike"}, 
+              "DDLDC" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                "D", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                "DDLDC"}}, Appearance -> "PopupMenu", 
+             ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
+           Center]}, {
+          Manipulate`Place[6], 
+          Manipulate`Place[7], 
+          Manipulate`Place[8], 
+          Manipulate`Place[9], 
+          Manipulate`Place[10], 
+          Row[{
+            ActionMenu[
+             Dynamic[$CellContext`oName$$], {
+             "c0a" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "L", $CellContext`o5$$ = "C", $CellContext`oName$$ = "c0a"}, 
+              "c0b" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "L", $CellContext`o5$$ = "L", $CellContext`oName$$ = "c0b"}, 
+              "leaver1" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                "leaver1"}, 
+              "leaver2" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "L", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                "leaver2"}, 
+              "leaver3" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                "leaver3"}, 
+              "allD" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "D", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "allD"}, 
+              "allC" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "C", $CellContext`o4$$ = 
+                "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = "allC"}, 
+              "hitrun" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "L", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "L", $CellContext`o5$$ = "L", $CellContext`oName$$ = 
+                "hitrun"}, 
+              "WSLS" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = "WSLS"}, 
+              "nWSLS" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = "nWSLS"},
+               "grim" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "grim"}, 
+              "grim2" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = "grim2"},
+               "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "C", $CellContext`o5$$ = "D", $CellContext`oName$$ = "TFT"}, 
+              "TFTlike" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                "TFTlike"}, 
+              "DDLDC" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                "D", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                "DDLDC"}}, Appearance -> "PopupMenu", 
+             ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
+           Center]}}, Alignment -> Left, Spacings -> {0, 0}]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}}, 
+    Typeset`size$$ = {360., {104.53880006340397`, 110.27073365715397`}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = False, 
+    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     2, StandardForm, 
+      "Variables" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+        "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+        "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+        "leaver1", $CellContext`m$$ = Rational[1, 20], $CellContext`o1$$ = 
+        "D", $CellContext`o2$$ = "D", $CellContext`o3$$ = 
+        "D", $CellContext`o4$$ = "D", $CellContext`o5$$ = 
+        "D", $CellContext`oName$$ = "allD", $CellContext`P$$ = 
+        1, $CellContext`R$$ = 3, $CellContext`S$$ = 0, $CellContext`step$$ = 
+        Rational[1, 8], $CellContext`T$$ = 4, $CellContext`\[Delta]$$ = 
+        Rational[19, 20], $CellContext`\[Epsilon]$$ = Rational[1, 20]}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
+        Typeset`keyframeList$$}, "Body" :> 
+      Module[{$CellContext`rules$ = {
+          "C" -> 0, "D" -> 1, "L" -> 
+           2}, $CellContext`s1$, $CellContext`s2$, $CellContext`payoffs$, \
+$CellContext`L$, $CellContext`FMatrix$, $CellContext`listOfArrows$, \
+$CellContext`rest$, $CellContext`restPoints$, $CellContext`x1$, \
+$CellContext`height$ = 0.5}, $CellContext`s1$ = 
+         ReplaceAll[{$CellContext`b1$$, $CellContext`b2$$, $CellContext`b3$$, \
+$CellContext`b4$$, $CellContext`b5$$}, $CellContext`rules$]; $CellContext`s2$ = 
+         ReplaceAll[{$CellContext`o1$$, $CellContext`o2$$, $CellContext`o3$$, \
+$CellContext`o4$$, $CellContext`o5$$}, $CellContext`rules$]; \
+$CellContext`payoffs$ = {$CellContext`R$$, $CellContext`S$$, \
+$CellContext`T$$, $CellContext`P$$}; $CellContext`L$ = \
+$CellContext`Ls[$CellContext`s1$, $CellContext`s2$, \
+$CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$]; $CellContext`FMatrix$ = {{
+            $CellContext`F[$CellContext`s1$, $CellContext`s1$, $CellContext`\
+\[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$], 
+            $CellContext`F[$CellContext`s1$, $CellContext`s2$, $CellContext`\
+\[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$]}, {
+            $CellContext`F[$CellContext`s2$, $CellContext`s1$, $CellContext`\
+\[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$], 
+            $CellContext`F[$CellContext`s2$, $CellContext`s2$, $CellContext`\
+\[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$]}}; \
+$CellContext`listOfArrows$ = Table[{
+            Arrowheads[0.03], 
+            
+            Arrow[{{$CellContext`initx1, $CellContext`height$}, \
+{$CellContext`initx1 + First[
+                 $CellContext`ExpectedChange[$CellContext`initx1, \
+$CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
+\[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
+$CellContext`payoffs$]], $CellContext`height$}}]}, {$CellContext`initx1, 0, 
+            1, $CellContext`step$$}]; $CellContext`rest$ = 
+         Reduce[{$CellContext`ExpectedChange[$CellContext`x1$, \
+$CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
+\[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
+$CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$, 
+           Reals]; $CellContext`restPoints$ = Select[{
+            ToRules[$CellContext`rest$]}, ListQ]; Show[
+          Plot[
+           Evaluate[
+            $CellContext`Fx[$CellContext`x1$, $CellContext`s1$, \
+$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
+$CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
+{$CellContext`x1$, 0, 1}, 
+           PlotRange -> {{0, 1}, {$CellContext`S$$, $CellContext`T$$}}, 
+           AxesLabel -> {
+             Style["% blue", Blue], "Exp. payoff"}], 
+          Graphics[$CellContext`listOfArrows$], 
+          Graphics[
+           MapThread[{
+             EdgeForm[Thick], Red, 
+             Disk[{#, $CellContext`height$}, 
+              Scaled[{0.02, 0.03}]]}& , {
+             N[
+              ReplaceAll[$CellContext`x1$, $CellContext`restPoints$]]}]]]], 
+      "Specifications" :> {{{$CellContext`b1$$, "D"}, ControlType -> 
+         None}, {{$CellContext`b2$$, "C"}, ControlType -> 
+         None}, {{$CellContext`b3$$, "L"}, ControlType -> 
+         None}, {{$CellContext`b4$$, "D"}, ControlType -> 
+         None}, {{$CellContext`b5$$, "C"}, ControlType -> 
+         None}, {{$CellContext`o1$$, "D"}, ControlType -> 
+         None}, {{$CellContext`o2$$, "D"}, ControlType -> 
+         None}, {{$CellContext`o3$$, "D"}, ControlType -> 
+         None}, {{$CellContext`o4$$, "D"}, ControlType -> 
+         None}, {{$CellContext`o5$$, "D"}, ControlType -> 
+         None}, {{$CellContext`bName$$, "leaver1"}, ControlType -> 
+         None}, {{$CellContext`oName$$, "allD"}, ControlType -> 
+         None}, {{$CellContext`T$$, 4}, 0, 5, 
+         Rational[1, 100], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             Round[$CellContext`T$$, 0.01]]}]& ]}, {{$CellContext`R$$, 3}, 0, 
+         5, 
+         Rational[1, 100], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             Round[$CellContext`R$$, 0.01]]}]& ]}, {{$CellContext`P$$, 1}, 0, 
+         5, 
+         Rational[1, 100], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             Round[$CellContext`P$$, 0.01]]}]& ]}, {{$CellContext`S$$, 0}, 0, 
+         5, 
+         Rational[1, 100], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             Round[$CellContext`S$$, 0.01]]}]& ]}, 
+        Delimiter, {{$CellContext`\[Epsilon]$$, 
+          Rational[1, 20]}, 0, 
+         Rational[1, 2], 
+         Rational[1, 10000], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             
+             Round[$CellContext`\[Epsilon]$$, 
+              0.0001]]}]& ]}, {{$CellContext`\[Delta]$$, 
+          Rational[19, 20]}, 
+         Rational[1, 100], 
+         Rational[99, 100], 
+         Rational[1, 100], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             
+             Round[$CellContext`\[Delta]$$, 
+              0.0001]]}]& ]}, {{$CellContext`m$$, 
+          Rational[1, 20], "\[Mu]"}, 0, 
+         Rational[1, 2], 
+         Rational[1, 10000], 
+         Dynamic[Row[{
+            Manipulator[
+             SlotSequence[1]], "  ", 
+            Dynamic[
+             Round[$CellContext`m$$, 0.0001]]}]& ]}, 
+        Delimiter, {{$CellContext`step$$, 
+          Rational[1, 8], "arrows"}, {
+         Rational[1, 32] -> "all", Rational[1, 16] -> "many", Rational[1, 8] -> 
+          "some", Rational[1, 4] -> "few", 2 -> "none"}}, 
+        Delimiter, {{$CellContext`b1$$, "D", 
+          Style["Blue      ", 
+           RGBColor[0, 0, 1]]}, {"C", "D"}, ControlType -> PopupMenu, 
+         ImageSize -> {43, 19}, ControlPlacement -> 
+         1}, {{$CellContext`b2$$, "C", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         2}, {{$CellContext`b3$$, "L", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         3}, {{$CellContext`b4$$, "D", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         4}, {{$CellContext`b5$$, "C", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         5}, {{$CellContext`o1$$, "D", 
+          Style["Orange ", 
+           RGBColor[1, 0.5, 0]]}, {"C", "D"}, ControlType -> PopupMenu, 
+         ImageSize -> {43, 19}, ControlPlacement -> 
+         6}, {{$CellContext`o2$$, "D", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         7}, {{$CellContext`o3$$, "D", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         8}, {{$CellContext`o4$$, "D", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 
+         9}, {{$CellContext`o5$$, "D", ""}, {"C", "D", "L"}, ControlType -> 
+         PopupMenu, ImageSize -> {43, 19}, ControlPlacement -> 10}, 
+        Grid[{{
+           Row[{"Color        initial        "}], "  After CC", "  After CD", 
+           "  After DC", "  After DD", "\tnames"}, {" ", SpanFromLeft}, {
+           Manipulate`Place[1], 
+           Manipulate`Place[2], 
+           Manipulate`Place[3], 
+           Manipulate`Place[4], 
+           Manipulate`Place[5], 
+           Row[{
+             ActionMenu[
+              Dynamic[$CellContext`bName$$], {
+              "c0a" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "L", $CellContext`b5$$ = "C", $CellContext`bName$$ = "c0a"}, 
+               "c0b" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "L", $CellContext`b5$$ = "L", $CellContext`bName$$ = "c0b"}, 
+               "leaver1" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "leaver1"}, 
+               "leaver2" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "L", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "leaver2"}, 
+               "leaver3" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "C", $CellContext`b5$$ = "C", $CellContext`oName$$ = 
+                 "leaver3"}, 
+               "allD" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "D", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "allD"},
+                "allC" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "C", $CellContext`b4$$ = 
+                 "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = "allC"},
+                "hitrun" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "L", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "L", $CellContext`b5$$ = "L", $CellContext`bName$$ = 
+                 "hitrun"}, 
+               "WSLS" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = "WSLS"},
+                "nWSLS" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "nWSLS"}, 
+               "grim" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "grim"},
+                "grim2" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "grim2"}, 
+               "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "C", $CellContext`b5$$ = "D", $CellContext`bName$$ = "TFT"}, 
+               "TFTlike" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
+                 "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "TFTlike"}, 
+               "DDLDC" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
+                 "D", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
+                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
+                 "DDLDC"}}, Appearance -> "PopupMenu", 
+              ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
+            Center]}, {
+           Manipulate`Place[6], 
+           Manipulate`Place[7], 
+           Manipulate`Place[8], 
+           Manipulate`Place[9], 
+           Manipulate`Place[10], 
+           Row[{
+             ActionMenu[
+              Dynamic[$CellContext`oName$$], {
+              "c0a" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "L", $CellContext`o5$$ = "C", $CellContext`oName$$ = "c0a"}, 
+               "c0b" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "L", $CellContext`o5$$ = "L", $CellContext`oName$$ = "c0b"}, 
+               "leaver1" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "leaver1"}, 
+               "leaver2" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "L", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "leaver2"}, 
+               "leaver3" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "leaver3"}, 
+               "allD" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "D", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "allD"},
+                "allC" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "C", $CellContext`o4$$ = 
+                 "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = "allC"},
+                "hitrun" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "L", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "L", $CellContext`o5$$ = "L", $CellContext`oName$$ = 
+                 "hitrun"}, 
+               "WSLS" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = "WSLS"},
+                "nWSLS" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "nWSLS"}, 
+               "grim" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "grim"},
+                "grim2" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "grim2"}, 
+               "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "C", $CellContext`o5$$ = "D", $CellContext`oName$$ = "TFT"}, 
+               "TFTlike" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
+                 "C", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "TFTlike"}, 
+               "DDLDC" :> {$CellContext`o1$$ = "D", $CellContext`o2$$ = 
+                 "D", $CellContext`o3$$ = "L", $CellContext`o4$$ = 
+                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
+                 "DDLDC"}}, Appearance -> "PopupMenu", 
+              ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
+            Center]}}, Alignment -> Left, Spacings -> {0, 0}]}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{
+      415.89111328125, {310.83227235344305`, 316.56420594719305`}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>(($CellContext`Outcome[
+         Pattern[$CellContext`a1, 
+          Blank[]], 
+         Pattern[$CellContext`a2, 
+          Blank[]]] := If[
+         And[$CellContext`a1 != 2, $CellContext`a2 != 2], 1 + 
+         2 $CellContext`a1 + $CellContext`a2, 0]; $CellContext`ReverseOutcome[
+        
+         Pattern[$CellContext`o, 
+          Blank[]]] := Switch[$CellContext`o, 
+         $CellContext`Outcome[0, 1], 
+         $CellContext`Outcome[1, 0], 
+         $CellContext`Outcome[1, 0], 
+         $CellContext`Outcome[0, 1], 
+         Blank[], $CellContext`o]; $CellContext`Action1[
+         Pattern[$CellContext`o, 
+          Blank[]]] := If[
+         Or[$CellContext`o == $CellContext`Outcome[
+           0, 0], $CellContext`o == $CellContext`Outcome[0, 1]], 0, 
+         1]; $CellContext`Action2[
+         Pattern[$CellContext`o, 
+          Blank[]]] := If[
+         Or[$CellContext`o == $CellContext`Outcome[
+           0, 0], $CellContext`o == $CellContext`Outcome[1, 0]], 0, 
+         1]; $CellContext`ActionAfter[
+         Pattern[$CellContext`s, 
+          Blank[List]], 
+         Pattern[$CellContext`outcome, 
+          Blank[]]] := 
+       Part[$CellContext`s, 1 + $CellContext`outcome]; $CellContext`Match[
+         Pattern[$CellContext`s1, 
+          Blank[]], 
+         Pattern[$CellContext`s2, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`\[Epsilon], 
+           Blank[]], 0], 
+         Optional[
+          Pattern[$CellContext`\[Delta], 
+           Blank[]], 1], 
+         Optional[
+          Pattern[$CellContext`timesteps, 
+           Blank[]], 10]] := 
+       Module[{$CellContext`a1 = First[$CellContext`s1], $CellContext`a2 = 
+          First[$CellContext`s2], $CellContext`t = 
+          0, $CellContext`sequence, $CellContext`pos, $CellContext`M, \
+$CellContext`initial}, 
+         If[
+          
+          And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
+           1], $CellContext`sequence = {
+             $CellContext`Outcome[$CellContext`a1, $CellContext`a2]}; While[
+            
+            And[$CellContext`Outcome[$CellContext`a1, $CellContext`a2] != 
+             0, $CellContext`t < 
+             1000], {$CellContext`a1, $CellContext`a2} = {
+               $CellContext`ActionAfter[$CellContext`s1, 
+                $CellContext`Outcome[$CellContext`a1, $CellContext`a2]], 
+               $CellContext`ActionAfter[$CellContext`s2, 
+                $CellContext`Outcome[$CellContext`a2, $CellContext`a1]]}; If[
+              MemberQ[$CellContext`sequence, 
+               $CellContext`Outcome[$CellContext`a1, $CellContext`a2]], \
+$CellContext`t = Infinity, $CellContext`t = $CellContext`t + 1; Null]; 
+            AppendTo[$CellContext`sequence, 
+              $CellContext`Outcome[$CellContext`a1, $CellContext`a2]]; Null]; 
+          If[$CellContext`t == Infinity, $CellContext`pos = First[
+               FirstPosition[$CellContext`sequence, 
+                $CellContext`Outcome[$CellContext`a1, $CellContext`a2]]]; \
+{$CellContext`t, {
+               Part[$CellContext`sequence, 
+                Span[1, $CellContext`pos - 1]], 
+               Part[$CellContext`sequence, 
+                Span[$CellContext`pos, -2]]}}, {$CellContext`t, 
+             Part[$CellContext`sequence, 
+              Span[
+              1, -2]]}], $CellContext`M = \
+$CellContext`TransitionMatrix[$CellContext`s1, $CellContext`s2, $CellContext`\
+\[Epsilon], $CellContext`\[Delta]]; $CellContext`initial = \
+$CellContext`FirstOutcomeDistribution[$CellContext`s1, $CellContext`s2, \
+$CellContext`\[Epsilon]]; Prepend[
+            Table[
+             Dot[$CellContext`initial, 
+              MatrixPower[$CellContext`M, $CellContext`i]], {$CellContext`i, 
+              1, $CellContext`timesteps}], $CellContext`initial]]]; \
+$CellContext`FirstOutcomeDistribution[
+         Pattern[$CellContext`s1, 
+          Blank[]], 
+         Pattern[$CellContext`s2, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`\[Epsilon], 
+           Blank[]], 0]] := Flatten[
+         Outer[
+         Times, (1 - $CellContext`\[Epsilon]) 
+           UnitVector[
+            1 + First[$CellContext`s1]] + $CellContext`\[Epsilon] ({1, 1} - 
+            UnitVector[1 + First[$CellContext`s1]]), (
+            1 - $CellContext`\[Epsilon]) 
+           UnitVector[
+            1 + First[$CellContext`s2]] + $CellContext`\[Epsilon] ({1, 1} - 
+            UnitVector[1 + First[$CellContext`s2]])]]; $CellContext`Payoff[
+         Pattern[$CellContext`o, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`payoffs, 
+           Blank[]], {3, 0, 4, 1}]] := 
+       Module[{$CellContext`R, $CellContext`S, $CellContext`T, \
+$CellContext`P}, {$CellContext`R, $CellContext`S, $CellContext`T, \
+$CellContext`P} = $CellContext`payoffs; 
+         Switch[$CellContext`o, 1, $CellContext`R, 2, $CellContext`S, 
+           3, $CellContext`T, 4, $CellContext`P, 
+           Blank[], "no"]]; $CellContext`F[
+         Pattern[$CellContext`i, 
+          Blank[]], 
+         Pattern[$CellContext`ej, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`\[Epsilon], 
+           Blank[]], 0], 
+         Optional[
+          Pattern[$CellContext`\[Delta], 
+           Blank[]], 1], 
+         Optional[
+          Pattern[$CellContext`payoffs, 
+           Blank[]], {3, 0, 4, 1}]] := 
+       Module[{$CellContext`Tij, $CellContext`sequence, \
+$CellContext`initialPhase, $CellContext`cycle, $CellContext`R, \
+$CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
+$CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
+           
+           And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
+            1], {$CellContext`Tij, $CellContext`sequence} = \
+$CellContext`Match[$CellContext`i, $CellContext`ej]; 
+           If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
+               $CellContext`Payoff[
+                
+                Part[$CellContext`sequence, $CellContext`t], \
+$CellContext`payoffs], {$CellContext`t, 
+                1, $CellContext`Tij}], {$CellContext`initialPhase, \
+$CellContext`cycle} = $CellContext`sequence; (1/Length[$CellContext`cycle]) 
+              Sum[
+                $CellContext`Payoff[
+                 
+                 Part[$CellContext`cycle, $CellContext`t], \
+$CellContext`payoffs], {$CellContext`t, 1, 
+                 Length[$CellContext`cycle]}]], 
+           
+           Dot[{$CellContext`R, $CellContext`S, $CellContext`T, \
+$CellContext`P}, 
+            $CellContext`AsymptoticDistribution[$CellContext`i, \
+$CellContext`ej, $CellContext`\[Epsilon], $CellContext`\[Delta]]]]]; \
+$CellContext`ProbsOfThe3Actions[
+         Pattern[$CellContext`s, 
+          Blank[List]], 
+         Pattern[$CellContext`outcome, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          
+          Blank[]]] := ($CellContext`ProbsOfThe3Actions[$CellContext`s, \
+$CellContext`outcome, $CellContext`\[Epsilon]] = 
+        Module[{$CellContext`actionNoNoise = \
+$CellContext`ActionAfter[$CellContext`s, $CellContext`outcome]}, 
+          
+          Switch[$CellContext`actionNoNoise, 0, {
+           1 - $CellContext`\[Epsilon], $CellContext`\[Epsilon], 0}, 
+           1, {$CellContext`\[Epsilon], 1 - $CellContext`\[Epsilon], 0}, 2, {
+           0, 0, 1}]]); $CellContext`ProbOfLeaving[
+         Pattern[$CellContext`s, 
+          Blank[List]], 
+         Pattern[$CellContext`outcome, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]]] := Last[
+         $CellContext`ProbsOfThe3Actions[$CellContext`s, \
+$CellContext`outcome, $CellContext`\[Epsilon]]]; \
+$CellContext`ProbOfPartnershipBreakup[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`outcome, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := 
+       Module[{$CellContext`p1 = $CellContext`ProbOfLeaving[$CellContext`s1, \
+$CellContext`outcome, $CellContext`\[Epsilon]], $CellContext`p2 = \
+$CellContext`ProbOfLeaving[$CellContext`s2, 
+            $CellContext`ReverseOutcome[$CellContext`outcome], $CellContext`\
+\[Epsilon]], $CellContext`pEnd}, $CellContext`pEnd = $CellContext`p1 + \
+$CellContext`p2 - $CellContext`p1 $CellContext`p2; 
+         1 - (1 - $CellContext`pEnd) $CellContext`\[Delta]]; \
+$CellContext`TransitionProb[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`o1, 
+          Blank[]], 
+         Pattern[$CellContext`o2, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := 
+       Module[{$CellContext`probBreakup = \
+$CellContext`ProbOfPartnershipBreakup[$CellContext`s1, $CellContext`s2, \
+$CellContext`o1, $CellContext`\[Epsilon], $CellContext`\[Delta]]}, 
+         If[$CellContext`o2 == 0, 
+          If[$CellContext`o1 == 0, 0, $CellContext`probBreakup], 
+          If[$CellContext`o1 == 0, 1, $CellContext`\[Delta]] Part[
+            $CellContext`ProbsOfThe3Actions[$CellContext`s1, $CellContext`o1, \
+$CellContext`\[Epsilon]], 1 + $CellContext`Action1[$CellContext`o2]] Part[
+            $CellContext`ProbsOfThe3Actions[$CellContext`s2, 
+             $CellContext`ReverseOutcome[$CellContext`o1], $CellContext`\
+\[Epsilon]], 
+            1 + $CellContext`Action2[$CellContext`o2]]]]; \
+$CellContext`TransitionMatrixIncludingBreakUp[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := Module[{$CellContext`allOutcomes = Range[0, 4]}, 
+         Outer[$CellContext`TransitionProb[$CellContext`s1, $CellContext`s2, \
+#, #2, $CellContext`\[Epsilon], $CellContext`\[Delta]]& , \
+$CellContext`allOutcomes, $CellContext`allOutcomes]]; \
+$CellContext`TransitionMatrix[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := 
+       Module[{$CellContext`M, $CellContext`outflow, $CellContext`inflow}, \
+$CellContext`M = \
+$CellContext`TransitionMatrixIncludingBreakUp[$CellContext`s1, \
+$CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta]]; \
+$CellContext`outflow = Rest[
+            First[$CellContext`M]]; $CellContext`inflow = First[
+            Transpose[$CellContext`M]]; Map[Rest[
+             Part[$CellContext`M, #]] + 
+           Part[$CellContext`inflow, #] $CellContext`outflow& , 
+           Range[2, 5]]]; $CellContext`AsymptoticDistribution[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := FullSimplify[
+         Normalize[
+          Abs[
+           First[
+            Eigenvectors[
+             Transpose[
+              $CellContext`TransitionMatrix[$CellContext`s1, $CellContext`s2, \
+$CellContext`\[Epsilon], $CellContext`\[Delta]]], 1]]], Total], 
+         Assumptions -> {
+          0 <= $CellContext`\[Epsilon] <= 1, 0 <= $CellContext`\[Delta] <= 
+           1}]; $CellContext`ExpectedTimeUntilBreakUp[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := 
+       Module[{$CellContext`P = \
+$CellContext`TransitionMatrixIncludingBreakUp[$CellContext`s1, \
+$CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta]], \
+$CellContext`initialDistribution = \
+$CellContext`FirstOutcomeDistribution[$CellContext`s1, $CellContext`s2, \
+$CellContext`\[Epsilon]]}, 
+         Dot[$CellContext`initialDistribution, 
+          Dot[
+           Inverse[IdentityMatrix[4] - Part[$CellContext`P, 
+             Span[2, All], 
+             Span[2, All]]], 
+           Table[1, {4}]]]]; $CellContext`Ls[
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := {
+         $CellContext`ExpectedTimeUntilBreakUp[$CellContext`s1, \
+$CellContext`s1, $CellContext`\[Epsilon], $CellContext`\[Delta]], 
+         $CellContext`ExpectedTimeUntilBreakUp[$CellContext`s1, \
+$CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta]], 
+         $CellContext`ExpectedTimeUntilBreakUp[$CellContext`s2, \
+$CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta]]}; \
+$CellContext`PoolFromPop[
+         Pattern[$CellContext`x1, 
+          Blank[]], 
+         Pattern[$CellContext`s1, 
+          Blank[]], 
+         Pattern[$CellContext`s2, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]]] := 
+       Module[{$CellContext`L11, $CellContext`Lx, $CellContext`L22, \
+$CellContext`L, $CellContext`p1}, {$CellContext`L11, $CellContext`Lx, \
+$CellContext`L22} = $CellContext`Ls[$CellContext`s1, $CellContext`s2, \
+$CellContext`\[Epsilon], $CellContext`\[Delta]]; 
+         If[$CellContext`L11 === $CellContext`Lx === $CellContext`L22, \
+$CellContext`x1, If[
+             And[
+             Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6), 
+              Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6), 
+              Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6)], 
+             Print["Warning! Ls too close to each other"]]; 
+           If[-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 
+             0, $CellContext`x1, ($CellContext`Lx + 
+              2 $CellContext`L22 $CellContext`x1 - 
+              2 $CellContext`Lx $CellContext`x1 - 
+              Sqrt[$CellContext`Lx^2 (1 - 2 $CellContext`x1)^2 - 
+               4 $CellContext`L11 $CellContext`L22 (-1 + $CellContext`x1) \
+$CellContext`x1])/(
+             2 (-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1))]]]; $CellContext`Fx[
+         Pattern[$CellContext`x1, 
+          Blank[]], 
+         Pattern[$CellContext`s1, 
+          Blank[]], 
+         Pattern[$CellContext`s2, 
+          Blank[]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]], 
+         Pattern[$CellContext`L, 
+          Blank[List]], 
+         Pattern[$CellContext`FMatrix, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`payoffs, 
+           Blank[]], {3, 0, 4, 1}]] := 
+       Module[{$CellContext`L11, $CellContext`Lx, $CellContext`L22, \
+$CellContext`p1}, {$CellContext`L11, $CellContext`Lx, $CellContext`L22} = \
+$CellContext`L; $CellContext`p1 = 
+          If[$CellContext`L11 === $CellContext`Lx === $CellContext`L22, \
+$CellContext`x1, If[
+              And[
+              Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6), 
+               Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6), 
+               Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6)], 
+              Print["Warning! Ls too close to each other"]]; 
+            If[-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 
+              0, $CellContext`x1, ($CellContext`Lx + 
+               2 $CellContext`L22 $CellContext`x1 - 
+               2 $CellContext`Lx $CellContext`x1 - 
+               Sqrt[$CellContext`Lx^2 (1 - 2 $CellContext`x1)^2 - 
+                4 $CellContext`L11 $CellContext`L22 (-1 + $CellContext`x1) \
+$CellContext`x1])/(
+              2 (-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1))]]; 
+         Dot[Transpose[{$CellContext`p1, 1 - $CellContext`p1} 
+              Transpose[{{$CellContext`L11, $CellContext`Lx}, \
+{$CellContext`Lx, $CellContext`L22}}]] $CellContext`FMatrix, {1, 1}]/Dot[
+           
+           Transpose[{$CellContext`p1, 1 - $CellContext`p1} 
+            Transpose[{{$CellContext`L11, $CellContext`Lx}, {$CellContext`Lx, \
+$CellContext`L22}}]], {1, 1}]]; $CellContext`Replicator[
+         Pattern[$CellContext`x, 
+          Blank[]], 
+         Pattern[$CellContext`\[CapitalPi], 
+          Blank[]]] := $CellContext`x $CellContext`\[CapitalPi] - 
+        Dot[$CellContext`x, $CellContext`\[CapitalPi]] $CellContext`x; \
+$CellContext`ReplicatorMS[
+         Pattern[$CellContext`x, 
+          Blank[]], 
+         Pattern[$CellContext`\[CapitalPi], 
+          Blank[]]] := 
+       Module[{$CellContext`avgPayoff = 
+          Dot[$CellContext`x, $CellContext`\[CapitalPi]]}, ($CellContext`x \
+$CellContext`\[CapitalPi] - $CellContext`avgPayoff \
+$CellContext`x)/$CellContext`avgPayoff]; $CellContext`ExpectedChange[
+         Pattern[$CellContext`x1, 
+          Blank[]], 
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]], 
+         Pattern[$CellContext`m, 
+          Blank[]], 
+         Pattern[$CellContext`L, 
+          Blank[List]], 
+         Pattern[$CellContext`FMatrix, 
+          Blank[]], 
+         Optional[
+          Pattern[$CellContext`payoffs, 
+           Blank[]], {3, 0, 4, 1}]] := 
+       Module[{$CellContext`p, $CellContext`\[CapitalPi]}, $CellContext`\
+\[CapitalPi] = $CellContext`Fx[$CellContext`x1, $CellContext`s1, \
+$CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta], \
+$CellContext`L, $CellContext`FMatrix, $CellContext`payoffs]; (
+            1 - $CellContext`m) $CellContext`ReplicatorMS[{$CellContext`x1, 
+              1 - $CellContext`x1}, $CellContext`\[CapitalPi]] + \
+$CellContext`m (
+            ConstantArray[1/2, 2] - {$CellContext`x1, 
+             1 - $CellContext`x1})]; $CellContext`allStrategies = Join[
+         Map[Prepend[#, 0]& , 
+          Tuples[{0, 1, 2}, 4]], 
+         Map[Prepend[#, 1]& , 
+          Tuples[{0, 1, 2}, 4]]]; $CellContext`allOutcomes = Range[0, 4]; 
+      Null); Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.968568908012027*^9},
+ CellLabel->"Out[96]=",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Code", "Title",
+ CellChangeTimes->{{3.939807201726128*^9, 
+  3.9398072092363997`*^9}},ExpressionUUID->"08ff96db-2645-434f-a134-\
+0c0ff8cef20e"],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"rules", "=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"\"\<C\>\"", "->", "0"}], ",", 
+          RowBox[{"\"\<D\>\"", "->", "1"}], ",", 
+          RowBox[{"\"\<L\>\"", "->", "2"}]}], "}"}]}], ",", "s1", ",", "s2", ",",
+        "payoffs", ",", "L", ",", "FMatrix", ",", "listOfArrows", ",", "rest",
+        ",", "restPoints", ",", "x1", ",", 
+       RowBox[{"height", "=", "0.5"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"s1", "=", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"b1", ",", "b2", ",", "b3", ",", "b4", ",", "b5"}], "}"}], "/.",
+         "rules"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"s2", "=", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"o1", ",", "o2", ",", "o3", ",", "o4", ",", "o5"}], "}"}], "/.",
+         "rules"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"payoffs", "=", 
+       RowBox[{"{", 
+        RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"L", "=", 
+       RowBox[{"Ls", "[", 
+        RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"FMatrix", "=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"F", "[", 
+            RowBox[{"s1", ",", "s1", ",", 
+             StyleBox["\[Epsilon]",
+              FontSlant->"Italic"], ",", "\[Delta]", ",", "payoffs"}], "]"}], 
+           ",", 
+           RowBox[{"F", "[", 
+            RowBox[{"s1", ",", "s2", ",", 
+             StyleBox["\[Epsilon]",
+              FontSlant->"Italic"], ",", "\[Delta]", ",", "payoffs"}], 
+            "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"F", "[", 
+            RowBox[{"s2", ",", "s1", ",", 
+             StyleBox["\[Epsilon]",
+              FontSlant->"Italic"], ",", "\[Delta]", ",", "payoffs"}], "]"}], 
+           ",", 
+           RowBox[{"F", "[", 
+            RowBox[{"s2", ",", "s2", ",", 
+             StyleBox["\[Epsilon]",
+              FontSlant->"Italic"], ",", "\[Delta]", ",", "payoffs"}], 
+            "]"}]}], "}"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"listOfArrows", "=", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Arrowheads", "[", "0.03", "]"}], ",", 
+           RowBox[{"Arrow", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"initx1", ",", "height"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"initx1", "+", 
+                 RowBox[{"First", "@", 
+                  RowBox[{"ExpectedChange", "[", 
+                   RowBox[{
+                   "initx1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
+                    "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
+                    "payoffs"}], "]"}]}]}], ",", "height"}], "}"}]}], "}"}], 
+            "]"}]}], "}"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"initx1", ",", "0", ",", "1", ",", "step"}], "}"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"rest", "=", 
+       RowBox[{"Reduce", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ExpectedChange", "[", 
+             RowBox[{
+             "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
+               "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "==", 
+            "0"}], ",", 
+           RowBox[{"0", "<=", "x1", "<=", "1"}]}], "}"}], ",", "x1", ",", 
+         "Reals"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"restPoints", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"List", "[", 
+          RowBox[{"ToRules", "[", "rest", "]"}], "]"}], ",", "ListQ"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"Evaluate", "@", 
+           RowBox[{"Fx", "[", 
+            RowBox[{
+            "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
+              "L", ",", "FMatrix", ",", "payoffs"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+          RowBox[{"PlotRange", "->", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "1"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"S", ",", "T"}], "}"}]}], "}"}]}], ",", 
+          RowBox[{"AxesLabel", "->", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<% blue\>\"", ",", "Blue"}], "]"}], 
+             ",", "\"\<Exp. payoff\>\""}], "}"}]}]}], "]"}], 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{"Graphics", "[", "listOfArrows", "]"}], "\[IndentingNewLine]",
+         ",", "\[IndentingNewLine]", 
+        RowBox[{"Graphics", "[", 
+         RowBox[{"MapThread", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"EdgeForm", "[", "Thick", "]"}], ",", "Red", ",", 
+              RowBox[{"Disk", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"#", ",", "height"}], "}"}], ",", 
+                RowBox[{"Scaled", "@", 
+                 RowBox[{"{", 
+                  RowBox[{"0.02", ",", "0.03"}], "}"}]}]}], "]"}]}], "}"}], 
+            "&"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"N", "[", 
+             RowBox[{"x1", "/.", "restPoints"}], "]"}], "}"}]}], "]"}], 
+         "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "End", " ", "of", " ", "Module", " ", "right", " ", "after", " ", 
+     "Manipulate"}], " ", "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"MANIPULATE", " ", "PARAMETERES"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "We", " ", "want", " ", "all", " ", "parameteres", " ", "to", " ", "be", 
+      " ", "controlled", " ", "by", " ", "Manipulate"}], ",", " ", 
+     RowBox[{
+     "but", " ", "we", " ", "also", " ", "want", " ", "to", " ", "customize", 
+      " ", "the", " ", 
+      RowBox[{"interface", ".", " ", "Because"}], " ", "of", " ", "this"}], ",",
+      " ", 
+     RowBox[{
+     "we", " ", "define", " ", "all", " ", "parameters", " ", "here", " ", 
+      "following", " ", "the", " ", "Manipulate", " ", "approach"}], ",", " ", 
+     RowBox[{
+      RowBox[{"but", " ", "with", " ", "ControlType"}], "\[Rule]", "None"}], ",",
+      " ", 
+     RowBox[{
+     "and", " ", "we", " ", "create", " ", "our", " ", "customized", " ", 
+      "controls", " ", "later"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b1", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b2", ",", "\"\<C\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b3", ",", "\"\<L\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b4", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b5", ",", "\"\<C\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"o1", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"o2", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"o3", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"o4", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"o5", ",", "\"\<D\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"bName", ",", "\"\<leaver1\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"oName", ",", "\"\<allD\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"T", ",", "4"}], "}"}], ",", "0", ",", "5", ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"T", ",", "0.01"}], "]"}]}]}], "}"}], "]"}], "&"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"R", ",", "3"}], "}"}], ",", "0", ",", "5", ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"R", ",", "0.01"}], "]"}]}]}], "}"}], "]"}], "&"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"P", ",", "1"}], "}"}], ",", "0", ",", "5", ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"P", ",", "0.01"}], "]"}]}]}], "}"}], "]"}], "&"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"S", ",", "0"}], "}"}], ",", "0", ",", "5", ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"S", ",", "0.01"}], "]"}]}]}], "}"}], "]"}], "&"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", "Delimiter", ",",
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Epsilon]", ",", 
+       RowBox[{"5", "/", "100"}]}], "}"}], ",", "0", ",", 
+     RowBox[{"1", "/", "2"}], ",", 
+     RowBox[{"1", "/", "10000"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"\[Epsilon]", ",", "0.0001"}], "]"}]}]}], "}"}], "]"}], 
+      "&"}]}], "}"}], ",", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\[Delta]", ",", 
+         RowBox[{"6", "/", "10"}]}], "}"}], ",", "0", ",", 
+       RowBox[{"9999", "/", "10000"}], ",", 
+       RowBox[{"1", "/", "10000"}], ",", 
+       RowBox[{
+        RowBox[{"Row", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+           RowBox[{"Dynamic", "@", 
+            RowBox[{"Round", "[", 
+             RowBox[{"\[Delta]", ",", "0.0001"}], "]"}]}], 
+           ",", "\"\<     (Exp. life = \>\"", ",", 
+           RowBox[{"Dynamic", "@", 
+            RowBox[{"Round", "[", 
+             RowBox[{
+              FractionBox[
+               RowBox[{
+                RowBox[{"-", "1"}], "-", 
+                SqrtBox["\[Delta]"]}], 
+               RowBox[{
+                RowBox[{"-", "1"}], "+", "\[Delta]"}]], ",", "0.1"}], "]"}]}],
+            ",", "\"\<)\>\""}], "}"}], "]"}], "&"}]}], "}"}], ","}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Delta]", ",", 
+       RowBox[{"95", "/", "100"}]}], "}"}], ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{"99", "/", "100"}], ",", 
+     RowBox[{"1", "/", "100"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"\[Delta]", ",", "0.0001"}], "]"}]}]}], "}"}], "]"}], 
+      "&"}]}], "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m", ",", 
+       RowBox[{"5", "/", "100"}], ",", "\"\<\[Mu]\>\""}], "}"}], ",", "0", ",", 
+     RowBox[{"1", "/", "2"}], ",", 
+     RowBox[{"1", "/", "10000"}], ",", 
+     RowBox[{
+      RowBox[{"Row", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Manipulator", "[", "##", "]"}], ",", "\"\<  \>\"", ",", 
+         RowBox[{"Dynamic", "@", 
+          RowBox[{"Round", "[", 
+           RowBox[{"m", ",", "0.0001"}], "]"}]}]}], "}"}], "]"}], "&"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", "Delimiter", ",",
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"step", ",", 
+       RowBox[{"1", "/", "8"}], ",", "\"\<arrows\>\""}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"1", "/", "32"}], "\[Rule]", "\"\<all\>\""}], ",", 
+       RowBox[{
+        RowBox[{"1", "/", "16"}], "\[Rule]", "\"\<many\>\""}], ",", 
+       RowBox[{
+        RowBox[{"1", "/", "8"}], "\[Rule]", "\"\<some\>\""}], ",", 
+       RowBox[{
+        RowBox[{"1", "/", "4"}], "\[Rule]", "\"\<few\>\""}], ",", 
+       RowBox[{"2", "\[Rule]", "\"\<none\>\""}]}], "}"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "Delimiter", ",", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Evaluate", "@", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"gameNamesB", "=", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<c0a\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<c0a\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<c0b\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<c0b\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver1\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<leaver1\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver2\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<leaver2\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver3\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<leaver3\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<allD\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<allD\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<allC\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<allC\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<hitrun\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<hitrun\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<WSLS\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<WSLS\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<nWSLS\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<nWSLS\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<grim\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<grim\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<grim2\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<grim2\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TFT\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<TFT\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TFTlike\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<TFTlike\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<DDLDC\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"b1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b2", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"bName", "=", "\"\<DDLDC\>\""}]}], "}"}]}]}], 
+          "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"gameNamesO", "=", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<c0a\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<c0a\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<c0b\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<c0b\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver1\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<leaver1\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver2\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<leaver2\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<leaver3\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<leaver3\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<allD\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<allD\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<allC\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<allC\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<hitrun\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<hitrun\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<WSLS\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<WSLS\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<nWSLS\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<nWSLS\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<grim\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<grim\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<grim2\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<grim2\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TFT\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<TFT\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TFTlike\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<TFTlike\>\""}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<DDLDC\>\"", "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"o1", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o2", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o3", "=", "\"\<L\>\""}], ",", 
+              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
+              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
+              RowBox[{"oName", "=", "\"\<DDLDC\>\""}]}], "}"}]}]}], 
+          "\[IndentingNewLine]", "}"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Grid", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Row", "[", 
+             RowBox[{"{", "\"\<Color        initial        \>\"", "}"}], 
+             "]"}], ",", "\"\<  After CC\>\"", ",", "\"\<  After CD\>\"", 
+            ",", "\"\<  After DC\>\"", ",", "\"\<  After DD\>\"", 
+            ",", "\"\<\\tnames\>\""}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\< \>\"", ",", "SpanFromLeft"}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"b1", ",", "\"\<D\>\"", ",", 
+                 RowBox[{"Style", "[", 
+                  RowBox[{"\"\<Blue      \>\"", ",", "Blue"}], "]"}]}], "}"}],
+                ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\""}], "}"}], ",", 
+               "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], " ", ",",
+             "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"b2", ",", "\"\<C\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"b3", ",", "\"\<L\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"b4", ",", "\"\<D\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"b5", ",", "\"\<C\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            RowBox[{"Row", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"ActionMenu", "[", 
+                RowBox[{
+                 RowBox[{"Dynamic", "[", "bName", "]"}], ",", "gameNamesB", ",", 
+                 RowBox[{"Appearance", "\[Rule]", "\"\<PopupMenu\>\""}], ",", 
+                 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"100", ",", "20"}], "}"}]}]}], "]"}], "}"}], ",", 
+              RowBox[{"ImageSize", "\[Rule]", "110"}], ",", 
+              RowBox[{"Alignment", "\[Rule]", "Center"}]}], "]"}]}], "}"}], ",",
+           "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"o1", ",", "\"\<D\>\"", ",", 
+                 RowBox[{"Style", "[", 
+                  RowBox[{"\"\<Orange \>\"", ",", "Orange"}], "]"}]}], "}"}], 
+               ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\""}], "}"}], ",", 
+               "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], " ", ",",
+             "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"o2", ",", "\"\<D\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"o3", ",", "\"\<D\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"o4", ",", "\"\<D\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Control", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"o5", ",", "\"\<D\>\"", ",", "\"\<\>\""}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"\"\<C\>\"", ",", "\"\<D\>\"", ",", "\"\<L\>\""}], 
+                "}"}], ",", "PopupMenu", ",", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"43", ",", "19"}], "}"}]}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Row", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"ActionMenu", "[", 
+                RowBox[{
+                 RowBox[{"Dynamic", "[", "oName", "]"}], ",", "gameNamesO", ",", 
+                 RowBox[{"Appearance", "\[Rule]", "\"\<PopupMenu\>\""}], ",", 
+                 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"100", ",", "20"}], "}"}]}]}], "]"}], "}"}], ",", 
+              RowBox[{"ImageSize", "\[Rule]", "110"}], ",", 
+              RowBox[{"Alignment", "\[Rule]", "Center"}]}], "]"}]}], "}"}]}], 
+         "\[IndentingNewLine]", "}"}], ",", 
+        RowBox[{"Alignment", "\[Rule]", "Left"}], ",", 
+        RowBox[{"Spacings", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}]}]}], "]"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ",", 
+   RowBox[{"Initialization", ":>", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Outcome", "[", 
+        RowBox[{"a1_", ",", "a2_"}], "]"}], ":=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"a1", "!=", "2"}], "&&", 
+          RowBox[{"a2", "!=", "2"}]}], ",", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "*", "a1"}], "+", "a2"}], ",", "0"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"cc", "=", "1"}], ";", " ", 
+        RowBox[{"cd", "=", "2"}], ";", " ", 
+        RowBox[{"dc", "=", "3"}], ";", " ", 
+        RowBox[{"dd", "=", "4"}], ";", " ", 
+        RowBox[{
+         RowBox[{"xl", " ", "or", " ", "lx"}], " ", "=", " ", "0"}]}], "*)"}],
+       "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "outcome", " ", "0", " ", "means", " ", "that", " ", "the", " ", 
+        "couple", " ", "has", " ", "broken", " ", "up"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ReverseOutcome", "[", "o_", "]"}], ":=", 
+       RowBox[{"Switch", "[", 
+        RowBox[{"o", ",", "\[IndentingNewLine]", 
+         RowBox[{"Outcome", "[", 
+          RowBox[{"0", ",", "1"}], "]"}], ",", 
+         RowBox[{"Outcome", "[", 
+          RowBox[{"1", ",", "0"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Outcome", "[", 
+          RowBox[{"1", ",", "0"}], "]"}], ",", 
+         RowBox[{"Outcome", "[", 
+          RowBox[{"0", ",", "1"}], "]"}], ",", "\[IndentingNewLine]", "_", ",",
+          "o"}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Action1", "[", "o_", "]"}], ":=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"o", "==", 
+           RowBox[{"Outcome", "[", 
+            RowBox[{"0", ",", "0"}], "]"}]}], "||", 
+          RowBox[{"o", "==", 
+           RowBox[{"Outcome", "[", 
+            RowBox[{"0", ",", "1"}], "]"}]}]}], ",", "0", ",", "1"}], "]"}]}],
+       ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Action2", "[", "o_", "]"}], ":=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"o", "==", 
+           RowBox[{"Outcome", "[", 
+            RowBox[{"0", ",", "0"}], "]"}]}], "||", 
+          RowBox[{"o", "==", 
+           RowBox[{"Outcome", "[", 
+            RowBox[{"1", ",", "0"}], "]"}]}]}], ",", "0", ",", "1"}], "]"}]}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"Action", " ", "after", " ", 
+        RowBox[{"outcome", ".", " ", "The"}], " ", "outcome", " ", "is", " ", 
+        "seen", " ", "from", " ", "the", " ", "perspective", " ", "of", " ", 
+        "the", " ", "individual"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ActionAfter", "[", 
+        RowBox[{"s_List", ",", "outcome_"}], "]"}], ":=", 
+       RowBox[{"s", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", "+", "outcome"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+        "Match", " ", "returns", " ", "the", " ", "Tij", " ", "and", " ", 
+         "the", " ", "sequence", " ", "of", " ", "outcomes", " ", "in", " ", 
+         "a", " ", "match", " ", "s1", " ", "vs", " ", 
+         RowBox[{"s2", ":", " ", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"A", ".", " ", "If"}], " ", "\[Epsilon]"}], "==", 
+           RowBox[{"0", "\[IndentingNewLine]", 
+            RowBox[{"a", ".", " ", "If"}], " ", "they", " ", "never", " ", 
+            "break"}]}], ":", " ", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\[Infinity]", ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+               "initial", " ", "sequence", " ", "of", " ", "outcomes"}], ",", 
+               " ", 
+               RowBox[{
+               "cyclic", " ", "sequence", " ", "of", " ", "outcomes"}]}], 
+              "}"}]}], "}"}], "\[IndentingNewLine]", " ", 
+           RowBox[{"b", ".", " ", "If"}], " ", "they", " ", "break", " ", 
+           "after", " ", "t", " ", 
+           RowBox[{"outcomes", ":", " ", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"t", ",", 
+                RowBox[{"sequence", " ", "of", " ", "outcomes"}]}], "}"}], 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"B", ".", "If"}], " ", "\[Epsilon]"}], "!=", 
+             "0"}]}]}]}]}], ",", " ", 
+        RowBox[{
+        "the", " ", "sequence", " ", "is", " ", "a", " ", "distribution", " ",
+          "of", " ", "outcomes", " ", "at", " ", "each", " ", 
+         RowBox[{"timestep", ".", " ", "This"}], " ", "function", " ", 
+         "returns", " ", "a", " ", "matrix"}], ",", " ", 
+        RowBox[{
+        "where", " ", "row", " ", "i", " ", "is", " ", "the", " ", 
+         "distribution", " ", "over", " ", "outcomes", " ", "at", " ", 
+         "timestep", " ", 
+         RowBox[{"i", "."}]}]}], " ", "\[IndentingNewLine]", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Match", "[", 
+        RowBox[{"s1_", ",", "s2_", ",", 
+         RowBox[{
+          StyleBox["\[Epsilon]_",
+           FontSlant->"Italic"], ":", "0"}], ",", 
+         RowBox[{"\[Delta]_", ":", "1"}], ",", 
+         RowBox[{"timesteps_", ":", "10"}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"a1", "=", 
+            RowBox[{"First", "[", "s1", "]"}]}], ",", 
+           RowBox[{"a2", "=", 
+            RowBox[{"First", "[", "s2", "]"}]}], ",", 
+           RowBox[{"t", "=", "0"}], ",", "sequence", ",", "pos", ",", "M", ",",
+            "initial"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
+            RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"sequence", "=", 
+             RowBox[{"{", 
+              RowBox[{"Outcome", "[", 
+               RowBox[{"a1", ",", "a2"}], "]"}], "}"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"While", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Outcome", "[", 
+                 RowBox[{"a1", ",", "a2"}], "]"}], "!=", "0"}], "&&", 
+               RowBox[{"t", "<", "1000"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"a1", ",", "a2"}], "}"}], "=", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"ActionAfter", "[", 
+                   RowBox[{"s1", ",", 
+                    RowBox[{"Outcome", "[", 
+                    RowBox[{"a1", ",", "a2"}], "]"}]}], "]"}], ",", 
+                  RowBox[{"ActionAfter", "[", 
+                   RowBox[{"s2", ",", 
+                    RowBox[{"Outcome", "[", 
+                    RowBox[{"a2", ",", "a1"}], "]"}]}], "]"}]}], "}"}]}], ";",
+                "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"MemberQ", "[", 
+                  RowBox[{"sequence", ",", 
+                   RowBox[{"Outcome", "[", 
+                    RowBox[{"a1", ",", "a2"}], "]"}]}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", " ", 
+                  RowBox[{
+                  "This", " ", "outcome", " ", "has", " ", "already", " ", 
+                   "been", " ", "observed", " ", "before"}], " ", "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"t", "=", "\[Infinity]"}], "\[IndentingNewLine]", ",",
+                  "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"t", " ", "=", " ", 
+                   RowBox[{"t", "+", "1"}]}], ";"}]}], "\[IndentingNewLine]", 
+                "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"sequence", ",", 
+                 RowBox[{"Outcome", "[", 
+                  RowBox[{"a1", ",", "a2"}], "]"}]}], "]"}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"t", "==", "\[Infinity]"}], ",", "\[IndentingNewLine]", 
+              
+              RowBox[{
+               RowBox[{"pos", "=", 
+                RowBox[{"First", "@", 
+                 RowBox[{"FirstPosition", "[", 
+                  RowBox[{"sequence", ",", 
+                   RowBox[{"Outcome", "[", 
+                    RowBox[{"a1", ",", "a2"}], "]"}]}], "]"}]}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"t", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"sequence", "[", 
+                    RowBox[{"[", 
+                    RowBox[{";;", 
+                    RowBox[{"pos", "-", "1"}]}], "]"}], "]"}], ",", 
+                   RowBox[{"sequence", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"pos", ";;", 
+                    RowBox[{"-", "2"}]}], "]"}], "]"}]}], "}"}]}], 
+                RowBox[{"(*", 
+                 RowBox[{"/.", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"0", "->", "\"\<C\>\""}], ",", 
+                    RowBox[{"1", "->", "\"\<D\>\""}]}], "}"}]}], "*)"}], 
+                "}"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"t", ",", 
+                RowBox[{"sequence", "[", 
+                 RowBox[{"[", 
+                  RowBox[{";;", 
+                   RowBox[{"-", "2"}]}], "]"}], "]"}]}], 
+               RowBox[{"(*", 
+                RowBox[{"/.", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"0", "->", "\"\<C\>\""}], ",", 
+                   RowBox[{"1", "->", "\"\<D\>\""}], ",", 
+                   RowBox[{"2", "->", "\"\<L\>\""}]}], "}"}]}], "*)"}], 
+               "}"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]",
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", " ", 
+            RowBox[{"\[Epsilon]", "!=", 
+             RowBox[{"0", " ", "or", " ", "\[Delta]"}], "!=", "1"}], " ", 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"M", "=", 
+             RowBox[{"TransitionMatrix", "[", 
+              RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"initial", "=", 
+             RowBox[{"FirstOutcomeDistribution", "[", 
+              RowBox[{"s1", ",", "s2", ",", 
+               StyleBox["\[Epsilon]",
+                FontSlant->"Italic"]}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"Prepend", "[", 
+             RowBox[{
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{"initial", ".", 
+                 RowBox[{"MatrixPower", "[", 
+                  RowBox[{"M", ",", "i"}], "]"}]}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", "1", ",", "timesteps"}], "}"}]}], "]"}], ",",
+               "initial"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"FirstOutcomeDistribution", "[", 
+        RowBox[{"s1_", ",", "s2_", ",", 
+         RowBox[{
+          StyleBox["\[Epsilon]_",
+           FontSlant->"Italic"], ":", "0"}]}], "]"}], ":=", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"Outer", "[", 
+         RowBox[{"Times", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
+            RowBox[{"UnitVector", "[", 
+             RowBox[{"1", "+", 
+              RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], "+", 
+           RowBox[{"\[Epsilon]", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"1", ",", "1"}], "}"}], "-", 
+              RowBox[{"UnitVector", "[", 
+               RowBox[{"1", "+", 
+                RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], ")"}]}]}], ",", 
+          
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
+            RowBox[{"UnitVector", "[", 
+             RowBox[{"1", "+", 
+              RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], "+", 
+           RowBox[{"\[Epsilon]", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"1", ",", "1"}], "}"}], "-", 
+              RowBox[{"UnitVector", "[", 
+               RowBox[{"1", "+", 
+                RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], ")"}]}]}]}], 
+         "]"}]}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Payoff", "[", 
+        RowBox[{"o_", ",", 
+         RowBox[{"payoffs_", ":", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}], "=", 
+           "payoffs"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Switch", "[", 
+           RowBox[{"o", ",", "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"cc", "=", "1"}], ";", " ", 
+              RowBox[{"cd", "=", "2"}], ";", " ", 
+              RowBox[{"dc", "=", "3"}], ";", " ", 
+              RowBox[{"dd", "=", "4"}], ";", " ", 
+              RowBox[{
+               RowBox[{"xl", " ", "or", " ", "lx"}], " ", "=", " ", "0"}]}], 
+             "*)"}], "\[IndentingNewLine]", "1", ",", "R", ",", 
+            "\[IndentingNewLine]", "2", ",", "S", ",", "\[IndentingNewLine]", 
+            "3", ",", "T", ",", "\[IndentingNewLine]", "4", ",", "P", ",", 
+            "\[IndentingNewLine]", "_", ",", "\"\<no\>\""}], 
+           "\[IndentingNewLine]", "]"}]}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"F", "[", 
+         RowBox[{"i", ",", "ej"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          SubscriptBox["F", "i"], 
+          RowBox[{"(", 
+           SubscriptBox["e", "j"], ")"}]}], " ", "=", " ", 
+         RowBox[{
+         "Payoff", " ", "of", " ", "i", " ", "on", " ", "monomorphic", " ", 
+          "population", " ", "state", " ", 
+          SubscriptBox["e", "j"]}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"F", "[", 
+        RowBox[{"i_", ",", "ej_", ",", 
+         RowBox[{
+          StyleBox["\[Epsilon]_",
+           FontSlant->"Italic"], ":", "0"}], ",", 
+         RowBox[{"\[Delta]_", ":", "1"}], ",", 
+         RowBox[{"payoffs_", ":", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "Tij", ",", "sequence", ",", "initialPhase", ",", "cycle", ",", "R",
+            ",", "S", ",", "T", ",", "P"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}], "=", 
+           "payoffs"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
+             RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"Tij", ",", "sequence"}], "}"}], "=", 
+              RowBox[{"Match", "[", 
+               RowBox[{"i", ",", "ej"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"Tij", "<", "\[Infinity]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                FractionBox["1", "Tij"], 
+                RowBox[{
+                 SubsuperscriptBox["\[Sum]", 
+                  RowBox[{"t", "=", "1"}], "Tij"], 
+                 RowBox[{"Payoff", "[", 
+                  RowBox[{
+                   RowBox[{"sequence", "[", 
+                    RowBox[{"[", "t", "]"}], "]"}], ",", "payoffs"}], 
+                  "]"}]}]}], "\[IndentingNewLine]", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"Tij", " ", "==", " ", "\[Infinity]"}], "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"initialPhase", ",", "cycle"}], "}"}], "=", 
+                 "sequence"}], ";", "\[IndentingNewLine]", 
+                RowBox[{
+                 FractionBox["1", 
+                  RowBox[{"Length", "[", "cycle", "]"}]], 
+                 RowBox[{
+                  SubsuperscriptBox["\[Sum]", 
+                   RowBox[{"t", "=", "1"}], 
+                   RowBox[{"Length", "[", "cycle", "]"}]], 
+                  RowBox[{"Payoff", "[", 
+                   RowBox[{
+                    RowBox[{"cycle", "[", 
+                    RowBox[{"[", "t", "]"}], "]"}], ",", "payoffs"}], 
+                   "]"}]}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"(*", " ", 
+             RowBox[{"\[Epsilon]", "!=", 
+              RowBox[{"0", " ", "or", " ", "\[Delta]"}], "!=", "1"}], " ", 
+             "*)"}], "\[IndentingNewLine]", 
+            RowBox[{"(*", " ", "limitingPayoff", " ", "*)"}], 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}], ".", 
+             RowBox[{"AsymptoticDistribution", "[", 
+              RowBox[{"i", ",", "ej", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+              "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "ProbsOfThe3Actions", " ", "returns", " ", "a", " ", "vector", " ", 
+         "with", " ", "the", " ", "probability", " ", "of", " ", "C"}], ",", 
+        " ", 
+        RowBox[{"D", " ", "and", " ", "L"}], ",", " ", 
+        RowBox[{
+        "for", " ", "strategy", " ", "s", " ", "after", " ", "outcome", " ", 
+         "o", " ", "in", " ", "the", " ", "presence", " ", "of", " ", "error",
+          " ", 
+         RowBox[{"\[Epsilon]", ".", " ", "The"}], " ", "outcome", " ", "is", " ",
+          "seen", " ", "from", " ", "the", " ", "perspective", " ", "of", " ",
+          "the", " ", "agent"}]}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ProbsOfThe3Actions", "[", 
+        RowBox[{"s_List", ",", "outcome_", ",", "\[Epsilon]_"}], "]"}], ":=", 
+       
+       RowBox[{
+        RowBox[{"ProbsOfThe3Actions", "[", 
+         RowBox[{"s", ",", "outcome", ",", "\[Epsilon]"}], "]"}], "=", 
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"actionNoNoise", "=", 
+            RowBox[{"ActionAfter", "[", 
+             RowBox[{"s", ",", "outcome"}], "]"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Switch", "[", 
+           RowBox[{"actionNoNoise", ",", "\[IndentingNewLine]", "0", 
+            RowBox[{"(*", "Cooperate", "*)"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"1", "-", "\[Epsilon]"}], ",", "\[Epsilon]", ",", "0"}],
+              "}"}], ",", "\[IndentingNewLine]", "1", 
+            RowBox[{"(*", "Defect", "*)"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"\[Epsilon]", ",", 
+              RowBox[{"1", "-", "\[Epsilon]"}], ",", "0"}], "}"}], ",", 
+            "\[IndentingNewLine]", "2", 
+            RowBox[{"(*", "Leave", "*)"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], 
+           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"https", ":"}], "//", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"reference", ".", "wolfram", ".", "com"}], "/", 
+           "language"}], "/", "workflow"}], "/", 
+         RowBox[{
+         "WriteAFunctionThatRemembersComputedValues", ".", "html"}]}]}], 
+       "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ProbOfLeaving", "[", 
+        RowBox[{"s_List", ",", "outcome_", ",", "\[Epsilon]_"}], "]"}], ":=", 
+       
+       RowBox[{"Last", "[", 
+        RowBox[{"ProbsOfThe3Actions", "[", 
+         RowBox[{"s", ",", "outcome", ",", "\[Epsilon]"}], "]"}], "]"}]}], ";",
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "ProbOfPartnershipBreakup", " ", "returns", " ", "the", " ", 
+        "probability", " ", "that", " ", "the", " ", "partnership", " ", 
+        RowBox[{"breaks", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ProbOfPartnershipBreakup", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "outcome_", ",", "\[Epsilon]_", ",", 
+         "\[Delta]_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"p1", "=", 
+            RowBox[{"ProbOfLeaving", "[", 
+             RowBox[{"s1", ",", "outcome", ",", "\[Epsilon]"}], "]"}]}], ",", 
+           
+           RowBox[{"p2", "=", 
+            RowBox[{"ProbOfLeaving", "[", 
+             RowBox[{"s2", ",", 
+              RowBox[{"ReverseOutcome", "@", "outcome"}], ",", "\[Epsilon]"}],
+              "]"}]}], ",", "pEnd"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pEnd", "=", 
+           RowBox[{"p1", "+", "p2", "-", 
+            RowBox[{"p1", "*", "p2"}]}]}], ";", " ", 
+          RowBox[{"(*", " ", 
+           RowBox[{"=", " ", 
+            RowBox[{
+             RowBox[{"1", "-", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"1", "-", "p1"}], ")"}], 
+               RowBox[{"(", 
+                RowBox[{"1", "-", "p2"}], ")"}]}]}], " ", "=", " ", 
+             RowBox[{
+              RowBox[{
+              "Probability", " ", "of", " ", "endogenous", " ", "break"}], "-",
+               "up"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"1", "-", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", "pEnd"}], ")"}], "\[Delta]"}]}]}]}], " ", 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "TransitionProb", " ", "returns", " ", "the", " ", "probability", " ",
+          "that"}], ",", " ", 
+        RowBox[{
+        "in", " ", "a", " ", "contest", " ", "between", " ", "s1", " ", "and",
+          " ", "s2"}], ",", " ", 
+        RowBox[{
+        "the", " ", "partnership", " ", "goes", " ", "from", " ", "outcome", " ",
+          "o1", " ", "to", " ", "outcome", " ", "o2", " ", "in", " ", "the", " ",
+          "presence", " ", "of", " ", "error", " ", 
+         RowBox[{"\[Epsilon]", ".", " ", "In"}], " ", "this", " ", "Markov", " ",
+          "chain"}], ",", " ", 
+        RowBox[{"outcome", " ", "0", " ", "is", " ", "a", " ", "state"}]}], 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"TransitionProb", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "o1_", ",", "o2_", ",", "\[Epsilon]_",
+          ",", "\[Delta]_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"probBreakup", "=", 
+           RowBox[{"ProbOfPartnershipBreakup", "[", 
+            RowBox[{
+            "s1", ",", "s2", ",", "o1", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+            "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"o2", "==", "0"}], ",", 
+           RowBox[{"(*", 
+            RowBox[{
+            "outcome", " ", "0", " ", "means", " ", "that", " ", "the", " ", 
+             "couple", " ", "has", " ", "broken", " ", "up"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"o1", "==", "0"}], ",", "0", ",", "probBreakup"}], "]"}],
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"o1", "==", "0"}], ",", "1", ",", "\[Delta]"}], "]"}], "*", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"ProbsOfThe3Actions", "[", 
+                RowBox[{"s1", ",", "o1", ",", "\[Epsilon]"}], "]"}], ")"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"1", "+", 
+                RowBox[{"Action1", "[", "o2", "]"}]}], "]"}], "]"}], ")"}], "*", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"ProbsOfThe3Actions", "[", 
+                RowBox[{"s2", ",", 
+                 RowBox[{"ReverseOutcome", "[", "o1", "]"}], ",", 
+                 "\[Epsilon]"}], "]"}], ")"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"1", "+", 
+                RowBox[{"Action2", "[", "o2", "]"}]}], "]"}], "]"}], 
+             ")"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]",
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"TransitionMatrixIncludingBreakUp", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
+        "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"allOutcomes", "=", 
+           RowBox[{"Range", "[", 
+            RowBox[{"0", ",", "4"}], "]"}]}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Outer", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"TransitionProb", "[", 
+             RowBox[{
+             "s1", ",", "s2", ",", "#1", ",", "#2", ",", "\[Epsilon]", ",", 
+              "\[Delta]"}], "]"}], "&"}], ",", "allOutcomes", ",", 
+           "allOutcomes"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"TransitionMatrix", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
+        "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"M", ",", "outflow", ",", "inflow"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"M", "=", 
+           RowBox[{"TransitionMatrixIncludingBreakUp", "[", 
+            RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"outflow", "=", 
+           RowBox[{"Rest", "@", 
+            RowBox[{"First", "[", "M", "]"}]}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{"inflow", "=", 
+           RowBox[{"First", "[", 
+            RowBox[{"M", "\[Transpose]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Rest", "[", 
+                RowBox[{"M", "[", 
+                 RowBox[{"[", "#", "]"}], "]"}], "]"}], "+", 
+               RowBox[{
+                RowBox[{"inflow", "[", 
+                 RowBox[{"[", "#", "]"}], "]"}], "*", "outflow"}]}], ")"}], 
+             "&"}], ",", 
+            RowBox[{"Range", "[", 
+             RowBox[{"2", ",", "5"}], "]"}]}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"AsymptoticDistribution", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
+        "]"}], ":=", 
+       RowBox[{"FullSimplify", "[", 
+        RowBox[{
+         RowBox[{"Normalize", "[", 
+          RowBox[{
+           RowBox[{"Abs", "@", 
+            RowBox[{"First", "@", 
+             RowBox[{"Eigenvectors", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"TransitionMatrix", "[", 
+                 RowBox[{
+                 "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], "]"}],
+                 "\[Transpose]"}], ",", "1"}], "]"}]}]}], ",", "Total"}], 
+          "]"}], ",", " ", 
+         RowBox[{"Assumptions", "->", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"0", "<=", "\[Epsilon]", "<=", "1"}], ",", 
+            RowBox[{"0", "<=", "\[Delta]", "<=", "1"}]}], "}"}]}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"Theorem", " ", "11.5"}], ",", " ", 
+        RowBox[{"p", ".", " ", "419"}], ",", " ", 
+        RowBox[{
+         RowBox[{"https", ":"}], "//", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"chance", ".", "dartmouth", ".", "edu"}], "/", 
+             "teaching_aids"}], "/", "books_articles"}], "/", 
+           "probability_book"}], "/", 
+          RowBox[{"book", ".", "html"}]}]}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ExpectedTimeUntilBreakUp", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
+        "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"P", "=", 
+            RowBox[{"TransitionMatrixIncludingBreakUp", "[", 
+             RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+             "]"}]}], ",", 
+           RowBox[{"initialDistribution", "=", 
+            RowBox[{"FirstOutcomeDistribution", "[", 
+             RowBox[{"s1", ",", "s2", ",", 
+              StyleBox["\[Epsilon]",
+               FontSlant->"Italic"]}], "]"}]}]}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"initialDistribution", ".", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Inverse", "[", 
+             RowBox[{
+              RowBox[{"IdentityMatrix", "[", "4", "]"}], "-", 
+              RowBox[{"P", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"2", ";;"}], ",", 
+                 RowBox[{"2", ";;"}]}], "]"}], "]"}]}], "]"}], ".", 
+            RowBox[{"Table", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"{", "4", "}"}]}], "]"}]}], ")"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Ls", "[", 
+        RowBox[{
+        "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
+        "]"}], ":=", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"{", 
+         RowBox[{"L11", ",", "L12", ",", "L22"}], "}"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"ExpectedTimeUntilBreakUp", "[", 
+          RowBox[{"s1", ",", "s1", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+          "]"}], ",", 
+         RowBox[{"ExpectedTimeUntilBreakUp", "[", 
+          RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+          "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"ExpectedTimeUntilBreakUp", "[", 
+          RowBox[{"s2", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+          "]"}]}], "}"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"PoolFromPop", "[", 
+        RowBox[{
+        "x1_", ",", "s1_", ",", "s2_", ",", "\[Epsilon]_", ",", "\[Delta]_"}],
+         "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"L11", ",", "Lx", ",", "L22", ",", "L", ",", "p1"}], "}"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"L11", ",", "Lx", ",", "L22"}], "}"}], "=", 
+           RowBox[{"Ls", "[", 
+            RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"L11", "===", "Lx", "===", "L22"}], ",", 
+            "\[IndentingNewLine]", "x1", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"And", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Abs", "[", 
+                   RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                  RowBox[{"10", "^", 
+                   RowBox[{"-", "6"}]}]}], ",", 
+                 RowBox[{
+                  RowBox[{"Abs", "[", 
+                   RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                  RowBox[{"10", "^", 
+                   RowBox[{"-", "6"}]}]}], ",", 
+                 RowBox[{
+                  RowBox[{"Abs", "[", 
+                   RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                  RowBox[{"10", "^", 
+                   RowBox[{"-", "6"}]}]}]}], "]"}], ",", 
+               RowBox[{
+               "Print", "[", "\"\<Warning! Ls too close to each other\>\"", 
+                "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "L11"}], "+", "Lx", "+", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"L11", "+", "L22", "-", 
+                    RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], ")"}], "==",
+                 "0"}], ",", "\[IndentingNewLine]", "x1", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", " ", 
+                RowBox[{"Formula", " ", "gives", " ", "errors", " ", "for", " ", 
+                 RowBox[{"e", ".", "g", ".", " ", 
+                  RowBox[{"PoolFromPop", "[", 
+                   RowBox[{
+                    RowBox[{"1", "/", "2"}], ",", "leaver1", ",", "TFT", ",", 
+                    "0", ",", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"1", "/", "25"}]}], ")"}], "2"]}], "]"}]}]}], 
+                "*)"}], "\[IndentingNewLine]", 
+               FractionBox[
+                RowBox[{"Lx", "+", 
+                 RowBox[{"2", " ", "L22", " ", "x1"}], "-", 
+                 RowBox[{"2", " ", "Lx", " ", "x1"}], "-", 
+                 SqrtBox[
+                  RowBox[{
+                   RowBox[{
+                    SuperscriptBox["Lx", "2"], " ", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", "x1"}]}], ")"}], "2"]}], "-", 
+                   RowBox[{"4", " ", "L11", " ", "L22", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", "x1"}], ")"}], " ", "x1"}]}]]}], 
+                
+                RowBox[{"2", " ", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"-", "L11"}], "+", "Lx", "+", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"L11", "+", "L22", "-", 
+                    RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], 
+                  ")"}]}]]}], "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{"L", "=", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"L11", ",", "Lx"}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"Lx", ",", "L22"}], "}"}]}], "}"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"First", "@", 
+                 RowBox[{"SolveValues", "[", 
+                  RowBox[{
+                   RowBox[{"x1", "==", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], "*", 
+                    RowBox[{
+                    RowBox[{"L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}], "/", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], ".", "L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}]}]}], ")"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ",", "p1", ",", 
+                   RowBox[{"Assumptions", "->", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"0", "<=", "x1", "<=", "1"}], ",", 
+                    RowBox[{"0", "<=", "p1", "<=", "1"}], ",", 
+                    RowBox[{"L", ">=", "1"}]}], "}"}]}]}], "]"}]}]}], "*)"}], 
+              "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+           "]"}]}]}], "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"L", "=", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"L11", ",", "Lx"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"Lx", ",", "L22"}], "}"}]}], "}"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"FullSimplify", "[", 
+           RowBox[{
+            RowBox[{"Solve", "[", 
+             RowBox[{
+              RowBox[{"x1", "==", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], "*", 
+                  RowBox[{
+                   RowBox[{"L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}], "/", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], ".", "L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}]}]}], ")"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], ",", "p1"}], "]"}], ",", 
+            RowBox[{"Assumptions", "->", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"0", "<=", "x1", "<=", "1"}], ",", 
+               RowBox[{"0", "<=", "p1", "<=", "1"}], ",", 
+               RowBox[{"L", ">=", "1"}]}], "}"}]}]}], "]"}]}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"L11", "===", "Lx", "===", "L22"}], ",", 
+           "\[IndentingNewLine]", "x1", ",", "\[IndentingNewLine]", 
+           FractionBox[
+            RowBox[{"Lx", "+", 
+             RowBox[{"2", " ", "L22", " ", "x1"}], "-", 
+             RowBox[{"2", " ", "Lx", " ", "x1"}], "-", 
+             SqrtBox[
+              RowBox[{
+               RowBox[{
+                SuperscriptBox["Lx", "2"], " ", 
+                SuperscriptBox[
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", 
+                   RowBox[{"2", " ", "x1"}]}], ")"}], "2"]}], "-", 
+               RowBox[{"4", " ", "L11", " ", "L22", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "x1"}], ")"}], " ", "x1"}]}]]}], 
+            RowBox[{"2", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "L11"}], "+", "Lx", "+", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"L11", "+", "L22", "-", 
+                  RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], 
+              ")"}]}]]}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Fx", "[", 
+        RowBox[{
+        "x1_", ",", "s1_", ",", "s2_", ",", "\[Epsilon]_", ",", "\[Delta]_", ",",
+          "L_List", ",", "FMatrix_", ",", 
+         RowBox[{"payoffs_", ":", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"L11", ",", "Lx", ",", "L22", ",", "p1"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"L11", ",", "Lx", ",", "L22"}], "}"}], "=", "L"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"p1", "=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"L11", "===", "Lx", "===", "L22"}], ",", 
+             "\[IndentingNewLine]", "x1", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"And", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Abs", "[", 
+                    RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                   RowBox[{"10", "^", 
+                    RowBox[{"-", "6"}]}]}], ",", 
+                  RowBox[{
+                   RowBox[{"Abs", "[", 
+                    RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                   RowBox[{"10", "^", 
+                    RowBox[{"-", "6"}]}]}], ",", 
+                  RowBox[{
+                   RowBox[{"Abs", "[", 
+                    RowBox[{"L11", "-", "Lx"}], "]"}], "<", 
+                   RowBox[{"10", "^", 
+                    RowBox[{"-", "6"}]}]}]}], "]"}], ",", 
+                RowBox[{
+                "Print", "[", "\"\<Warning! Ls too close to each other\>\"", 
+                 "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"-", "L11"}], "+", "Lx", "+", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"L11", "+", "L22", "-", 
+                    RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], ")"}], "==",
+                  "0"}], ",", "\[IndentingNewLine]", "x1", ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{"Formula", " ", "gives", " ", "errors", " ", "for", " ", 
+                  RowBox[{"e", ".", "g", ".", " ", 
+                   RowBox[{"PoolFromPop", "[", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], ",", "leaver1", ",", "TFT", ",", 
+                    "0", ",", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"1", "/", "25"}]}], ")"}], "2"]}], "]"}]}]}], 
+                 "*)"}], "\[IndentingNewLine]", 
+                FractionBox[
+                 RowBox[{"Lx", "+", 
+                  RowBox[{"2", " ", "L22", " ", "x1"}], "-", 
+                  RowBox[{"2", " ", "Lx", " ", "x1"}], "-", 
+                  SqrtBox[
+                   RowBox[{
+                    RowBox[{
+                    SuperscriptBox["Lx", "2"], " ", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", "x1"}]}], ")"}], "2"]}], "-", 
+                    RowBox[{"4", " ", "L11", " ", "L22", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", "x1"}], ")"}], " ", "x1"}]}]]}], 
+                 
+                 RowBox[{"2", " ", 
+                  RowBox[{"(", 
+                   RowBox[{
+                    RowBox[{"-", "L11"}], "+", "Lx", "+", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"L11", "+", "L22", "-", 
+                    RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], 
+                   ")"}]}]]}], "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"L", "=", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"L11", ",", "Lx"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"Lx", ",", "L22"}], "}"}]}], "}"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"First", "@", 
+                  RowBox[{"SolveValues", "[", 
+                   RowBox[{
+                    RowBox[{"x1", "==", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], "*", 
+                    RowBox[{
+                    RowBox[{"L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}], "/", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}], ".", "L", ".", 
+                    RowBox[{"{", 
+                    RowBox[{"p1", ",", 
+                    RowBox[{"1", "-", "p1"}]}], "}"}]}]}]}], ")"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ",", "p1", ",", 
+                    RowBox[{"Assumptions", "->", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"0", "<=", "x1", "<=", "1"}], ",", 
+                    RowBox[{"0", "<=", "p1", "<=", "1"}], ",", 
+                    RowBox[{"L", ">=", "1"}]}], "}"}]}]}], "]"}]}]}], "*)"}], 
+               "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"p1", ",", 
+                   RowBox[{"1", "-", "p1"}]}], "}"}], "*", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"L11", ",", "Lx"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"Lx", ",", "L22"}], "}"}]}], "}"}], 
+                  "\[Transpose]"}]}], ")"}], "\[Transpose]"}], "*", 
+              "FMatrix"}], ")"}], ".", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "1"}], "}"}]}], "/", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"p1", ",", 
+                  RowBox[{"1", "-", "p1"}]}], "}"}], "*", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"L11", ",", "Lx"}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"Lx", ",", "L22"}], "}"}]}], "}"}], 
+                 "\[Transpose]"}]}], ")"}], "\[Transpose]"}], ".", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", "1"}], "}"}]}], ")"}]}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "DYNAMICS", " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Replicator", "[", 
+        RowBox[{"x_", ",", "\[CapitalPi]_"}], "]"}], ":=", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"x", ".", "\[CapitalPi]"}], ")"}], " ", "x"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ReplicatorMS", "[", 
+        RowBox[{"x_", ",", "\[CapitalPi]_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"avgPayoff", "=", 
+           RowBox[{"x", ".", "\[CapitalPi]"}]}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
+           RowBox[{"avgPayoff", " ", "x"}]}], "avgPayoff"]}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Piecewise", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"{", 
+             RowBox[{
+              FractionBox[
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
+                RowBox[{"avgPayoff", " ", "x"}]}], "avgPayoff"], ",", 
+              RowBox[{"avgPayoff", ">", "0"}]}], "}"}], "}"}], ",", "0"}], 
+          "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ExpectedChange", "[", 
+        RowBox[{
+        "x1_", ",", "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", 
+         "\[Delta]_", ",", "m_", ",", "L_List", ",", "FMatrix_", ",", 
+         RowBox[{"payoffs_", ":", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"p", ",", "\[CapitalPi]"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\[CapitalPi]", "=", 
+           RowBox[{"Fx", "[", 
+            RowBox[{
+            "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
+              "L", ",", "FMatrix", ",", "payoffs"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", "m"}], ")"}], "*", 
+            RowBox[{"ReplicatorMS", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"1", "-", "x1"}]}], "}"}], ",", "\[CapitalPi]"}], 
+             "]"}]}], "+", 
+           RowBox[{"m", "*", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{
+                RowBox[{"1", "/", "2"}], ",", "2"}], "]"}], "-", 
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"1", "-", "x1"}]}], "}"}]}], ")"}]}]}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"allStrategies", "=", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Prepend", "[", 
+             RowBox[{"#", ",", "0"}], "]"}], "&"}], ",", 
+           RowBox[{"Tuples", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "1", ",", "2"}], "}"}], ",", "4"}], "]"}]}], 
+          "]"}], ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Prepend", "[", 
+             RowBox[{"#", ",", "1"}], "]"}], "&"}], ",", 
+           RowBox[{"Tuples", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "1", ",", "2"}], "}"}], ",", "4"}], "]"}]}], 
+          "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"allOutcomes", "=", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "4"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+     ")"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.939807001438822*^9, 3.939807075313405*^9}, 
+   3.939807164934147*^9, {3.940514200550207*^9, 3.940514205924425*^9}, {
+   3.940514303312221*^9, 3.9405143330210123`*^9}, {3.940514366827774*^9, 
+   3.940514389197831*^9}, {3.940515113256175*^9, 3.940515116369012*^9}, {
+   3.940515282520546*^9, 3.9405153814865313`*^9}, {3.94051545353437*^9, 
+   3.9405154676697206`*^9}, {3.940515792058221*^9, 3.9405158207561703`*^9}, {
+   3.940515855951103*^9, 3.9405161536580276`*^9}, {3.940516193236597*^9, 
+   3.940516245082501*^9}, {3.9405167482019463`*^9, 3.9405167484399652`*^9}, {
+   3.9405211123991327`*^9, 3.940521150694373*^9}, {3.94052118437001*^9, 
+   3.940521184794381*^9}, {3.94052122489787*^9, 3.9405212293109426`*^9}, {
+   3.94052126819235*^9, 3.940521282450658*^9}, {3.94052131637836*^9, 
+   3.9405213164516068`*^9}, {3.940521350699916*^9, 3.940521354203017*^9}, {
+   3.9405214577112007`*^9, 3.9405214645224333`*^9}, {3.940521545617918*^9, 
+   3.940521590072459*^9}, {3.9405216246679296`*^9, 3.94052166603016*^9}, {
+   3.940521697453608*^9, 3.94052171797121*^9}, 3.9405217489683027`*^9, {
+   3.940521853394388*^9, 3.940521859034788*^9}, {3.9405219014373417`*^9, 
+   3.9405219102510853`*^9}, {3.940522022156207*^9, 3.940522075800111*^9}, {
+   3.940522364657686*^9, 3.940522382834731*^9}, {3.940522428075444*^9, 
+   3.940522478619218*^9}, {3.94052261491573*^9, 3.940522623343795*^9}, {
+   3.9405234196605663`*^9, 3.940523460743762*^9}, 3.94052354449575*^9, {
+   3.940523591732595*^9, 3.9405236249013443`*^9}, {3.940523666099441*^9, 
+   3.94052374224551*^9}, {3.940523774307392*^9, 3.940523781243087*^9}, {
+   3.940523817792418*^9, 3.9405238514884863`*^9}, {3.9405238825065517`*^9, 
+   3.940523900028058*^9}, {3.940524042027364*^9, 3.9405241308796377`*^9}, {
+   3.940524176722753*^9, 3.940524465556632*^9}, {3.940568056697886*^9, 
+   3.940568108136998*^9}, {3.940568268493628*^9, 3.940568279012308*^9}, {
+   3.9479461606140823`*^9, 3.947946176064101*^9}, {3.9479464446952057`*^9, 
+   3.947946475964323*^9}, {3.947946515391199*^9, 3.9479465774381227`*^9}, {
+   3.947946935884601*^9, 3.947946936482786*^9}, {3.952659619197304*^9, 
+   3.952659721501411*^9}, {3.959057488286562*^9, 3.9590574894815083`*^9}, {
+   3.9590575441431427`*^9, 3.959057569243581*^9}, {3.959057622647294*^9, 
+   3.959057628854753*^9}, {3.959062802880662*^9, 3.959062803338601*^9}, {
+   3.95906291439717*^9, 3.959062944430517*^9}, {3.959063104281846*^9, 
+   3.959063107364662*^9}, {3.959063185132564*^9, 3.959063187933766*^9}, {
+   3.960443176786166*^9, 3.9604431855923767`*^9}, 3.968568329707309*^9, {
+   3.9685683980023193`*^9, 3.968568399357196*^9}, {3.968568442341208*^9, 
+   3.968568459804532*^9}, {3.9685685341033163`*^9, 3.968568541530712*^9}, {
+   3.968568604170508*^9, 3.968568643771968*^9}, {3.968568686798975*^9, 
+   3.968568707344803*^9}, {3.968568745070817*^9, 3.9685687516857243`*^9}, {
+   3.968568828777876*^9, 3.968568833142386*^9}},
+ CellLabel->"In[96]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Closed]]
+},
+WindowSize->{1197, 818},
+WindowMargins->{{31, Automatic}, {Automatic, 22}},
+FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"0624d9ff-abda-40e1-9cb7-5dece4c668eb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
+Cell[824, 28, 48656, 982, 644, "Output",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[49517, 1015, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[49669, 1020, 93435, 2195, 7287, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Closed]]
+}
+]
+*)
+
