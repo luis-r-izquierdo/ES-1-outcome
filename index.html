@@ -1,0 +1,603 @@
+<!doctype html>
+
+<html lang="en">
+   <head>
+      <title>Endogenous Separation conditioned on the previous outcome. ES-1-outcome</title>
+
+      <meta charset="UTF-8" />
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      
+      <meta
+         name="keywords"
+         content="Endogenous Separation, conditional dissociation, cooperation, evolution, evolutionary, game theory, prisoner dilemma, netLogo, agent-based modelling" />
+
+      <meta
+         name="description"
+         content="ES-1-outcome (Endogenous Separation conditioned on the previous outcome) is a model designed to formally analyze the mechanism of endogenous separation (or conditional dissociation) in the evolutionary emergence of cooperation." />
+
+      <meta name="author" content="Luis R. Izquierdo, Segismundo S. Izquierdo, Robert Boyd" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet" />
+
+      <style type="text/css">
+         body,
+         p,
+         ul,
+         ol,
+         table {
+            font-family: "Nunito", sans-serif;
+         }
+
+         h1 {
+            background-color: #111199;
+            color: #ffffff;
+            padding: 5px;
+         }
+
+         h2 {
+            background-color: #66ccff;
+            font-family: Arial, sans-serif;
+            padding: 4px;
+         }
+
+         h3 {
+            background-color: #cccccc;
+            font-weight: bold;
+            padding: 4px;
+         }
+
+         p {
+            text-align: justify;
+         }
+
+         i.parameter {
+            font-family: Arial, sans-serif;
+            color: red;
+            font-weight: bold;
+         }
+
+         i.button {
+            font-family: Arial, sans-serif;
+            color: blue;
+            font-weight: bold;
+         }
+
+         i.value {
+            font-family: Arial, sans-serif;
+            color: #444;
+            font-weight: bold;
+         }
+
+         i.slider {
+            font-family: Arial, sans-serif;
+            color: green;
+            font-weight: bold;
+         }
+
+         i.monitor {
+            font-family: Arial, sans-serif;
+            color: #b8860b;
+            font-weight: bold;
+         }
+
+         i.plot {
+            font-family: Arial, sans-serif;
+            color: brown;
+            font-weight: bold;
+         }
+
+         img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9; /* IE8 */
+         }
+      </style>
+   </head>
+
+   <body>
+      <h1>ES-1-outcome (Endogenous Separation conditioned on the previous outcome)</h1>
+      <h3>Luis R. Izquierdo, Segismundo S. Izquierdo &amp; Robert Boyd</h3>
+
+      <h2>HOW TO INSTALL THE MODEL</h2>
+
+      <p>
+         To use ES-1-outcome, you will have to install
+         <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo 6.4 (free and open source)</a> and
+         download <a href="./ES-1-outcome.nlogo.zip">the model itself</a>. Unzip the downloaded file and click on
+         ES-1-outcome.nlogo
+      </p>
+
+      <h2>OVERVIEW OF THE MODEL</h2>
+
+      <p>
+         <b>ES-1-outcome</b> (<b>E</b>ndogenous <b>S</b>eparation conditioned on the previous outcome) is a model
+         designed to formally analyze the mechanism of endogenous separation (or conditional dissociation) in the
+         evolutionary emergence of cooperation. This section gives an informal and brief overview of
+         <b>ES-1-outcome</b>. The figure below provides a sketch that illustrates the sequence of events within each
+         time-step.
+      </p>
+
+      <a href="./timeline.png"
+         ><img
+            style="margin: 0px auto; display: block"
+            src="./timeline.png"
+            alt="Timeline of events within each time step"
+      /></a>
+      <p style="text-align: center">
+         <i
+            >Sketch of the sequence of events within each time-step. The "Remaining Pairs" and "Singles" at the end of a
+            time-step are identical to the "Existing Pairs" and "Singles" in the next time-step.</i
+         >
+      </p>
+
+      <p>
+         We use bold red italicised Arial font to denote <i class="parameter">parameters</i> (i.e. variables that can be
+         set by the user). In <b>ES-1-outcome</b>, there is a population of
+         <i class="parameter">n-of-players</i> players that are matched in couples (partnerships) to play a 2&times;2
+         symmetric game. The 2 possible actions players can take in the game are denoted <b>C</b> (for <b>C</b>ooperate)
+         and <b>D</b> (for <b>D</b>efect).
+      </p>
+
+      <p>After having played the game, partnerships may dissolve in two ways:</p>
+      <ul>
+         <li>
+            Exogenously - a partnership is exogenously broken with probability (1-1/<i class="parameter"
+               >exp-n-of-interactions</i
+            >). Players who undergo exogenous separation revise their strategy with probability
+            <i class="parameter">prob-revision</i>.
+         </li>
+         <li>
+            Endogenously - after observing the outcome of the game, either player may unilaterally choose to leave the
+            partnership, according to their individual strategy.
+         </li>
+      </ul>
+
+      <p>
+         Players who separate are randomly re-matched in the following period and continue playing the stage game with
+         their new partner.
+      </p>
+
+      <p>
+         The model can be used to simulate processes with endogenous separation (if
+         <i class="parameter">option-to-leave?</i> = <i class="value">on</i>) and processes <i>without</i> endogenous
+         separation (if <i class="parameter">option-to-leave?</i> = <i class="value">off</i>).
+      </p>
+
+      <h2>DESCRIPTION OF THE MODEL</h2>
+
+      <p>
+         This section explains the formal model that <b>ES-1-outcome</b> implements. The information provided here
+         should suffice to re-implement the same formal model in any sophisticated enough modelling platform.
+      </p>
+
+      <h3>The game</h3>
+
+      <p>
+         Consider a population of <i class="parameter">n-of-players</i> individuals; some of the individuals are matched
+         in pairs and some may be single.
+      </p>
+
+      <p>
+         Every individual who is single at the beginning of the time-step is randomly matched with another single. Thus,
+         after this random matching of singles, every individual is paired with another individual.
+      </p>
+
+      <p>
+         In each time-step, the two members of every pair play a symmetric 2&times;2 game once, where each of them can
+         undertake one of two possible actions. These two possible actions are called <b>C</b> (for <b>C</b>ooperate)
+         and <b>D</b> (for <b>D</b>efect). The action selected by each of the players determines the payoff that each of
+         them receives in that time-step: <i class="parameter">CC-payoff</i>, <i class="parameter">CD-payoff</i>,
+         <i class="parameter">DC-payoff</i>, or <i class="parameter">DD-payoff</i>, where AB-payoff denotes the payoff
+         that an individual choosing action A obtains when her counterpart chooses action B.
+      </p>
+
+      <h3>Memory-one strategies</h3>
+
+      <p>
+         Each individual carries five "genes" that shape her behaviour. These five genes determine the individual's
+         strategy.
+      </p>
+
+      <ul>
+         <li>
+            <span style="color: deeppink"><b>First action</b></span
+            >: The first gene determines the individual's <span style="color: deeppink"><b>first action</b></span
+            >, i.e. the action (<b>C</b> or <b>D</b>) when the individual interacts with her partner for the very first
+            time.
+         </li>
+         <li>
+            <span style="color: deeppink"><b>After CC</b></span
+            >: The second gene determines what to do when the outcome of the interaction has been
+            <span style="color: deeppink"><b>CC</b></span
+            >, i.e. both players have played C. The options are:
+            <ul>
+               <li>
+                  <b>C</b>: <b>Stay</b> with the current partner and, assuming the partnership continues, play C in the
+                  following time-step.
+               </li>
+               <li>
+                  <b>D</b>: <b>Stay</b> with the current partner and, assuming the partnership continues, play D in the
+                  following time-step.
+               </li>
+               <li>
+                  <b>L</b>: <b>Leave</b> the current partnership. In this case, the partnership is broken regardless of
+                  the decision of the partner.
+               </li>
+            </ul>
+         </li>
+         <li>
+            <span style="color: deeppink"><b>After CD</b></span
+            >: The third gene determines the choice -also <b>C</b>, <b>D</b> or <b>L</b>- after outcome
+            <span style="color: deeppink"><b>CD</b></span
+            >, which denotes the situation where the individual has played <b>C</b> and the partner has played <b>D</b>.
+         </li>
+         <li>
+            <span style="color: deeppink"><b>After DC</b></span
+            >: The fourth gene determines the choice (<b>C</b>, <b>D</b> or <b>L</b>) after outcome
+            <span style="color: deeppink"><b>DC</b></span
+            >, which denotes the situation where the individual has played <b>D</b> and the partner has played <b>C</b>.
+         </li>
+         <li>
+            <span style="color: deeppink"><b>After DD</b></span
+            >: Finally, the fifth gene determines the choice (<b>C</b>, <b>D</b> or <b>L</b>) after outcome
+            <span style="color: deeppink"><b>DD</b></span
+            >, i.e. when the two players have defected.
+         </li>
+      </ul>
+
+      <p>
+         A strategy thus specifies a course of action at every possible juncture in an individual's life. The number of
+         possible memory-one strategies in the model <i>with</i> the option to leave (i.e., if
+         <i class="parameter">option-to-leave?</i> = <i class="value">on</i>) is 2&middot;3&middot;3&middot;3&middot;3 =
+         162. The memory-one strategies for the model <i>without</i> the option to leave (<i class="parameter"
+            >option-to-leave?</i
+         >
+         = <i class="value">off</i>) are the 2&middot;2<sup>4</sup> = 32 strategies with no L.
+      </p>
+
+      <p>
+         We use these five genes to name the different strategies. An example of a strategy is D-C-L-D-C. A player with
+         this strategy:
+      </p>
+      <ul>
+         <li>Starts by playing D whenever the player meets a new partner.</li>
+         <li>After CC, the player stays and plays C in the next interaction.</li>
+         <li>
+            After CD, the player leaves (L) the current partnership, so the two members of the partnership will join the
+            pool of singles.
+         </li>
+         <li>After DC, the player stays and plays D in the next interaction.</li>
+         <li>After DD, the player stays and plays C in the next interaction.</li>
+      </ul>
+
+      <p>
+         Thus, <i>Tit-For-Tat</i> corresponds to C-C-D-C-D, <i>Win-Stay-Lose-Shift</i> is C-C-D-D-C, and C-C-D-D-D is a
+         strategy that chooses to cooperate with new partners and keeps on cooperating if and only if there is mutual
+         cooperation; otherwise it defects.
+      </p>
+
+      <h3>Errors</h3>
+
+      <p>
+         There is also the possibility of errors when playing the game. Every time an individual must decide what action
+         to take in the game (C or D), she will make an error (i.e. choose the unintended action) with probability
+         <i class="parameter">action-error</i>. Thus, the agent will take the action prescribed by her strategy with
+         probability (1 - <i class="parameter">action-error</i>) and the other one (C or D), with probability
+         <i class="parameter">action-error</i>:
+      </p>
+
+      <h3>The time line</h3>
+
+      <p>
+         The population process advances in discrete time-steps <i>t</i> = 1, 2, 3,... which are called 'ticks' in the
+         interface of the model. In each time-step, the following events occur in sequence (see figure above):
+      </p>
+
+      <ol>
+         <li>
+            <b><u>Random matching of singles</u></b
+            >. At the beginning of each time-step, single individuals are randomly matched. Note that all individuals
+            are single at the beginning of the very first time-step.
+         </li>
+         <li>
+            <b><u>The stage game</u></b
+            >. All pairs play the 2&times;2 symmetric game described above once and obtain the corresponding payoff.
+            Each individual's action (<b>C</b> or <b>D</b>) is determined by (the corresponding gene in) her strategy,
+            potentially affected by <i class="parameter">action-error</i>.
+         </li>
+         <li>
+            <b><u>Exogenous separation</u></b
+            >. Every partnership is exogenously broken with probability (1-1/<i class="parameter"
+               >exp-n-of-interactions</i
+            >). Thus, parameter <i class="parameter">exp-n-of-interactions</i> is the expected number of interactions of
+            partnerships whose members do not choose to break up. If a partnership is broken, both players join the pool
+            of singles.
+         </li>
+         <li>
+            <b><u>Revision of strategies</u></b
+            >. Players whose partnership has been exogenously broken may revise their strategy, with independent
+            probability <i class="parameter">prob-revision</i>. The revision process is as follows:
+            <ul>
+               <li>
+                  With probability <i class="parameter">prob-experimentation</i>, the revising player adopts a
+                  <i>neighboring</i> strategy within the set of feasible strategies. Two strategies are neighbors if and
+                  only they differ in exactly one gene. To be precise, revising players change one of the 5 genes that
+                  make up their strategy, chosen uniformly at random. Then,
+                  <ul>
+                     <li>
+                        If <i class="parameter">option-to-leave?</i> = <i class="value">off</i>, the action prescribed
+                        by the randomly chosen gene is flipped (C &#8614; D, and D &#8614; C).
+                     </li>
+                     <li>
+                        If <i class="parameter">option-to-leave?</i> = <i class="value">on</i>, and the first gene is
+                        selected, the action prescribed is flipped (C &#8614; D, and D &#8614; C). If any of the other
+                        four genes is selected, then the action is replaced by any of the other two possibilities (C
+                        &#8614; {D or L}, D &#8614; {C or L}, and L &#8614; {C or D}), with 50% probability of choosing
+                        each of them.
+                     </li>
+                  </ul>
+               </li>
+               <li>
+                  With probability (1-<i class="parameter">prob-experimentation</i>), revising players choose one of the
+                  strategies that is being played in the population, with probability proportional to the total payoff
+                  obtained by the players using that strategy during the current stage.
+                  <a href="https://wisc.pb.unizin.org/agent-based-evolutionary-game-dynamics/chapter/a-1/"
+                     >Izquierdo et al. (2024, Appendix A1)</a
+                  >
+                  show three different ways one can implement this procedure.
+               </li>
+            </ul>
+         </li>
+         <li>
+            <b><u>Endogenous separation</u></b
+            >. Every individual involved in a partnership decides whether to leave or stay, according to her strategy.
+            Individuals involved in partnerships that are broken join the pool of singles entering the next time-step.
+         </li>
+      </ol>
+
+      <h2>HOW TO USE IT</h2>
+
+      <a href="./ES-1-outcome-interface.png"
+         ><img style="margin: 0px auto; display: block" src="./ES-1-outcome-interface.png" alt="Interface of the model"
+      /></a>
+
+      <h3>Type of model: with or without the option to leave</h3>
+      <p>
+         The user can choose to simulate a) a process with the option to leave (162 possible strategies), by setting
+         <i class="slider">option-to-leave?</i> = <i class="value">on</i>, or b) a process without that possibility (32
+         possible strategies), by turning <i class="slider">option-to-leave?</i> <i class="value">off</i>.
+      </p>
+
+      <h3>Payoffs</h3>
+
+      <ul>
+         <li>
+            <i class="slider">CC-payoff</i>: Payoff obtained by a player who cooperates when the other player cooperates
+            too.
+         </li>
+         <li>
+            <i class="slider">CD-payoff</i>: Payoff obtained by a player who cooperates when the other player defects.
+         </li>
+         <li>
+            <i class="slider">DC-payoff</i>: Payoff obtained by a player who defects when the other player cooperates.
+         </li>
+         <li>
+            <i class="slider">DD-payoff</i>: Payoff obtained by a player who defects when the other player also defects.
+         </li>
+      </ul>
+
+      <h3>Population parameters</h3>
+
+      <ul>
+         <li><i class="slider">n-of-players</i>: Number of players in the population</li>
+         <li>
+            <i class="slider">action-error</i>: Probability with which an individual makes an error when choosing the
+            action in the game (C or D).
+         </li>
+         <li>
+            <i class="slider">exp-n-of-interactions</i>: The expected number of interactions of partnerships whose
+            members do not choose to break up. This actually sets the probability of exogenous breakup for each
+            partnership at every time-step to the value 1/<i class="slider">exp-n-of-interactions</i>.
+         </li>
+         <li>
+            <i class="slider">prob-revision</i>: Probability with which a player whose partnership has been exogenously
+            broken revises her strategy.
+         </li>
+         <li>
+            <i class="slider">prob-experimentation</i>: Probability with which a revising player adopts a random
+            neighboring strategy within the set of feasible strategies.
+         </li>
+
+         <li>
+            <i class="slider">initial-strategy</i>: Initial strategy for the population. It can be any of the 162
+            strategies for the whole population, or random.
+            <ul>
+               <li>
+                  If <i class="slider">initial-strategy</i> = <i class="value">random</i>, each player takes one of the
+                  possible strategies with equal probability. There are 162 possible strategies if
+                  <i class="slider">option-to-leave?</i> = <i class="value">on</i> and 32 if
+                  <i class="slider">option-to-leave?</i> = <i class="value">off</i>.
+               </li>
+               <li>
+                  Otherwise, every player in the population adopts the strategy introduced in this input box. To denote
+                  strategies, we use the notation X1-X2-X3-X4-X5, where:
+                  <ul>
+                     <li>X1 &isin; {<b>C</b>, <b>D</b>} is the action to take with a new partner,</li>
+                     <li>
+                        X2 &isin; {<b>C</b>,<b>D</b> <b>L</b>} is the action to take after outcome
+                        <span style="color: deeppink"><b>CC</b></span
+                        >,
+                     </li>
+                     <li>
+                        X3 &isin; {<b>C</b>,<b>D</b> <b>L</b>} is the action to take after outcome
+                        <span style="color: deeppink"><b>CD</b></span
+                        >,
+                     </li>
+                     <li>
+                        X4 &isin; {<b>C</b>,<b>D</b> <b>L</b>} is the action to take after outcome
+                        <span style="color: deeppink"><b>DC</b></span
+                        >,
+                     </li>
+                     <li>
+                        X5 &isin; {<b>C</b>,<b>D</b> <b>L</b>} is the action to take after outcome
+                        <span style="color: deeppink"><b>DD</b></span
+                        >,
+                     </li>
+                  </ul>
+
+                  For instance,
+                  <i class="value">C-C-L-C-L</i> is the strategy that always cooperates, stays (and cooperates) if the
+                  current partner cooperated in the previous interaction, and leaves if the partner defected in the
+                  previous interaction. <i class="value">C-C-D-C-D</i> is the famous 'Tit for Tat'.
+               </li>
+            </ul>
+         </li>
+      </ul>
+
+      <h3>Buttons</h3>
+
+      <ul>
+         <li>
+            <i class="button">setup</i>: Creates a new population of <i class="slider">n-of-players</i> players
+            according to <i class="slider">initial-strategy</i>.
+         </li>
+         <li><i class="button">go once</i>: Pressing this button will run the model one time-step only.</li>
+         <li>
+            <i class="button">go</i>: Pressing this button will run the model until this same button is pressed again.
+         </li>
+      </ul>
+      <ul>
+         <li>
+            <i class="button">show 5 most popular strategies</i>: When you press this button, a list is shown in the
+            command center, with the 5 most popular strategies and the number of individuals that are using each of
+            them.
+         </li>
+      </ul>
+
+      <h2>MONITORS AND PLOTS</h2>
+
+      <h3>Monitors</h3>
+
+      <ul>
+         <li><i class="monitor">ticks</i>: Number of time-steps that have gone by.</li>
+      </ul>
+
+      <ul>
+         <li>
+            <i class="monitor">% of CCs</i>: Percentage of couples where both players cooperated in the current
+            time-step.
+         </li>
+         <li>
+            <i class="monitor">% of CDs</i>: Percentage of couples where one player cooperated and the other player
+            defected in the current time-step.
+         </li>
+         <li>
+            <i class="monitor">% of DDs</i>: Percentage of couples where both players defected in the current time-step.
+         </li>
+      </ul>
+
+      <h3>Plots</h3>
+      <p>
+         Switch
+         <i class="slider">show-plots?</i> controls whether plots are updated every tick or not. The model runs
+         significantly faster if <i class="slider">show-plots?</i> is <i class="value">off</i>. Importantly, all plots
+         refer to the situation after the processes of exogenous and endogenous breakup have taken place but before any
+         player revises her strategy.
+      </p>
+
+      <ul>
+         <li>
+            <i class="plot">% Individuals separated</i>: Time series of the percentage of players who have become single
+            in the current tick.
+         </li>
+         <li>
+            <i class="plot">Outcome Frequencies</i>: Time series of the fraction of couples where both players
+            cooperated (CC), where one player cooperated and the other one defected (CD), and where both players
+            defected (DD).
+         </li>
+         <li>
+            <i class="plot">Strategy Distribution</i>: Time series of the distribution of strategies in the whole
+            population. The strategies shown in this plot (and their color) can be chosen by the user using the input
+            box <i class="slider">plot-the-following-strategy-names-and-colors</i>. The user should input a list of
+            two-item lists, one for each strategy to be plotted. The first item in each two-item list is the name of the
+            strategy to be plotted and the second item is the color for the strategy. For instance:<br />
+
+            <p style="text-align: center">
+               [ ["C-C-D-C-D" 87] ["C-C-L-C-D" 94] ["D-C-L-L-C" green] ["D-D-D-D-D" red] ]
+            </p>
+
+            Colors can be determined using either names or numbers, according to NetLogo's 'Color Swatches', which can
+            be accessed through the Tools menu.
+         </li>
+         <li>
+            <i class="plot">Action with new partner</i>: Time series showing the fraction of players who play C or D
+            when they first meet a partner (i.e. the first gene).
+         </li>
+         <li>
+            <i class="plot">Avg Payoff</i>: Time series showing the average payoff of all the players and also of those
+            who started a new partnership in the current tick (new couples).
+         </li>
+         <li>
+            <i class="plot">Action after CC</i>: Time series showing the fraction of players who, after outcome CC,
+            choose to stay and cooperate (Stay-C), stay and defect (Stay-D), leave and start the next partnership
+            cooperating (Leave-C) or leave and start the next partnership defecting (Leave-D).
+         </li>
+         <li>
+            <i class="plot">Action after CD</i>: Time series showing the fraction of players who, after outcome CD,
+            choose Stay-C, Stay-D, leave and start the next partnership cooperating (Leave-C) or leave and start the
+            next partnership defecting (Leave-D).
+         </li>
+         <li>
+            <i class="plot">Action after DC</i>: Time series showing the fraction of players who, after outcome DC,
+            choose Stay-C, Stay-D, Leave-C or Leave-D.
+         </li>
+         <li>
+            <i class="plot">Action after DD</i>: Time series showing the fraction of players who, after outcome DD,
+            choose Stay-C, Stay-D, Leave-C or Leave-D.
+         </li>
+      </ul>
+
+      <h2>LICENCE</h2>
+      <p>
+         ES-1-outcome (Endogenous Separation conditioned on the previous outcome) is a model designed to formally
+         analyze the mechanism of endogenous separation (or conditional dissociation) in the evolutionary emergence of
+         cooperation. <br />Copyright (C) 2025 <a target="_blank" href="http://luis.izqui.org">Luis R. Izquierdo</a>,
+         <a target="_blank" href="http://segis.izqui.org">Segismundo S. Izquierdo</a> &amp;
+         <a target="_blank" href="https://www.robboyd.net/">Robert Boyd</a>
+      </p>
+
+      <p>
+         This program is free software; you can redistribute it and/or modify it under the terms of the
+         <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> as published by
+         the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+      </p>
+      <p>
+         This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+         implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+         <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> for more details.
+      </p>
+      <p>
+         You can download a copy of the
+         <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> by clicking
+         <a target="_blank" href="./LICENSE">here</a>; you can also get a printed copy writing to the Free Software
+         Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+      </p>
+      <p>
+         Contact information: <br />Luis R. Izquierdo <br />
+         University of Burgos, Spain. <br />
+         e-mail: <a href="mailto:lrizquierdo@ubu.es">lrizquierdo@ubu.es</a>
+      </p>
+
+      <h2>MODELLERS</h2>
+      <p>
+         This program has been designed and implemented by
+         <a target="_blank" href="http://luis.izqui.org">Luis R. Izquierdo</a>,
+         <a target="_blank" href="http://segis.izqui.org">Segismundo S. Izquierdo</a> &amp;
+         <a target="_blank" href="https://www.robboyd.net/">Robert Boyd</a>.
+      </p>
+      <hr />
+   </body>
+</html>
