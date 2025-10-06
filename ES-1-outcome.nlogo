@@ -626,7 +626,7 @@ DD-payoff
 DD-payoff
 0
 10
-2.0
+1.0
 1
 1
 NIL
@@ -923,7 +923,7 @@ INPUTBOX
 161
 388
 initial-strategy
-D-C-L-C-C
+random
 1
 0
 String
