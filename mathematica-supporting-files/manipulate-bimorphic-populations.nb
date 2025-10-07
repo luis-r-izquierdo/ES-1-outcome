@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    143825,       3239]
-NotebookOptionsPosition[    143120,       3218]
-NotebookOutlinePosition[    143515,       3234]
-CellTagsIndexPosition[    143472,       3231]
+NotebookDataLength[    145007,       3263]
+NotebookOptionsPosition[    144208,       3241]
+NotebookOutlinePosition[    144603,       3257]
+CellTagsIndexPosition[    144560,       3254]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -25,6 +25,29 @@ Cell["Payoffs and dynamics in bimorphic populations", "Title",
   3.968576986093499*^9, 
   3.9685770386007633`*^9}},ExpressionUUID->"9c3381b5-674f-4efe-ae3e-\
 93d5b51fcfad"],
+
+Cell["\<\
+This Manipulate shows the expected payoff of each strategy in bimorphic \
+populations, together with the (1-dimensional) mean dynamic at the bottom of \
+the plot: arrows
+point in the direction of movement and circles indicate the location of rest \
+points. 
+
+Errors are modeled as unintended action flips in the stage game, with \
+probability \[Epsilon]. Parameter \[Delta] is the continuation probability of \
+a partnership in which both players decide to stay. Experimentation (with \
+probability \[Mu]) consists in choosing one of the two strategies at random. 
+
+Note that errors affect the expected payoff obtained by each strategy, but \
+experimentation does not. Experimentation affects the dynamics, including the \
+existence and location of rest points.
+\
+\>", "Text",
+ CellChangeTimes->{{3.9688087027578297`*^9, 3.9688087247053003`*^9}, 
+   3.968809007712736*^9, {3.968809048843854*^9, 3.968809164626637*^9}, {
+   3.968809255186688*^9, 3.968809314364915*^9}, {3.968809350361679*^9, 
+   3.968809381672908*^9}},ExpressionUUID->"4551b46e-2323-49fd-b026-\
+0d75fec47e8a"],
 
 Cell[BoxData[
  TagBox[
@@ -3235,11 +3258,12 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[580, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
-Cell[824, 28, 48656, 982, 644, "Output",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
+Cell[824, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
+Cell[1912, 51, 48656, 982, 644, "Output",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[49517, 1015, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[49669, 1020, 93435, 2195, 7287, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[50605, 1038, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[50757, 1043, 93435, 2195, 7287, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
