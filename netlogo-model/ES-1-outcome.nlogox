@@ -45,6 +45,7 @@ globals [
     ;; these variables store the percentage of
     ;; each of the outcomes in the tick
   n-of-outcomes
+  n-of-CC n-of-CD n-of-DD
 
   strategy-payoffs
   strategy-frequencies
@@ -57,6 +58,7 @@ globals [
   action-first-C-players
 
   exogenously-separated
+  players-in-couples
 
   strategy-name-number-and-color-trios
 
@@ -80,6 +82,8 @@ players-own [
   payoff
   strategy-number
   new-partnership?
+  
+  ticks-out ;; number of periods you have been out (not rematched)
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -118,6 +122,7 @@ to setup-players
     set strategy-number -1
     set mate nobody
     set payoff -1
+    set ticks-out 0
     set hidden? true
   ]
 
@@ -167,12 +172,14 @@ end
 to go
 
   make-couples
-  ask players [update-action]
-  ask players [play]
+  set players-in-couples players with [mate != nobody]
+  
+  ask players-in-couples [update-action]
+  ask players-in-couples [play]
 
   gather-data
 
-  ask players [update-next-action]
+  ask players-in-couples [update-next-action]
 
   ;; EXOGENOUS separation
   conduct-exogenous-separation
@@ -191,11 +198,21 @@ end
 
 to make-couples
   ask players [
-    set new-partnership? ifelse-value mate = nobody [true][false]
+    ifelse mate = nobody 
+    [
+      ifelse ticks-out = ticks-until-rematching 
+      [ set new-partnership? true ]
+      [ 
+        set new-partnership? -1  ;; this means the agent is waiting to be rematched
+        set payoff out-payoff
+        set ticks-out (ticks-out + 1)
+      ]
+    ]
+    [ set new-partnership? false ]
   ]
-  ask players [
+  ask players with [new-partnership? = true] [
     if (mate = nobody) [
-      set mate one-of other players with [mate = nobody]
+      set mate one-of other players with [mate = nobody and new-partnership? = true]
       ask mate [set mate myself]
     ]
   ]
@@ -229,25 +246,27 @@ to update-next-action
 end
 
 to conduct-exogenous-separation
-  ask players with [random-float 1.0 < 1 - (sqrt (1 - 1 / exp-n-of-interactions))] [
+  ask players-in-couples with [random-float 1.0 < 1 - (sqrt (1 - 1 / exp-n-of-interactions))] [
     if (mate != nobody) [ break-partnership ]
     ;; if mate = nobody, this player has already everything set up
     ;; (see break-partnership), so there is nothing else to do
   ]
-  set exogenously-separated players with [mate = nobody]
+  set exogenously-separated players-in-couples with [mate = nobody]
 end
 
 to break-partnership
   ask mate [
     set next-action action-first
     set mate nobody
+    set ticks-out 0
   ]
   set next-action action-first
   set mate nobody
+  set ticks-out 0
 end
 
 to conduct-endogenous-separation
-  ask players [
+  ask players-in-couples [
     if (mate != nobody) and (next-action = L) [
       break-partnership
     ]
@@ -257,24 +276,27 @@ end
 to conduct-revisions
 
   let players-to-revise exogenously-separated with [random-float 1.0 < prob-revision]
+  
+  if any? players-to-revise [
 
-  let num-players-to-revise count players-to-revise
+    let num-players-to-revise count players-to-revise
+  
+    compute-strategy-payoffs ;; this sets the value of strategy-payoffs
+    let new-strategies rnd:weighted-n-of-list-with-repeats num-players-to-revise strategy-numbers [[s] -> array:item strategy-payoffs s]
+      ;; new strategies is ordered, but this is not a problem,
+      ;; since agents in players-to-revise are in random order
 
-  compute-strategy-payoffs ;; this sets the value of strategy-payoffs
-  let new-strategies rnd:weighted-n-of-list-with-repeats num-players-to-revise strategy-numbers [[s] -> array:item strategy-payoffs s]
-    ;; new strategies is ordered, but this is not a problem,
-    ;; since agents in players-to-revise are in random order
+    let i 0
 
-  let i 0
+    ask players-to-revise [
 
-  ask players-to-revise [
+      set strategy-number ifelse-value (random-float 1.0 < prob-experimentation)
+        [ strategy-after-mutation-in-one-gene ]
+        [ item i new-strategies ]
 
-    set strategy-number ifelse-value (random-float 1.0 < prob-experimentation)
-      [ strategy-after-mutation-in-one-gene ]
-      [ item i new-strategies ]
-
-    setup-new-strategy
-    set i (i + 1)
+      setup-new-strategy
+      set i (i + 1)
+    ]
   ]
 end
 
@@ -359,15 +381,23 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 to gather-data
-  let n-of-CC (count players with [active-action = C and [active-action] of mate = C]) / 2
-  let n-of-DD (count players with [active-action = D and [active-action] of mate = D]) / 2
-  let n-of-CD (count players with [active-action = C and [active-action] of mate = D])
+  set n-of-CC (count players-in-couples with [active-action = C and [active-action] of mate = C]) / 2
+  set n-of-DD (count players-in-couples with [active-action = D and [active-action] of mate = D]) / 2
+  set n-of-CD (count players-in-couples with [active-action = C and [active-action] of mate = D])
   set n-of-outcomes (n-of-CC + n-of-DD + n-of-CD)
 
-  set %-CC (n-of-CC / n-of-outcomes)
-  set %-CD (n-of-CD / n-of-outcomes)
-  set %-DD (n-of-DD / n-of-outcomes)
-
+  ifelse n-of-outcomes = 0 
+  [
+    set %-CC 0
+    set %-CD 0
+    set %-DD 0
+  ]
+  [
+    set %-CC (n-of-CC / n-of-outcomes)
+    set %-CD (n-of-CD / n-of-outcomes)
+    set %-DD (n-of-DD / n-of-outcomes)
+  ]
+  
   compute-strategy-frequencies
 
   set C-if-CC-players count players with [decision-if-CC = C]
@@ -466,9 +496,9 @@ to update-graphs
   ;; all graphs refer to the situation before the new breed comes in.
 
   set-current-plot "Outcome Frequencies"
-    set-current-plot-pen "DD"     plotxy ticks 1
-    set-current-plot-pen "CD"     plotxy ticks  1 - %-DD
-    set-current-plot-pen "CC"     plotxy ticks  %-CC
+    set-current-plot-pen "DD"     plotxy ticks n-of-DD + n-of-CD + n-of-CC
+    set-current-plot-pen "CD"     plotxy ticks n-of-CD + n-of-CC
+    set-current-plot-pen "CC"     plotxy ticks n-of-CC
 
   let current-n-of-players (count players)
   let n-of-single-players (count (players with [mate = nobody]))
@@ -501,15 +531,18 @@ to update-graphs
     set-current-plot-pen "D"     plotxy ticks 1
     set-current-plot-pen "C"     plotxy ticks (action-first-C-players / current-n-of-players)
 
-  set-current-plot "% Individuals separated"
-    plotxy ticks 100 * (n-of-single-players / current-n-of-players)
-
   set-current-plot "Avg Payoff"
-    set-current-plot-pen "all"
-    plotxy ticks mean [payoff] of players
-    if (any? players with [new-partnership?]) [
+    if (any? players-in-couples) [
+      set-current-plot-pen "all couples"
+      plotxy ticks mean [payoff] of players-in-couples
+    ]
+    if (any? players with [new-partnership? = true]) [
       set-current-plot-pen "new couples"
-      plotxy ticks mean [payoff] of players with [new-partnership?]
+      plotxy ticks mean [payoff] of players with [new-partnership? = true]
+    ]
+    if (any? players with [new-partnership? = -1]) [ ;; waiting to be rematched
+    set-current-plot-pen "waiting to be rematched"
+      plotxy ticks mean [payoff] of players with [new-partnership? = -1]
     ]
 
   set-current-plot "Strategy Distribution"
@@ -538,8 +571,6 @@ end]]></code>
     <slider x="142" step="1" y="56" max="10" display="CD-payoff" height="33" min="0" direction="Horizontal" default="0.0" variable="CD-payoff" width="117" sizeVersion="0"></slider>
     <slider x="15" step="1" y="91" max="10" display="DC-payoff" height="33" min="0" direction="Horizontal" default="4.0" variable="DC-payoff" width="120" sizeVersion="0"></slider>
     <slider x="142" step="1" y="92" max="10" display="DD-payoff" height="33" min="0" direction="Horizontal" default="1.0" variable="DD-payoff" width="117" sizeVersion="0"></slider>
-    <button x="12" y="429" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="setup" width="81" sizeVersion="0">startup</button>
-    <button x="96" y="465" height="33" disableUntilTicks="false" forever="true" kind="Observer" width="71" sizeVersion="0">go</button>
     <plot x="266" autoPlotX="true" yMax="1.0" autoPlotY="true" y="10" xMin="0.0" height="229" legend="true" xMax="1.0" yMin="0.0" display="Outcome Frequencies" width="366" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -556,13 +587,10 @@ end]]></code>
         <update></update>
       </pen>
     </plot>
-    <monitor x="647" precision="2" y="10" height="45" fontSize="11" display="% of CCs" width="73" sizeVersion="0">100 * %-CC</monitor>
-    <monitor x="1004" precision="2" y="10" height="45" fontSize="11" display="% of DDs" width="75" sizeVersion="0">100 * %-DD</monitor>
-    <monitor x="820" precision="2" y="10" height="45" fontSize="11" display="% of CDs" width="69" sizeVersion="0">100 * %-CD</monitor>
-    <plot x="861" autoPlotX="true" yMax="0.0" autoPlotY="true" y="61" xMin="0.0" height="179" legend="true" xMax="10.0" yMin="0.0" display="Avg Payoff" width="218" sizeVersion="0">
+    <plot x="861" autoPlotX="true" yMax="0.0" autoPlotY="true" y="11" xMin="0.0" height="229" legend="true" xMax="10.0" yMin="0.0" display="Avg Payoff" width="218" sizeVersion="0">
       <setup></setup>
       <update></update>
-      <pen interval="1.0" mode="0" display="all" color="-16777216" legend="true">
+      <pen interval="1.0" mode="0" display="all couples" color="-16777216" legend="true">
         <setup></setup>
         <update></update>
       </pen>
@@ -570,17 +598,12 @@ end]]></code>
         <setup></setup>
         <update></update>
       </pen>
-    </plot>
-    <plot x="11" autoPlotX="true" yMax="100.0" autoPlotY="true" yAxis="% Separated" y="502" xMin="0.0" height="160" legend="false" xMax="10.0" yMin="0.0" display="% Individuals separated" width="249" sizeVersion="0">
-      <setup></setup>
-      <update></update>
-      <pen interval="1.0" mode="0" display="default" color="-16777216" legend="true">
+      <pen interval="1.0" mode="0" display="waiting to be rematched" color="-5825686" legend="true">
         <setup></setup>
         <update></update>
       </pen>
     </plot>
     <slider x="14" step="1" y="202" max="100" display="exp-n-of-interactions" height="33" min="1" direction="Horizontal" default="20.0" variable="exp-n-of-interactions" width="248" sizeVersion="0"></slider>
-    <button x="12" y="465" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
     <slider x="13" step="0.001" y="273" max="0.1" display="prob-experimentation" height="33" min="0" direction="Horizontal" default="0.05" variable="prob-experimentation" width="248" sizeVersion="0"></slider>
     <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CC" width="215" sizeVersion="0">
       <setup></setup>
@@ -602,7 +625,6 @@ end]]></code>
         <update></update>
       </pen>
     </plot>
-    <monitor x="176" precision="17" y="446" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
     <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="451" xMin="0.0" height="214" legend="true" xMax="10.0" yMin="0.0" display="Action after DC" width="215" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -641,12 +663,6 @@ end]]></code>
     </plot>
     <note x="17" y="35" backgroundDark="0" fontSize="13" width="60" markdown="false" height="18" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Payoffs</note>
     <slider x="14" step="0.01" y="166" max="0.1" display="action-error" height="33" min="0" direction="Horizontal" default="0.05" variable="action-error" width="215" sizeVersion="0"></slider>
-    <input x="14" multiline="false" y="328" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
-    <note x="157" y="313" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
-    * D-C-L-C-C
-    * C-C-D-C-D
-    * D-L-L-L-L
-    * D-C-L-L-C</note>
     <plot x="861" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CD" width="218" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -694,10 +710,26 @@ end]]></code>
   ["D-C-L-D-C" 75]["D-D-L-D-C" 17]
   ["D-D-D-D-D" red] ["D-L-L-L-L" orange] ] </input>
     <button x="268" y="630" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="show 5 most popular strategies" width="226" sizeVersion="0">show-?-main-strategies 5</button>
-    <switch x="497" y="631" height="33" on="true" variable="show-plots?" display="show-plots?" width="130" sizeVersion="0"></switch>
-    <note x="16" y="397" backgroundDark="0" fontSize="11" width="240" markdown="false" height="35" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' initial strategy random</note>
+    <switch x="497" y="631" height="33" on="false" variable="show-plots?" display="show-plots?" width="130" sizeVersion="0"></switch>
     <slider x="14" step="0.01" y="237" max="1" display="prob-revision" height="33" min="0" direction="Horizontal" default="0.1" variable="prob-revision" width="172" sizeVersion="0"></slider>
     <switch x="96" y="10" height="33" on="true" variable="option-to-leave?" display="option-to-leave?" width="161" sizeVersion="0"></switch>
+    <monitor x="177" precision="17" y="549" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
+    <button x="13" y="568" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
+    <slider x="11" step="1" y="314" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="0.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
+    <slider x="12" step="1" y="356" max="5" display="out-payoff" height="37" min="0" direction="Horizontal" default="0.0" variable="out-payoff" width="250" sizeVersion="0"></slider>
+    <input x="12" multiline="false" y="420" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
+    <note x="13" y="484" backgroundDark="0" fontSize="11" width="240" markdown="false" height="40" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' 
+initial strategy random</note>
+    <note x="155" y="405" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
+    * D-C-L-C-C
+    * C-C-D-C-D
+    * D-L-L-L-L
+    * D-C-L-L-C</note>
+    <monitor x="788" precision="2" y="11" height="45" fontSize="11" display="% of DDs" width="68" sizeVersion="0">100 * %-DD</monitor>
+    <button x="13" y="532" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="setup" width="81" sizeVersion="0">startup</button>
+    <button x="97" y="568" height="33" disableUntilTicks="false" forever="true" kind="Observer" width="71" sizeVersion="0">go</button>
+    <monitor x="640" precision="2" y="11" height="45" fontSize="11" display="% of CCs" width="72" sizeVersion="0">100 * %-CC</monitor>
+    <monitor x="715" precision="2" y="11" height="45" fontSize="11" display="% of CDs" width="70" sizeVersion="0">100 * %-CD</monitor>
   </widgets>
   <info></info>
   <turtleShapes>
