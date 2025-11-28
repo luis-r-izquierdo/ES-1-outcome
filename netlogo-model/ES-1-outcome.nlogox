@@ -566,11 +566,11 @@ to show-?-main-strategies [n]
 end]]></code>
   <widgets>
     <view x="304" wrappingAllowedX="true" y="289" frameRate="30.0" minPycor="-1" height="177" showTickCounter="true" patchSize="56.0" fontSize="10" wrappingAllowedY="true" width="176" tickCounterLabel="ticks" maxPycor="1" updateMode="1" maxPxcor="1" minPxcor="-1"></view>
-    <slider x="15" step="2" y="130" max="1000" display="n-of-players" height="33" min="2" direction="Horizontal" default="500.0" variable="n-of-players" width="214" sizeVersion="0"></slider>
-    <slider x="15" step="1" y="55" max="10" display="CC-payoff" height="33" min="0" direction="Horizontal" default="3.0" variable="CC-payoff" width="120" sizeVersion="0"></slider>
-    <slider x="142" step="1" y="56" max="10" display="CD-payoff" height="33" min="0" direction="Horizontal" default="0.0" variable="CD-payoff" width="117" sizeVersion="0"></slider>
-    <slider x="15" step="1" y="91" max="10" display="DC-payoff" height="33" min="0" direction="Horizontal" default="4.0" variable="DC-payoff" width="120" sizeVersion="0"></slider>
-    <slider x="142" step="1" y="92" max="10" display="DD-payoff" height="33" min="0" direction="Horizontal" default="1.0" variable="DD-payoff" width="117" sizeVersion="0"></slider>
+    <slider x="15" step="2" y="145" max="1000" display="n-of-players" height="33" min="2" direction="Horizontal" default="500.0" variable="n-of-players" width="214" sizeVersion="0"></slider>
+    <slider x="15" step="1" y="63" max="10" display="CC-payoff" height="33" min="0" direction="Horizontal" default="3.0" variable="CC-payoff" width="120" sizeVersion="0"></slider>
+    <slider x="142" step="1" y="64" max="10" display="CD-payoff" height="33" min="0" direction="Horizontal" default="0.0" variable="CD-payoff" width="117" sizeVersion="0"></slider>
+    <slider x="15" step="1" y="99" max="10" display="DC-payoff" height="33" min="0" direction="Horizontal" default="4.0" variable="DC-payoff" width="120" sizeVersion="0"></slider>
+    <slider x="142" step="1" y="100" max="10" display="DD-payoff" height="33" min="0" direction="Horizontal" default="1.0" variable="DD-payoff" width="117" sizeVersion="0"></slider>
     <plot x="266" autoPlotX="true" yMax="1.0" autoPlotY="true" y="10" xMin="0.0" height="229" legend="true" xMax="1.0" yMin="0.0" display="Outcome Frequencies" width="366" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -603,8 +603,8 @@ end]]></code>
         <update></update>
       </pen>
     </plot>
-    <slider x="14" step="1" y="202" max="100" display="exp-n-of-interactions" height="33" min="1" direction="Horizontal" default="20.0" variable="exp-n-of-interactions" width="248" sizeVersion="0"></slider>
-    <slider x="13" step="0.001" y="273" max="0.1" display="prob-experimentation" height="33" min="0" direction="Horizontal" default="0.05" variable="prob-experimentation" width="248" sizeVersion="0"></slider>
+    <slider x="14" step="1" y="234" max="100" display="exp-n-of-interactions" height="33" min="1" direction="Horizontal" default="20.0" variable="exp-n-of-interactions" width="248" sizeVersion="0"></slider>
+    <slider x="13" step="0.001" y="316" max="0.1" display="prob-experimentation" height="33" min="0" direction="Horizontal" default="0.05" variable="prob-experimentation" width="248" sizeVersion="0"></slider>
     <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CC" width="215" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -661,8 +661,8 @@ end]]></code>
       <setup></setup>
       <update></update>
     </plot>
-    <note x="17" y="35" backgroundDark="0" fontSize="13" width="60" markdown="false" height="18" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Payoffs</note>
-    <slider x="14" step="0.01" y="166" max="0.1" display="action-error" height="33" min="0" direction="Horizontal" default="0.05" variable="action-error" width="215" sizeVersion="0"></slider>
+    <note x="17" y="43" backgroundDark="0" fontSize="13" width="60" markdown="false" height="18" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Payoffs</note>
+    <slider x="14" step="0.01" y="188" max="0.1" display="action-error" height="33" min="0" direction="Horizontal" default="0.05" variable="action-error" width="215" sizeVersion="0"></slider>
     <plot x="861" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CD" width="218" sizeVersion="0">
       <setup></setup>
       <update></update>
@@ -710,24 +710,24 @@ end]]></code>
   ["D-C-L-D-C" 75]["D-D-L-D-C" 17]
   ["D-D-D-D-D" red] ["D-L-L-L-L" orange] ] </input>
     <button x="268" y="630" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="show 5 most popular strategies" width="226" sizeVersion="0">show-?-main-strategies 5</button>
-    <switch x="497" y="631" height="33" on="false" variable="show-plots?" display="show-plots?" width="130" sizeVersion="0"></switch>
-    <slider x="14" step="0.01" y="237" max="1" display="prob-revision" height="33" min="0" direction="Horizontal" default="0.1" variable="prob-revision" width="172" sizeVersion="0"></slider>
+    <switch x="497" y="631" height="33" on="true" variable="show-plots?" display="show-plots?" width="130" sizeVersion="0"></switch>
+    <slider x="14" step="0.01" y="280" max="1" display="prob-revision" height="33" min="0" direction="Horizontal" default="0.1" variable="prob-revision" width="172" sizeVersion="0"></slider>
     <switch x="96" y="10" height="33" on="true" variable="option-to-leave?" display="option-to-leave?" width="161" sizeVersion="0"></switch>
-    <monitor x="177" precision="17" y="549" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
-    <button x="13" y="568" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
-    <slider x="11" step="1" y="314" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="0.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
-    <slider x="12" step="1" y="356" max="5" display="out-payoff" height="37" min="0" direction="Horizontal" default="0.0" variable="out-payoff" width="250" sizeVersion="0"></slider>
-    <input x="12" multiline="false" y="420" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
-    <note x="13" y="484" backgroundDark="0" fontSize="11" width="240" markdown="false" height="40" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' 
+    <monitor x="177" precision="17" y="609" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
+    <button x="13" y="628" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
+    <slider x="11" step="1" y="368" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="6.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
+    <slider x="12" step="1" y="410" max="5" display="out-payoff" height="37" min="0" direction="Horizontal" default="0.0" variable="out-payoff" width="250" sizeVersion="0"></slider>
+    <input x="12" multiline="false" y="480" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
+    <note x="13" y="544" backgroundDark="0" fontSize="11" width="240" markdown="false" height="40" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' 
 initial strategy random</note>
-    <note x="155" y="405" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
+    <note x="155" y="465" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
     * D-C-L-C-C
     * C-C-D-C-D
     * D-L-L-L-L
     * D-C-L-L-C</note>
     <monitor x="788" precision="2" y="11" height="45" fontSize="11" display="% of DDs" width="68" sizeVersion="0">100 * %-DD</monitor>
-    <button x="13" y="532" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="setup" width="81" sizeVersion="0">startup</button>
-    <button x="97" y="568" height="33" disableUntilTicks="false" forever="true" kind="Observer" width="71" sizeVersion="0">go</button>
+    <button x="13" y="592" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="setup" width="81" sizeVersion="0">startup</button>
+    <button x="97" y="628" height="33" disableUntilTicks="false" forever="true" kind="Observer" width="71" sizeVersion="0">go</button>
     <monitor x="640" precision="2" y="11" height="45" fontSize="11" display="% of CCs" width="72" sizeVersion="0">100 * %-CC</monitor>
     <monitor x="715" precision="2" y="11" height="45" fontSize="11" display="% of CDs" width="70" sizeVersion="0">100 * %-CD</monitor>
   </widgets>
