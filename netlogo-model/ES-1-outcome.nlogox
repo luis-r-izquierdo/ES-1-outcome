@@ -715,7 +715,7 @@ end]]></code>
     <switch x="96" y="10" height="33" on="true" variable="option-to-leave?" display="option-to-leave?" width="161" sizeVersion="0"></switch>
     <monitor x="177" precision="17" y="609" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
     <button x="13" y="628" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
-    <slider x="11" step="1" y="368" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="0.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
+    <slider x="11" step="1" y="368" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="5.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
     <slider x="12" step="1" y="410" max="5" display="out-payoff" height="37" min="0" direction="Horizontal" default="0.0" variable="out-payoff" width="250" sizeVersion="0"></slider>
     <input x="12" multiline="false" y="480" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
     <note x="13" y="544" backgroundDark="0" fontSize="11" width="240" markdown="false" height="40" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' 

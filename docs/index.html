@@ -105,7 +105,7 @@
 
       <p>
          To use ES-1-outcome, you will have to install
-         <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo 6.4 (free and open source)</a> and
+         <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo 7.0 (free and open source)</a> and
          download
          <a
             href="https://github.com/luis-r-izquierdo/ES-1-outcome/raw/refs/heads/main/netlogo-model/ES-1-outcome.nlogo.zip"
@@ -120,7 +120,7 @@
          designed to formally analyze the mechanism of endogenous separation (or conditional dissociation) in the
          evolutionary emergence of cooperation. This section gives an informal and brief overview of
          <b>ES-1-outcome</b>. The figure below provides a sketch that illustrates the sequence of events within each
-         time-step.
+         time-step, also called 'tick'.
       </p>
 
       <a href="./timeline.png"
@@ -131,8 +131,10 @@
       /></a>
       <p style="text-align: center">
          <i
-            >Sketch of the sequence of events within each time-step. The "Remaining Pairs" and "Singles" at the end of a
-            time-step are identical to the "Existing Pairs" and "Singles" in the next time-step.</i
+            >Sketch of the sequence of events within each time-step. Here we are assuming that all singles are
+            immediately paired, i.e. <i class="parameter">ticks-until-rematching</i> = 0. Thus, the "Remaining Pairs"
+            and "Singles" at the end of a time-step are identical to the "Existing Pairs" and "Singles" in the next
+            time-step.</i
          >
       </p>
 
@@ -159,8 +161,10 @@
       </ul>
 
       <p>
-         Players who separate are randomly re-matched in the following period and continue playing the stage game with
-         their new partner.
+         Players who separate remain single for <i class="parameter">ticks-until-rematching</i> ticks; then they are
+         randomly rematched and continue playing the stage game with their new partner. If
+         <i class="parameter">ticks-until-rematching</i> = 0, then every single player is rematched at the beginning of
+         every tick (i.e., all agents play the stage game in every tick).
       </p>
 
       <p>
@@ -184,8 +188,11 @@
       </p>
 
       <p>
-         Every individual who is single at the beginning of the time-step is randomly matched with another single. Thus,
-         after this random matching of singles, every individual is paired with another individual.
+         Individuals who become single must wait for <i class="parameter">ticks-until-rematching</i> time-steps until
+         they are rematched. Every individual who is single and has been waiting in the pool of singles for
+         <i class="parameter">ticks-until-rematching</i> time-steps is randomly matched with another single. Thus, if
+         <i class="parameter">ticks-until-rematching</i> = 0 (which is the situation shown in the sketch above), every
+         single individual is paired with another individual at the beginning of every time-step.
       </p>
 
       <p>
@@ -194,7 +201,8 @@
          and <b>D</b> (for <b>D</b>efect). The action selected by each of the players determines the payoff that each of
          them receives in that time-step: <i class="parameter">CC-payoff</i>, <i class="parameter">CD-payoff</i>,
          <i class="parameter">DC-payoff</i>, or <i class="parameter">DD-payoff</i>, where AB-payoff denotes the payoff
-         that an individual choosing action A obtains when her counterpart chooses action B.
+         that an individual choosing action A obtains when her counterpart chooses action B. Single individuals who do
+         not play the game get a payoff of <i class="parameter">out-payoff</i>.
       </p>
 
       <h3>Memory-one strategies</h3>
@@ -302,8 +310,11 @@
       <ol>
          <li>
             <b><u>Random matching of singles</u></b
-            >. At the beginning of each time-step, single individuals are randomly matched. Note that all individuals
-            are single at the beginning of the very first time-step.
+            >. At the beginning of each time-step, single individuals who have been in the pool of singles for
+            <i class="parameter">ticks-until-rematching</i> time-steps are randomly rematched. Single individuals who
+            have not yet spent <i class="parameter">ticks-until-rematching</i> time-steps in the pool of singles stay
+            single and receive a payoff equal to <i class="parameter">out-payoff</i>. (At the beginning of the
+            simulation all individuals are single and they are all matched for the first time.)
          </li>
          <li>
             <b><u>The stage game</u></b
@@ -391,6 +402,12 @@
             <i class="slider">DD-payoff</i>: Payoff obtained by a player who defects when the other player also defects.
          </li>
       </ul>
+      <ul>
+         <li>
+            <i class="slider">out-payoff</i>: Payoff obtained by a single player who has not been matched in the current
+            period. If <i class="slider">ticks-until-rematching</i> = 0, no player obtains this payoff.
+         </li>
+      </ul>
 
       <h3>Population parameters</h3>
 
@@ -458,6 +475,14 @@
                </li>
             </ul>
          </li>
+         <li>
+            <i class="slider">ticks-until-rematching</i>: number of ticks that single players must wait in the pool of
+            singles before they are randomly rematched.
+         </li>
+         <li>
+            <i class="slider">out-payoff</i>: Payoff obtained by single players who have not been rematched in the
+            current period. If <i class="slider">ticks-until-rematching</i> = 0, no player obtains this payoff.
+         </li>
       </ul>
 
       <h3>Buttons</h3>
@@ -513,13 +538,8 @@
 
       <ul>
          <li>
-            <i class="plot">% Individuals separated</i>: Time series of the percentage of players who have become single
-            in the current tick.
-         </li>
-         <li>
-            <i class="plot">Outcome Frequencies</i>: Time series of the fraction of couples where both players
-            cooperated (CC), where one player cooperated and the other one defected (CD), and where both players
-            defected (DD).
+            <i class="plot">Outcome Frequencies</i>: Time series of the number of couples where both players cooperated
+            (CC), where one player cooperated and the other one defected (CD), and where both players defected (DD).
          </li>
          <li>
             <i class="plot">Strategy Distribution</i>: Time series of the distribution of strategies in the whole
@@ -540,8 +560,9 @@
             when they first meet a partner (i.e. the first gene).
          </li>
          <li>
-            <i class="plot">Avg Payoff</i>: Time series showing the average payoff of all the players and also of those
-            who started a new partnership in the current tick (new couples).
+            <i class="plot">Avg Payoff</i>: Time series showing the average payoff of all the players in couples, of
+            those who started a new partnership in the current tick (new couples), and also of those who remain single
+            during the tick.
          </li>
          <li>
             <i class="plot">Action after CC</i>: Time series showing the fraction of players who, after outcome CC,
