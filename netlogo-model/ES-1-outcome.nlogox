@@ -1,0 +1,1420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model version="NetLogo 7.0.0" snapToGrid="false">
+  <code><![CDATA[;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; GNU GENERAL PUBLIC LICENSE ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ES-1-outcome (Endogenous Separation conditioned on the previous outcome)
+;; is a model designed to formally analyze the mechanism of endogenous
+;; separation (or conditional dissociation) in the evolutionary
+;; emergence of cooperation.
+;; Copyright (C) 2025
+;; Luis R. Izquierdo, Segismundo S. Izquierdo & Robert Boyd
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;; Contact information:
+;; Luis R. Izquierdo
+;;   University of Burgos, Spain.
+;;   e-mail: lrizquierdo@ubu.es
+
+
+extensions [array rnd]
+
+;;;;;;;;;;;;;;;;;
+;;; variables ;;;
+;;;;;;;;;;;;;;;;;
+
+globals [
+  C D L
+    ;; these are labels for the actions, to improve code readability
+    ;; C (Cooperate) = 0, D (Defect) = 1 and L (Leave) = 2
+
+  %-CC %-CD %-DD
+    ;; these variables store the percentage of
+    ;; each of the outcomes in the tick
+  n-of-outcomes
+
+  strategy-payoffs
+  strategy-frequencies
+  strategy-numbers
+
+  C-if-CC-players  D-if-CC-players LD-if-CC-players
+  C-if-CD-players  D-if-CD-players LD-if-CD-players
+  C-if-DC-players  D-if-DC-players LD-if-DC-players
+  C-if-DD-players  D-if-DD-players LD-if-DD-players
+  action-first-C-players
+
+  exogenously-separated
+
+  strategy-name-number-and-color-trios
+
+]
+
+breed [players player]
+
+players-own [
+  action-first    ;; action-first is either 0 (C) or 1 (D)
+    ;; the following variables can take the values 0 (C), 1 (D) of 2 (L);
+    ;; actions C and D imply that the agent stays with the current partner
+  decision-if-CC  ;; action if both cooperated
+  decision-if-CD  ;; if THE AGENT cooperated and THE PARTNER defected
+  decision-if-DC  ;; if THE AGENT defected and THE PARTNER cooperated
+  decision-if-DD  ;; action if both defected
+
+  next-action     ;; if the partnership is broken, next-action = action-first
+  active-action   ;; the action used to play the game
+
+  mate
+  payoff
+  strategy-number
+  new-partnership?
+]
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;; setup procedures ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; the following procedure is called when the model is first loaded
+to startup
+  clear-all
+  no-display
+  setup-variables
+  setup-players
+  setup-graph
+  reset-ticks
+  compute-strategy-frequencies
+end
+
+to setup-variables
+  set C 0
+  set D 1
+  set L 2
+
+  set strategy-numbers range 162
+  ;; 2 * (3 ^ 4) = 162 strategies
+  ;; In the model without the option to leave,
+  ;; we will only use 32 (= 2^5) of them
+end
+
+to setup-players
+  create-players n-of-players [
+    set action-first -1
+    set decision-if-CC -1
+    set decision-if-CD -1
+    set decision-if-DC -1
+    set decision-if-DD -1
+    set strategy-number -1
+    set mate nobody
+    set payoff -1
+    set hidden? true
+  ]
+
+  if-else initial-strategy = "random" [
+    ;; random distribution of initial strategies for the whole population
+    let n-of-possible-actions ifelse-value option-to-leave? [3][2]
+    ask players [
+      set action-first random 2
+      set decision-if-CC random n-of-possible-actions
+      set decision-if-CD random n-of-possible-actions
+      set decision-if-DC random n-of-possible-actions
+      set decision-if-DD random n-of-possible-actions
+
+      set strategy-number (genome-to-decimal genome)
+        ;; genome is a reporter that reports the set of genes,
+        ;; e.g. [C D L L D]
+        ;; genome-to-decimal converts a genome into a decimal number
+        ;; strategies are numbered from 0 (0 0 0 0 0) to 161 (1 2 2 2 2)
+
+      set active-action -1
+      set next-action action-first
+    ]
+  ]
+  [
+    ask players [
+      set strategy-number name-to-decimal initial-strategy
+      setup-new-strategy
+    ]
+  ]
+end
+
+to setup-graph
+  set-current-plot "Strategy Distribution"
+  let strategy-name-and-color-pairs read-from-string plot-the-following-strategy-names-and-colors
+  set strategy-name-number-and-color-trios map [[p] -> (list (first p) (name-to-decimal first p) last p)] strategy-name-and-color-pairs
+  foreach strategy-name-and-color-pairs [ p ->
+    create-temporary-plot-pen first p
+    set-plot-pen-mode 1
+    set-plot-pen-color last p
+  ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; run-time procedures ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to go
+
+  make-couples
+  ask players [update-action]
+  ask players [play]
+
+  gather-data
+
+  ask players [update-next-action]
+
+  ;; EXOGENOUS separation
+  conduct-exogenous-separation
+
+  ;; ENDOGENOUS separation
+  if option-to-leave? [conduct-endogenous-separation]
+
+  tick
+  if show-plots? [update-graphs]
+
+  ;; REVISION
+  conduct-revisions
+
+  if (count players != n-of-players) [adjust-num-players]
+end
+
+to make-couples
+  ask players [
+    set new-partnership? ifelse-value mate = nobody [true][false]
+  ]
+  ask players [
+    if (mate = nobody) [
+      set mate one-of other players with [mate = nobody]
+      ask mate [set mate myself]
+    ]
+  ]
+end
+
+to update-action
+  set active-action ifelse-value (random-float 1.0 < action-error)
+    [ (next-action + 1) mod 2 ] ;; flip C <-> D on error
+    [ next-action ]
+end
+
+to play
+  set payoff payoff-for active-action ([active-action] of mate)
+end
+
+to-report payoff-for [my-action her-action]
+  report ifelse-value my-action = C
+    [ ifelse-value her-action = C [CC-payoff][CD-payoff] ]
+    [ ifelse-value her-action = C [DC-payoff][DD-payoff] ]
+end
+
+to update-next-action
+  let mate-s-action ([active-action] of mate)
+
+  set next-action ifelse-value (active-action = C)
+  [ ifelse-value mate-s-action = C [decision-if-CC][decision-if-CD] ]
+  [ ifelse-value mate-s-action = C [decision-if-DC][decision-if-DD] ]
+  ;; if next-action here takes the value L (Leave, 2),
+  ;; next-action will be set to action-first in procedure
+  ;; conduct-endogenous-separation -> break-partnership
+end
+
+to conduct-exogenous-separation
+  ask players with [random-float 1.0 < 1 - (sqrt (1 - 1 / exp-n-of-interactions))] [
+    if (mate != nobody) [ break-partnership ]
+    ;; if mate = nobody, this player has already everything set up
+    ;; (see break-partnership), so there is nothing else to do
+  ]
+  set exogenously-separated players with [mate = nobody]
+end
+
+to break-partnership
+  ask mate [
+    set next-action action-first
+    set mate nobody
+  ]
+  set next-action action-first
+  set mate nobody
+end
+
+to conduct-endogenous-separation
+  ask players [
+    if (mate != nobody) and (next-action = L) [
+      break-partnership
+    ]
+  ]
+end
+
+to conduct-revisions
+
+  let players-to-revise exogenously-separated with [random-float 1.0 < prob-revision]
+
+  let num-players-to-revise count players-to-revise
+
+  compute-strategy-payoffs ;; this sets the value of strategy-payoffs
+  let new-strategies rnd:weighted-n-of-list-with-repeats num-players-to-revise strategy-numbers [[s] -> array:item strategy-payoffs s]
+    ;; new strategies is ordered, but this is not a problem,
+    ;; since agents in players-to-revise are in random order
+
+  let i 0
+
+  ask players-to-revise [
+
+    set strategy-number ifelse-value (random-float 1.0 < prob-experimentation)
+      [ strategy-after-mutation-in-one-gene ]
+      [ item i new-strategies ]
+
+    setup-new-strategy
+    set i (i + 1)
+  ]
+end
+
+to-report strategy-after-mutation-in-one-gene
+  ifelse option-to-leave?
+
+  [   ;; EXPERIMENTATION WITH THE OPTION TO LEAVE
+    ifelse (random-float 1.0 < 0.2)
+    [ ;; mutation on the first gene
+      report (strategy-number + 81) mod 162
+    ]
+    [ ;; mutation on any of the other four genes
+      let g decimal-to-genome strategy-number
+      let rd-position (1 + random 4)
+      let current-value item rd-position g
+      report genome-to-decimal replace-item rd-position g ((current-value + 1 + random 2) mod 3)
+    ]
+  ]
+
+  [ ;; EXPERIMENTATION WITHOUT THE OPTION TO LEAVE
+    let g decimal-to-genome strategy-number
+    let rd-position (random 5)
+    let current-value item rd-position g
+    report genome-to-decimal replace-item rd-position g ((current-value + 1) mod 2)
+  ]
+
+end
+
+to compute-strategy-payoffs
+  ;; compute the payoff of strategies (sum of payoffs of all agents that are using each strategy)
+  set strategy-payoffs array:from-list n-values 162 [0]
+  let tmp 0
+  ask players [
+    set tmp (array:item strategy-payoffs strategy-number)
+    array:set strategy-payoffs strategy-number (tmp + payoff)
+  ]
+end
+
+to adjust-num-players
+  let adjustment (n-of-players - (count players))
+  if adjustment != 0 [
+  ifelse adjustment > 0
+    [
+      create-players adjustment [
+        set mate nobody
+        set strategy-number ifelse-value (initial-strategy = "random")
+          [ifelse-value option-to-leave?
+            [random 162]
+            [genome-to-decimal n-values 5 [random 2]]]
+          [name-to-decimal initial-strategy]
+        setup-new-strategy
+      ]
+    ]
+    [
+      ask n-of (0 - adjustment) players [
+        if (mate != nobody)  [ break-partnership ]
+        die
+      ]
+    ]
+  ]
+end
+
+to setup-new-strategy
+  ;; this procedure is only used by newborns
+  ;; first, update strategy variables from strategy-number
+;  set [action-first decision-if-CC decision-if-CD decision-if-DC decision-if-DD]
+;    decimal-to-genome strategy-number
+  let tmp decimal-to-genome strategy-number
+  set action-first    item 0 tmp
+  set decision-if-CC  item 1 tmp
+  set decision-if-CD  item 2 tmp
+  set decision-if-DC  item 3 tmp
+  set decision-if-DD  item 4 tmp
+
+  ;; and then set next-action
+  set next-action action-first
+  set hidden? true
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;    Statistics    ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+to gather-data
+  let n-of-CC (count players with [active-action = C and [active-action] of mate = C]) / 2
+  let n-of-DD (count players with [active-action = D and [active-action] of mate = D]) / 2
+  let n-of-CD (count players with [active-action = C and [active-action] of mate = D])
+  set n-of-outcomes (n-of-CC + n-of-DD + n-of-CD)
+
+  set %-CC (n-of-CC / n-of-outcomes)
+  set %-CD (n-of-CD / n-of-outcomes)
+  set %-DD (n-of-DD / n-of-outcomes)
+
+  compute-strategy-frequencies
+
+  set C-if-CC-players count players with [decision-if-CC = C]
+  set D-if-CC-players count players with [decision-if-CC = D]
+  set LD-if-CC-players (count players with [decision-if-CC = L and action-first = D])
+
+  set C-if-CD-players count players with [decision-if-CD = C]
+  set D-if-CD-players count players with [decision-if-CD = D]
+  set LD-if-CD-players (count players with [decision-if-CD = L and action-first = D])
+
+  set C-if-DC-players count players with [decision-if-DC = C]
+  set D-if-DC-players count players with [decision-if-DC = D]
+  set LD-if-DC-players (count players with [decision-if-DC = L and action-first = D])
+
+  set C-if-DD-players count players with [decision-if-DD = C]
+  set D-if-DD-players count players with [decision-if-DD = D]
+  set LD-if-DD-players (count players with [decision-if-DD = L and action-first = D])
+
+  set action-first-C-players count players with [action-first = C]
+end
+
+to compute-strategy-frequencies
+  ;; compute the distribution of strategies (number of agents that are using each strategy)
+  set strategy-frequencies array:from-list n-values 162 [0]
+  let tmp 0
+  ask players [
+    set tmp (array:item strategy-frequencies strategy-number)
+    array:set strategy-frequencies strategy-number (tmp + 1)
+  ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;    Reporters     ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+to-report genome
+  report (list
+    action-first
+    decision-if-CC
+    decision-if-CD
+    decision-if-DC
+    decision-if-DD
+  )
+end
+
+to-report genome-to-decimal [g]
+  report reduce [ [?1 ?2] -> 3 * ?1 + ?2 ] g
+end
+
+to-report decimal-to-genome [n]
+  let g []
+
+  let remain n
+  repeat 4 [
+    set g fput (remain mod 3) g
+    set remain floor (remain / 3)
+  ]
+
+  report fput (remain mod 2) g
+end
+
+to-report name-of-genome [g]
+  report but-last reduce word map [
+    [n] -> (ifelse-value
+    n = C [ "C-" ]
+    n = D [ "D-" ]
+    n = L [ "L-" ])
+  ] g
+end
+
+to-report name-of-strategy [s]
+  report name-of-genome decimal-to-genome s
+end
+
+to-report name-to-decimal [name]
+  let simple-name remove "-" name
+  let decimal 0
+  let i 0
+  repeat 5 [
+    set decimal 3 * decimal + (ifelse-value
+      (item i simple-name) = "C" [0]
+      (item i simple-name) = "D" [1]
+      (item i simple-name) = "L" [2]
+    )
+    ;; read-from-string only takes literals
+    set i (i + 1)
+  ]
+  report decimal
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;      Plots       ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+to update-graphs
+  ;; all graphs refer to the situation before the new breed comes in.
+
+  set-current-plot "Outcome Frequencies"
+    set-current-plot-pen "DD"     plotxy ticks 1
+    set-current-plot-pen "CD"     plotxy ticks  1 - %-DD
+    set-current-plot-pen "CC"     plotxy ticks  %-CC
+
+  let current-n-of-players (count players)
+  let n-of-single-players (count (players with [mate = nobody]))
+
+  set-current-plot "Action after CC"
+    set-current-plot-pen "Leave-D"    plotxy ticks  1
+    set-current-plot-pen "Leave-C"    plotxy ticks  1 - (LD-if-CC-players / current-n-of-players)
+    set-current-plot-pen "Stay-D"     plotxy ticks  (C-if-CC-players / current-n-of-players) + (D-if-CC-players / current-n-of-players)
+    set-current-plot-pen "Stay-C"     plotxy ticks  (C-if-CC-players / current-n-of-players)
+
+  set-current-plot "Action after CD"
+    set-current-plot-pen "Leave-D"    plotxy ticks  1
+    set-current-plot-pen "Leave-C"    plotxy ticks  1 - (LD-if-CD-players / current-n-of-players)
+    set-current-plot-pen "Stay-D"     plotxy ticks  (C-if-CD-players / current-n-of-players) + (D-if-CD-players / current-n-of-players)
+    set-current-plot-pen "Stay-C"     plotxy ticks  (C-if-CD-players / current-n-of-players)
+
+  set-current-plot "Action after DC"
+    set-current-plot-pen "Leave-D"    plotxy ticks  1
+    set-current-plot-pen "Leave-C"    plotxy ticks  1 - (LD-if-DC-players / current-n-of-players)
+    set-current-plot-pen "Stay-D"     plotxy ticks  (C-if-DC-players / current-n-of-players) + (D-if-DC-players / current-n-of-players)
+    set-current-plot-pen "Stay-C"     plotxy ticks  (C-if-DC-players / current-n-of-players)
+
+  set-current-plot "Action after DD"
+    set-current-plot-pen "Leave-D"    plotxy ticks  1
+    set-current-plot-pen "Leave-C"    plotxy ticks  1 - (LD-if-DD-players / current-n-of-players)
+    set-current-plot-pen "Stay-D"     plotxy ticks  (C-if-DD-players / current-n-of-players) + (D-if-DD-players / current-n-of-players)
+    set-current-plot-pen "Stay-C"     plotxy ticks  (C-if-DD-players / current-n-of-players)
+
+  set-current-plot "Action with new partner"
+    set-current-plot-pen "D"     plotxy ticks 1
+    set-current-plot-pen "C"     plotxy ticks (action-first-C-players / current-n-of-players)
+
+  set-current-plot "% Individuals separated"
+    plotxy ticks 100 * (n-of-single-players / current-n-of-players)
+
+  set-current-plot "Avg Payoff"
+    set-current-plot-pen "all"
+    plotxy ticks mean [payoff] of players
+    if (any? players with [new-partnership?]) [
+      set-current-plot-pen "new couples"
+      plotxy ticks mean [payoff] of players with [new-partnership?]
+    ]
+
+  set-current-plot "Strategy Distribution"
+    set-plot-y-range 0 n-of-players
+    let selected-strategies-frequencies map [[t] -> array:item strategy-frequencies (item 1 t)] strategy-name-number-and-color-trios
+    let bar sum selected-strategies-frequencies
+
+    foreach strategy-name-number-and-color-trios [ t ->
+      set-current-plot-pen first t
+      plotxy ticks bar
+      set bar bar - (array:item strategy-frequencies (item 1 t))
+    ]
+end
+
+to show-?-main-strategies [n]
+  let strategy-names map name-of-strategy strategy-numbers
+  let pairs (map [[name f] -> list name f] strategy-names array:to-list strategy-frequencies)
+  set pairs sort-by [[l1 l2] -> last l1 > last l2] pairs
+  set pairs (sublist pairs 0 n)
+  show pairs
+end]]></code>
+  <widgets>
+    <view x="304" wrappingAllowedX="true" y="289" frameRate="30.0" minPycor="-1" height="177" showTickCounter="true" patchSize="56.0" fontSize="10" wrappingAllowedY="true" width="176" tickCounterLabel="ticks" maxPycor="1" updateMode="1" maxPxcor="1" minPxcor="-1"></view>
+    <slider x="15" step="2" y="130" max="1000" display="n-of-players" height="33" min="2" direction="Horizontal" default="500.0" variable="n-of-players" width="214" sizeVersion="0"></slider>
+    <slider x="15" step="1" y="55" max="10" display="CC-payoff" height="33" min="0" direction="Horizontal" default="3.0" variable="CC-payoff" width="120" sizeVersion="0"></slider>
+    <slider x="142" step="1" y="56" max="10" display="CD-payoff" height="33" min="0" direction="Horizontal" default="0.0" variable="CD-payoff" width="117" sizeVersion="0"></slider>
+    <slider x="15" step="1" y="91" max="10" display="DC-payoff" height="33" min="0" direction="Horizontal" default="4.0" variable="DC-payoff" width="120" sizeVersion="0"></slider>
+    <slider x="142" step="1" y="92" max="10" display="DD-payoff" height="33" min="0" direction="Horizontal" default="1.0" variable="DD-payoff" width="117" sizeVersion="0"></slider>
+    <button x="12" y="429" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="setup" width="81" sizeVersion="0">startup</button>
+    <button x="96" y="465" height="33" disableUntilTicks="false" forever="true" kind="Observer" width="71" sizeVersion="0">go</button>
+    <plot x="266" autoPlotX="true" yMax="1.0" autoPlotY="true" y="10" xMin="0.0" height="229" legend="true" xMax="1.0" yMin="0.0" display="Outcome Frequencies" width="366" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="DD" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="CD" color="-4539718" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="CC" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <monitor x="647" precision="2" y="10" height="45" fontSize="11" display="% of CCs" width="73" sizeVersion="0">100 * %-CC</monitor>
+    <monitor x="1004" precision="2" y="10" height="45" fontSize="11" display="% of DDs" width="75" sizeVersion="0">100 * %-DD</monitor>
+    <monitor x="820" precision="2" y="10" height="45" fontSize="11" display="% of CDs" width="69" sizeVersion="0">100 * %-CD</monitor>
+    <plot x="861" autoPlotX="true" yMax="0.0" autoPlotY="true" y="61" xMin="0.0" height="179" legend="true" xMax="10.0" yMin="0.0" display="Avg Payoff" width="218" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="0" display="all" color="-16777216" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="0" display="new couples" color="-955883" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <plot x="11" autoPlotX="true" yMax="100.0" autoPlotY="true" yAxis="% Separated" y="502" xMin="0.0" height="160" legend="false" xMax="10.0" yMin="0.0" display="% Individuals separated" width="249" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="0" display="default" color="-16777216" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <slider x="14" step="1" y="202" max="100" display="exp-n-of-interactions" height="33" min="1" direction="Horizontal" default="20.0" variable="exp-n-of-interactions" width="248" sizeVersion="0"></slider>
+    <button x="12" y="465" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
+    <slider x="13" step="0.001" y="273" max="0.1" display="prob-experimentation" height="33" min="0" direction="Horizontal" default="0.05" variable="prob-experimentation" width="248" sizeVersion="0"></slider>
+    <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CC" width="215" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="Leave-D" color="-1184463" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Leave-C" color="-10899396" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-D" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-C" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <monitor x="176" precision="17" y="446" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
+    <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="451" xMin="0.0" height="214" legend="true" xMax="10.0" yMin="0.0" display="Action after DC" width="215" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="Leave-D" color="-1184463" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Leave-C" color="-10899396" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-D" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-C" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <plot x="640" autoPlotX="true" yMax="1.0" autoPlotY="true" y="61" xMin="0.0" height="179" legend="true" xMax="10.0" yMin="0.0" display="Action with new partner" width="216" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="D" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="C" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <plot x="267" autoPlotX="true" yMax="10.0" autoPlotY="true" y="242" xMin="0.0" height="244" legend="true" xMax="10.0" yMin="0.0" display="Strategy Distribution" width="366" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+    </plot>
+    <note x="17" y="35" backgroundDark="0" fontSize="13" width="60" markdown="false" height="18" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Payoffs</note>
+    <slider x="14" step="0.01" y="166" max="0.1" display="action-error" height="33" min="0" direction="Horizontal" default="0.05" variable="action-error" width="215" sizeVersion="0"></slider>
+    <input x="14" multiline="false" y="328" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
+    <note x="157" y="313" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
+    * D-C-L-C-C
+    * C-C-D-C-D
+    * D-L-L-L-L
+    * D-C-L-L-C</note>
+    <plot x="861" autoPlotX="true" yMax="1.0" autoPlotY="true" y="243" xMin="0.0" height="205" legend="true" xMax="10.0" yMin="0.0" display="Action after CD" width="218" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="Leave-D" color="-1184463" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Leave-C" color="-10899396" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-D" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-C" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <plot x="860" autoPlotX="true" yMax="1.0" autoPlotY="true" y="451" xMin="0.0" height="214" legend="true" xMax="10.0" yMin="0.0" display="Action after DD" width="219" sizeVersion="0">
+      <setup></setup>
+      <update></update>
+      <pen interval="1.0" mode="1" display="Leave-D" color="-1184463" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Leave-C" color="-10899396" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-D" color="-2674135" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+      <pen interval="1.0" mode="1" display="Stay-C" color="-13345367" legend="true">
+        <setup></setup>
+        <update></update>
+      </pen>
+    </plot>
+    <input x="268" multiline="true" y="491" height="134" variable="plot-the-following-strategy-names-and-colors" type="command" width="360" sizeVersion="0">[ ["C-C-D-C-D" 87]  ["C-C-D-L-L" 84] 
+  ["C-C-L-C-L" 107] ["C-C-L-L-L" 104] 
+  ["C-C-L-C-C" 97]  ["C-C-L-C-D" 94]
+  ["D-C-L-C-C" lime] ["D-C-L-L-C" green] 
+  ["D-C-L-D-C" 75]["D-D-L-D-C" 17]
+  ["D-D-D-D-D" red] ["D-L-L-L-L" orange] ] </input>
+    <button x="268" y="630" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="show 5 most popular strategies" width="226" sizeVersion="0">show-?-main-strategies 5</button>
+    <switch x="497" y="631" height="33" on="true" variable="show-plots?" display="show-plots?" width="130" sizeVersion="0"></switch>
+    <note x="16" y="397" backgroundDark="0" fontSize="11" width="240" markdown="false" height="35" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">You can also type 'random' to make agents' initial strategy random</note>
+    <slider x="14" step="0.01" y="237" max="1" display="prob-revision" height="33" min="0" direction="Horizontal" default="0.1" variable="prob-revision" width="172" sizeVersion="0"></slider>
+    <switch x="96" y="10" height="33" on="true" variable="option-to-leave?" display="option-to-leave?" width="161" sizeVersion="0"></switch>
+  </widgets>
+  <info></info>
+  <turtleShapes>
+    <shape name="default" rotatable="true" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="5"></point>
+        <point x="40" y="250"></point>
+        <point x="150" y="205"></point>
+        <point x="260" y="250"></point>
+      </polygon>
+    </shape>
+    <shape name="airplane" rotatable="true" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="0"></point>
+        <point x="135" y="15"></point>
+        <point x="120" y="60"></point>
+        <point x="120" y="105"></point>
+        <point x="15" y="165"></point>
+        <point x="15" y="195"></point>
+        <point x="120" y="180"></point>
+        <point x="135" y="240"></point>
+        <point x="105" y="270"></point>
+        <point x="120" y="285"></point>
+        <point x="150" y="270"></point>
+        <point x="180" y="285"></point>
+        <point x="210" y="270"></point>
+        <point x="165" y="240"></point>
+        <point x="180" y="180"></point>
+        <point x="285" y="195"></point>
+        <point x="285" y="165"></point>
+        <point x="180" y="105"></point>
+        <point x="180" y="60"></point>
+        <point x="165" y="15"></point>
+      </polygon>
+    </shape>
+    <shape name="arrow" rotatable="true" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="0"></point>
+        <point x="0" y="150"></point>
+        <point x="105" y="150"></point>
+        <point x="105" y="293"></point>
+        <point x="195" y="293"></point>
+        <point x="195" y="150"></point>
+        <point x="300" y="150"></point>
+      </polygon>
+    </shape>
+    <shape name="box" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="285"></point>
+        <point x="285" y="225"></point>
+        <point x="285" y="75"></point>
+        <point x="150" y="135"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="135"></point>
+        <point x="15" y="75"></point>
+        <point x="150" y="15"></point>
+        <point x="285" y="75"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="15" y="75"></point>
+        <point x="15" y="225"></point>
+        <point x="150" y="285"></point>
+        <point x="150" y="135"></point>
+      </polygon>
+      <line endX="150" startY="285" marked="false" color="255" endY="135" startX="150"></line>
+      <line endX="15" startY="135" marked="false" color="255" endY="75" startX="150"></line>
+      <line endX="285" startY="135" marked="false" color="255" endY="75" startX="150"></line>
+    </shape>
+    <shape name="bug" rotatable="true" editableColorIndex="0">
+      <circle x="96" y="182" marked="true" color="-1920102913" diameter="108" filled="true"></circle>
+      <circle x="110" y="127" marked="true" color="-1920102913" diameter="80" filled="true"></circle>
+      <circle x="110" y="75" marked="true" color="-1920102913" diameter="80" filled="true"></circle>
+      <line endX="80" startY="100" marked="true" color="-1920102913" endY="30" startX="150"></line>
+      <line endX="220" startY="100" marked="true" color="-1920102913" endY="30" startX="150"></line>
+    </shape>
+    <shape name="butterfly" rotatable="true" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="165"></point>
+        <point x="209" y="199"></point>
+        <point x="225" y="225"></point>
+        <point x="225" y="255"></point>
+        <point x="195" y="270"></point>
+        <point x="165" y="255"></point>
+        <point x="150" y="240"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="165"></point>
+        <point x="89" y="198"></point>
+        <point x="75" y="225"></point>
+        <point x="75" y="255"></point>
+        <point x="105" y="270"></point>
+        <point x="135" y="255"></point>
+        <point x="150" y="240"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="139" y="148"></point>
+        <point x="100" y="105"></point>
+        <point x="55" y="90"></point>
+        <point x="25" y="90"></point>
+        <point x="10" y="105"></point>
+        <point x="10" y="135"></point>
+        <point x="25" y="180"></point>
+        <point x="40" y="195"></point>
+        <point x="85" y="194"></point>
+        <point x="139" y="163"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="162" y="150"></point>
+        <point x="200" y="105"></point>
+        <point x="245" y="90"></point>
+        <point x="275" y="90"></point>
+        <point x="290" y="105"></point>
+        <point x="290" y="135"></point>
+        <point x="275" y="180"></point>
+        <point x="260" y="195"></point>
+        <point x="215" y="195"></point>
+        <point x="162" y="165"></point>
+      </polygon>
+      <polygon color="255" filled="true" marked="false">
+        <point x="150" y="255"></point>
+        <point x="135" y="225"></point>
+        <point x="120" y="150"></point>
+        <point x="135" y="120"></point>
+        <point x="150" y="105"></point>
+        <point x="165" y="120"></point>
+        <point x="180" y="150"></point>
+        <point x="165" y="225"></point>
+      </polygon>
+      <circle x="135" y="90" marked="false" color="255" diameter="30" filled="true"></circle>
+      <line endX="195" startY="105" marked="false" color="255" endY="60" startX="150"></line>
+      <line endX="105" startY="105" marked="false" color="255" endY="60" startX="150"></line>
+    </shape>
+    <shape name="car" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="300" y="180"></point>
+        <point x="279" y="164"></point>
+        <point x="261" y="144"></point>
+        <point x="240" y="135"></point>
+        <point x="226" y="132"></point>
+        <point x="213" y="106"></point>
+        <point x="203" y="84"></point>
+        <point x="185" y="63"></point>
+        <point x="159" y="50"></point>
+        <point x="135" y="50"></point>
+        <point x="75" y="60"></point>
+        <point x="0" y="150"></point>
+        <point x="0" y="165"></point>
+        <point x="0" y="225"></point>
+        <point x="300" y="225"></point>
+        <point x="300" y="180"></point>
+      </polygon>
+      <circle x="180" y="180" marked="false" color="255" diameter="90" filled="true"></circle>
+      <circle x="30" y="180" marked="false" color="255" diameter="90" filled="true"></circle>
+      <polygon color="255" filled="true" marked="false">
+        <point x="162" y="80"></point>
+        <point x="132" y="78"></point>
+        <point x="134" y="135"></point>
+        <point x="209" y="135"></point>
+        <point x="194" y="105"></point>
+        <point x="189" y="96"></point>
+        <point x="180" y="89"></point>
+      </polygon>
+      <circle x="47" y="195" marked="true" color="-1920102913" diameter="58" filled="true"></circle>
+      <circle x="195" y="195" marked="true" color="-1920102913" diameter="58" filled="true"></circle>
+    </shape>
+    <shape name="circle" rotatable="false" editableColorIndex="0">
+      <circle x="0" y="0" marked="true" color="-1920102913" diameter="300" filled="true"></circle>
+    </shape>
+    <shape name="circle 2" rotatable="false" editableColorIndex="0">
+      <circle x="0" y="0" marked="true" color="-1920102913" diameter="300" filled="true"></circle>
+      <circle x="30" y="30" marked="false" color="255" diameter="240" filled="true"></circle>
+    </shape>
+    <shape name="cow" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="200" y="193"></point>
+        <point x="197" y="249"></point>
+        <point x="179" y="249"></point>
+        <point x="177" y="196"></point>
+        <point x="166" y="187"></point>
+        <point x="140" y="189"></point>
+        <point x="93" y="191"></point>
+        <point x="78" y="179"></point>
+        <point x="72" y="211"></point>
+        <point x="49" y="209"></point>
+        <point x="48" y="181"></point>
+        <point x="37" y="149"></point>
+        <point x="25" y="120"></point>
+        <point x="25" y="89"></point>
+        <point x="45" y="72"></point>
+        <point x="103" y="84"></point>
+        <point x="179" y="75"></point>
+        <point x="198" y="76"></point>
+        <point x="252" y="64"></point>
+        <point x="272" y="81"></point>
+        <point x="293" y="103"></point>
+        <point x="285" y="121"></point>
+        <point x="255" y="121"></point>
+        <point x="242" y="118"></point>
+        <point x="224" y="167"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="73" y="210"></point>
+        <point x="86" y="251"></point>
+        <point x="62" y="249"></point>
+        <point x="48" y="208"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="25" y="114"></point>
+        <point x="16" y="195"></point>
+        <point x="9" y="204"></point>
+        <point x="23" y="213"></point>
+        <point x="25" y="200"></point>
+        <point x="39" y="123"></point>
+      </polygon>
+    </shape>
+    <shape name="cylinder" rotatable="false" editableColorIndex="0">
+      <circle x="0" y="0" marked="true" color="-1920102913" diameter="300" filled="true"></circle>
+    </shape>
+    <shape name="dot" rotatable="false" editableColorIndex="0">
+      <circle x="90" y="90" marked="true" color="-1920102913" diameter="120" filled="true"></circle>
+    </shape>
+    <shape name="face happy" rotatable="false" editableColorIndex="0">
+      <circle x="8" y="8" marked="true" color="-1920102913" diameter="285" filled="true"></circle>
+      <circle x="60" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <circle x="180" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <polygon color="255" filled="true" marked="false">
+        <point x="150" y="255"></point>
+        <point x="90" y="239"></point>
+        <point x="62" y="213"></point>
+        <point x="47" y="191"></point>
+        <point x="67" y="179"></point>
+        <point x="90" y="203"></point>
+        <point x="109" y="218"></point>
+        <point x="150" y="225"></point>
+        <point x="192" y="218"></point>
+        <point x="210" y="203"></point>
+        <point x="227" y="181"></point>
+        <point x="251" y="194"></point>
+        <point x="236" y="217"></point>
+        <point x="212" y="240"></point>
+      </polygon>
+    </shape>
+    <shape name="face neutral" rotatable="false" editableColorIndex="0">
+      <circle x="8" y="7" marked="true" color="-1920102913" diameter="285" filled="true"></circle>
+      <circle x="60" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <circle x="180" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <rectangle endX="240" startY="195" marked="false" color="255" endY="225" startX="60" filled="true"></rectangle>
+    </shape>
+    <shape name="face sad" rotatable="false" editableColorIndex="0">
+      <circle x="8" y="8" marked="true" color="-1920102913" diameter="285" filled="true"></circle>
+      <circle x="60" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <circle x="180" y="75" marked="false" color="255" diameter="60" filled="true"></circle>
+      <polygon color="255" filled="true" marked="false">
+        <point x="150" y="168"></point>
+        <point x="90" y="184"></point>
+        <point x="62" y="210"></point>
+        <point x="47" y="232"></point>
+        <point x="67" y="244"></point>
+        <point x="90" y="220"></point>
+        <point x="109" y="205"></point>
+        <point x="150" y="198"></point>
+        <point x="192" y="205"></point>
+        <point x="210" y="220"></point>
+        <point x="227" y="242"></point>
+        <point x="251" y="229"></point>
+        <point x="236" y="206"></point>
+        <point x="212" y="183"></point>
+      </polygon>
+    </shape>
+    <shape name="fish" rotatable="false" editableColorIndex="0">
+      <polygon color="-1" filled="true" marked="false">
+        <point x="44" y="131"></point>
+        <point x="21" y="87"></point>
+        <point x="15" y="86"></point>
+        <point x="0" y="120"></point>
+        <point x="15" y="150"></point>
+        <point x="0" y="180"></point>
+        <point x="13" y="214"></point>
+        <point x="20" y="212"></point>
+        <point x="45" y="166"></point>
+      </polygon>
+      <polygon color="-1" filled="true" marked="false">
+        <point x="135" y="195"></point>
+        <point x="119" y="235"></point>
+        <point x="95" y="218"></point>
+        <point x="76" y="210"></point>
+        <point x="46" y="204"></point>
+        <point x="60" y="165"></point>
+      </polygon>
+      <polygon color="-1" filled="true" marked="false">
+        <point x="75" y="45"></point>
+        <point x="83" y="77"></point>
+        <point x="71" y="103"></point>
+        <point x="86" y="114"></point>
+        <point x="166" y="78"></point>
+        <point x="135" y="60"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="30" y="136"></point>
+        <point x="151" y="77"></point>
+        <point x="226" y="81"></point>
+        <point x="280" y="119"></point>
+        <point x="292" y="146"></point>
+        <point x="292" y="160"></point>
+        <point x="287" y="170"></point>
+        <point x="270" y="195"></point>
+        <point x="195" y="210"></point>
+        <point x="151" y="212"></point>
+        <point x="30" y="166"></point>
+      </polygon>
+      <circle x="215" y="106" marked="false" color="255" diameter="30" filled="true"></circle>
+    </shape>
+    <shape name="flag" rotatable="false" editableColorIndex="0">
+      <rectangle endX="75" startY="15" marked="true" color="-1920102913" endY="300" startX="60" filled="true"></rectangle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="90" y="150"></point>
+        <point x="270" y="90"></point>
+        <point x="90" y="30"></point>
+      </polygon>
+      <line endX="90" startY="135" marked="true" color="-1920102913" endY="135" startX="75"></line>
+      <line endX="90" startY="45" marked="true" color="-1920102913" endY="45" startX="75"></line>
+    </shape>
+    <shape name="flower" rotatable="false" editableColorIndex="0">
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="135" y="120"></point>
+        <point x="165" y="165"></point>
+        <point x="180" y="210"></point>
+        <point x="180" y="240"></point>
+        <point x="150" y="300"></point>
+        <point x="165" y="300"></point>
+        <point x="195" y="240"></point>
+        <point x="195" y="195"></point>
+        <point x="165" y="135"></point>
+      </polygon>
+      <circle x="85" y="132" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="130" y="147" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="192" y="85" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="85" y="40" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="177" y="40" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="177" y="132" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="70" y="85" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="130" y="25" marked="true" color="-1920102913" diameter="38" filled="true"></circle>
+      <circle x="96" y="51" marked="true" color="-1920102913" diameter="108" filled="true"></circle>
+      <circle x="113" y="68" marked="false" color="255" diameter="74" filled="true"></circle>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="189" y="233"></point>
+        <point x="219" y="188"></point>
+        <point x="249" y="173"></point>
+        <point x="279" y="188"></point>
+        <point x="234" y="218"></point>
+      </polygon>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="180" y="255"></point>
+        <point x="150" y="210"></point>
+        <point x="105" y="210"></point>
+        <point x="75" y="240"></point>
+        <point x="135" y="240"></point>
+      </polygon>
+    </shape>
+    <shape name="house" rotatable="false" editableColorIndex="0">
+      <rectangle endX="255" startY="120" marked="true" color="-1920102913" endY="285" startX="45" filled="true"></rectangle>
+      <rectangle endX="180" startY="210" marked="false" color="255" endY="285" startX="120" filled="true"></rectangle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="15" y="120"></point>
+        <point x="150" y="15"></point>
+        <point x="285" y="120"></point>
+      </polygon>
+      <line endX="270" startY="120" marked="false" color="255" endY="120" startX="30"></line>
+    </shape>
+    <shape name="leaf" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="210"></point>
+        <point x="135" y="195"></point>
+        <point x="120" y="210"></point>
+        <point x="60" y="210"></point>
+        <point x="30" y="195"></point>
+        <point x="60" y="180"></point>
+        <point x="60" y="165"></point>
+        <point x="15" y="135"></point>
+        <point x="30" y="120"></point>
+        <point x="15" y="105"></point>
+        <point x="40" y="104"></point>
+        <point x="45" y="90"></point>
+        <point x="60" y="90"></point>
+        <point x="90" y="105"></point>
+        <point x="105" y="120"></point>
+        <point x="120" y="120"></point>
+        <point x="105" y="60"></point>
+        <point x="120" y="60"></point>
+        <point x="135" y="30"></point>
+        <point x="150" y="15"></point>
+        <point x="165" y="30"></point>
+        <point x="180" y="60"></point>
+        <point x="195" y="60"></point>
+        <point x="180" y="120"></point>
+        <point x="195" y="120"></point>
+        <point x="210" y="105"></point>
+        <point x="240" y="90"></point>
+        <point x="255" y="90"></point>
+        <point x="263" y="104"></point>
+        <point x="285" y="105"></point>
+        <point x="270" y="120"></point>
+        <point x="285" y="135"></point>
+        <point x="240" y="165"></point>
+        <point x="240" y="180"></point>
+        <point x="270" y="195"></point>
+        <point x="240" y="210"></point>
+        <point x="180" y="210"></point>
+        <point x="165" y="195"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="135" y="195"></point>
+        <point x="135" y="240"></point>
+        <point x="120" y="255"></point>
+        <point x="105" y="255"></point>
+        <point x="105" y="285"></point>
+        <point x="135" y="285"></point>
+        <point x="165" y="240"></point>
+        <point x="165" y="195"></point>
+      </polygon>
+    </shape>
+    <shape name="line" rotatable="true" editableColorIndex="0">
+      <line endX="150" startY="0" marked="true" color="-1920102913" endY="300" startX="150"></line>
+    </shape>
+    <shape name="line half" rotatable="true" editableColorIndex="0">
+      <line endX="150" startY="0" marked="true" color="-1920102913" endY="150" startX="150"></line>
+    </shape>
+    <shape name="link" rotatable="true" editableColorIndex="0">
+      <line endX="150" startY="0" marked="true" color="-1920102913" endY="300" startX="150"></line>
+    </shape>
+    <shape name="link direction" rotatable="true" editableColorIndex="0">
+      <line endX="30" startY="150" marked="true" color="-1920102913" endY="225" startX="150"></line>
+      <line endX="270" startY="150" marked="true" color="-1920102913" endY="225" startX="150"></line>
+    </shape>
+    <shape name="pentagon" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="15"></point>
+        <point x="15" y="120"></point>
+        <point x="60" y="285"></point>
+        <point x="240" y="285"></point>
+        <point x="285" y="120"></point>
+      </polygon>
+    </shape>
+    <shape name="person" rotatable="false" editableColorIndex="0">
+      <circle x="110" y="5" marked="true" color="-1920102913" diameter="80" filled="true"></circle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="105" y="90"></point>
+        <point x="120" y="195"></point>
+        <point x="90" y="285"></point>
+        <point x="105" y="300"></point>
+        <point x="135" y="300"></point>
+        <point x="150" y="225"></point>
+        <point x="165" y="300"></point>
+        <point x="195" y="300"></point>
+        <point x="210" y="285"></point>
+        <point x="180" y="195"></point>
+        <point x="195" y="90"></point>
+      </polygon>
+      <rectangle endX="172" startY="79" marked="true" color="-1920102913" endY="94" startX="127" filled="true"></rectangle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="195" y="90"></point>
+        <point x="240" y="150"></point>
+        <point x="225" y="180"></point>
+        <point x="165" y="105"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="105" y="90"></point>
+        <point x="60" y="150"></point>
+        <point x="75" y="180"></point>
+        <point x="135" y="105"></point>
+      </polygon>
+    </shape>
+    <shape name="plant" rotatable="false" editableColorIndex="0">
+      <rectangle endX="165" startY="90" marked="true" color="-1920102913" endY="300" startX="135" filled="true"></rectangle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="135" y="255"></point>
+        <point x="90" y="210"></point>
+        <point x="45" y="195"></point>
+        <point x="75" y="255"></point>
+        <point x="135" y="285"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="165" y="255"></point>
+        <point x="210" y="210"></point>
+        <point x="255" y="195"></point>
+        <point x="225" y="255"></point>
+        <point x="165" y="285"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="135" y="180"></point>
+        <point x="90" y="135"></point>
+        <point x="45" y="120"></point>
+        <point x="75" y="180"></point>
+        <point x="135" y="210"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="165" y="180"></point>
+        <point x="165" y="210"></point>
+        <point x="225" y="180"></point>
+        <point x="255" y="120"></point>
+        <point x="210" y="135"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="135" y="105"></point>
+        <point x="90" y="60"></point>
+        <point x="45" y="45"></point>
+        <point x="75" y="105"></point>
+        <point x="135" y="135"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="165" y="105"></point>
+        <point x="165" y="135"></point>
+        <point x="225" y="105"></point>
+        <point x="255" y="45"></point>
+        <point x="210" y="60"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="135" y="90"></point>
+        <point x="120" y="45"></point>
+        <point x="150" y="15"></point>
+        <point x="180" y="45"></point>
+        <point x="165" y="90"></point>
+      </polygon>
+    </shape>
+    <shape name="square" rotatable="false" editableColorIndex="0">
+      <rectangle endX="270" startY="30" marked="true" color="-1920102913" endY="270" startX="30" filled="true"></rectangle>
+    </shape>
+    <shape name="square 2" rotatable="false" editableColorIndex="0">
+      <rectangle endX="270" startY="30" marked="true" color="-1920102913" endY="270" startX="30" filled="true"></rectangle>
+      <rectangle endX="240" startY="60" marked="false" color="255" endY="240" startX="60" filled="true"></rectangle>
+    </shape>
+    <shape name="star" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="151" y="1"></point>
+        <point x="185" y="108"></point>
+        <point x="298" y="108"></point>
+        <point x="207" y="175"></point>
+        <point x="242" y="282"></point>
+        <point x="151" y="216"></point>
+        <point x="59" y="282"></point>
+        <point x="94" y="175"></point>
+        <point x="3" y="108"></point>
+        <point x="116" y="108"></point>
+      </polygon>
+    </shape>
+    <shape name="target" rotatable="false" editableColorIndex="0">
+      <circle x="0" y="0" marked="true" color="-1920102913" diameter="300" filled="true"></circle>
+      <circle x="30" y="30" marked="false" color="255" diameter="240" filled="true"></circle>
+      <circle x="60" y="60" marked="true" color="-1920102913" diameter="180" filled="true"></circle>
+      <circle x="90" y="90" marked="false" color="255" diameter="120" filled="true"></circle>
+      <circle x="120" y="120" marked="true" color="-1920102913" diameter="60" filled="true"></circle>
+    </shape>
+    <shape name="tree" rotatable="false" editableColorIndex="0">
+      <circle x="118" y="3" marked="true" color="-1920102913" diameter="94" filled="true"></circle>
+      <rectangle endX="180" startY="195" marked="false" color="-1653716737" endY="300" startX="120" filled="true"></rectangle>
+      <circle x="65" y="21" marked="true" color="-1920102913" diameter="108" filled="true"></circle>
+      <circle x="116" y="41" marked="true" color="-1920102913" diameter="127" filled="true"></circle>
+      <circle x="45" y="90" marked="true" color="-1920102913" diameter="120" filled="true"></circle>
+      <circle x="104" y="74" marked="true" color="-1920102913" diameter="152" filled="true"></circle>
+    </shape>
+    <shape name="triangle" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="30"></point>
+        <point x="15" y="255"></point>
+        <point x="285" y="255"></point>
+      </polygon>
+    </shape>
+    <shape name="triangle 2" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="150" y="30"></point>
+        <point x="15" y="255"></point>
+        <point x="285" y="255"></point>
+      </polygon>
+      <polygon color="255" filled="true" marked="false">
+        <point x="151" y="99"></point>
+        <point x="225" y="223"></point>
+        <point x="75" y="224"></point>
+      </polygon>
+    </shape>
+    <shape name="truck" rotatable="false" editableColorIndex="0">
+      <rectangle endX="195" startY="45" marked="true" color="-1920102913" endY="187" startX="4" filled="true"></rectangle>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="296" y="193"></point>
+        <point x="296" y="150"></point>
+        <point x="259" y="134"></point>
+        <point x="244" y="104"></point>
+        <point x="208" y="104"></point>
+        <point x="207" y="194"></point>
+      </polygon>
+      <rectangle endX="195" startY="60" marked="false" color="-1" endY="105" startX="195" filled="true"></rectangle>
+      <polygon color="255" filled="true" marked="false">
+        <point x="238" y="112"></point>
+        <point x="252" y="141"></point>
+        <point x="219" y="141"></point>
+        <point x="218" y="112"></point>
+      </polygon>
+      <circle x="234" y="174" marked="false" color="255" diameter="42" filled="true"></circle>
+      <rectangle endX="214" startY="185" marked="true" color="-1920102913" endY="194" startX="181" filled="true"></rectangle>
+      <circle x="144" y="174" marked="false" color="255" diameter="42" filled="true"></circle>
+      <circle x="24" y="174" marked="false" color="255" diameter="42" filled="true"></circle>
+      <circle x="24" y="174" marked="true" color="-1920102913" diameter="42" filled="false"></circle>
+      <circle x="144" y="174" marked="true" color="-1920102913" diameter="42" filled="false"></circle>
+      <circle x="234" y="174" marked="true" color="-1920102913" diameter="42" filled="false"></circle>
+    </shape>
+    <shape name="turtle" rotatable="true" editableColorIndex="0">
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="215" y="204"></point>
+        <point x="240" y="233"></point>
+        <point x="246" y="254"></point>
+        <point x="228" y="266"></point>
+        <point x="215" y="252"></point>
+        <point x="193" y="210"></point>
+      </polygon>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="195" y="90"></point>
+        <point x="225" y="75"></point>
+        <point x="245" y="75"></point>
+        <point x="260" y="89"></point>
+        <point x="269" y="108"></point>
+        <point x="261" y="124"></point>
+        <point x="240" y="105"></point>
+        <point x="225" y="105"></point>
+        <point x="210" y="105"></point>
+      </polygon>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="105" y="90"></point>
+        <point x="75" y="75"></point>
+        <point x="55" y="75"></point>
+        <point x="40" y="89"></point>
+        <point x="31" y="108"></point>
+        <point x="39" y="124"></point>
+        <point x="60" y="105"></point>
+        <point x="75" y="105"></point>
+        <point x="90" y="105"></point>
+      </polygon>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="132" y="85"></point>
+        <point x="134" y="64"></point>
+        <point x="107" y="51"></point>
+        <point x="108" y="17"></point>
+        <point x="150" y="2"></point>
+        <point x="192" y="18"></point>
+        <point x="192" y="52"></point>
+        <point x="169" y="65"></point>
+        <point x="172" y="87"></point>
+      </polygon>
+      <polygon color="1504722175" filled="true" marked="false">
+        <point x="85" y="204"></point>
+        <point x="60" y="233"></point>
+        <point x="54" y="254"></point>
+        <point x="72" y="266"></point>
+        <point x="85" y="252"></point>
+        <point x="107" y="210"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="119" y="75"></point>
+        <point x="179" y="75"></point>
+        <point x="209" y="101"></point>
+        <point x="224" y="135"></point>
+        <point x="220" y="225"></point>
+        <point x="175" y="261"></point>
+        <point x="128" y="261"></point>
+        <point x="81" y="224"></point>
+        <point x="74" y="135"></point>
+        <point x="88" y="99"></point>
+      </polygon>
+    </shape>
+    <shape name="wheel" rotatable="false" editableColorIndex="0">
+      <circle x="3" y="3" marked="true" color="-1920102913" diameter="294" filled="true"></circle>
+      <circle x="30" y="30" marked="false" color="255" diameter="240" filled="true"></circle>
+      <line endX="150" startY="285" marked="true" color="-1920102913" endY="15" startX="150"></line>
+      <line endX="285" startY="150" marked="true" color="-1920102913" endY="150" startX="15"></line>
+      <circle x="120" y="120" marked="true" color="-1920102913" diameter="60" filled="true"></circle>
+      <line endX="79" startY="40" marked="true" color="-1920102913" endY="269" startX="216"></line>
+      <line endX="269" startY="84" marked="true" color="-1920102913" endY="221" startX="40"></line>
+      <line endX="269" startY="216" marked="true" color="-1920102913" endY="79" startX="40"></line>
+      <line endX="221" startY="40" marked="true" color="-1920102913" endY="269" startX="84"></line>
+    </shape>
+    <shape name="x" rotatable="false" editableColorIndex="0">
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="270" y="75"></point>
+        <point x="225" y="30"></point>
+        <point x="30" y="225"></point>
+        <point x="75" y="270"></point>
+      </polygon>
+      <polygon color="-1920102913" filled="true" marked="true">
+        <point x="30" y="75"></point>
+        <point x="75" y="30"></point>
+        <point x="270" y="225"></point>
+        <point x="225" y="270"></point>
+      </polygon>
+    </shape>
+  </turtleShapes>
+  <linkShapes>
+    <shape name="default" curviness="0.0">
+      <lines>
+        <line x="-0.2" visible="false">
+          <dash value="0.0"></dash>
+          <dash value="1.0"></dash>
+        </line>
+        <line x="0.0" visible="true">
+          <dash value="1.0"></dash>
+          <dash value="0.0"></dash>
+        </line>
+        <line x="0.2" visible="false">
+          <dash value="0.0"></dash>
+          <dash value="1.0"></dash>
+        </line>
+      </lines>
+      <indicator>
+        <shape name="link direction" rotatable="true" editableColorIndex="0">
+          <line endX="90" startY="150" marked="true" color="-1920102913" endY="180" startX="150"></line>
+          <line endX="210" startY="150" marked="true" color="-1920102913" endY="180" startX="150"></line>
+        </shape>
+      </indicator>
+    </shape>
+  </linkShapes>
+  <previewCommands>setup repeat 75 [ go ]</previewCommands>
+</model>
