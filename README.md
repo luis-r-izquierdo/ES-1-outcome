@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17473911.svg)](https://doi.org/10.5281/zenodo.17473911)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17473910.svg)](https://doi.org/10.5281/zenodo.17473910)
 
 # ES-1-outcome
 ES-1-outcome (Endogenous Separation conditioned on the previous outcome) is a repository with various tools to formally analyze the mechanism of endogenous separation (or conditional dissociation) in the evolutionary emergence of cooperation.
