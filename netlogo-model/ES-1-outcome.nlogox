@@ -501,7 +501,6 @@ to update-graphs
     set-current-plot-pen "CC"     plotxy ticks n-of-CC
 
   let current-n-of-players (count players)
-  let n-of-single-players (count (players with [mate = nobody]))
 
   set-current-plot "Action after CC"
     set-current-plot-pen "Leave-D"    plotxy ticks  1
