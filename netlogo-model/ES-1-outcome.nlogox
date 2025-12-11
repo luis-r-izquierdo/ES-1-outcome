@@ -200,7 +200,9 @@ to make-couples
   ask players [
     ifelse mate = nobody 
     [
-      ifelse ticks-out = ticks-until-rematching 
+      ifelse ticks-out >= ticks-until-rematching 
+      ;; in principle, ticks-out can never be greater than ticks-until-rematching, 
+      ;; but if the user modifies ticks-until-rematching at run-time, this case may occur.
       [ set new-partnership? true ]
       [ 
         set new-partnership? -1  ;; this means the agent is waiting to be rematched
