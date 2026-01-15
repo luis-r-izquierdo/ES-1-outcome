@@ -94,6 +94,42 @@
             height: auto;
             width: auto\9; /* IE8 */
          }
+
+         /* ---------- Responsive + zoom images ---------- */
+
+         .responsive-image {
+            max-width: 900px;
+            margin: 1.5rem auto;
+         }
+
+         .responsive-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: zoom-in;
+         }
+
+         .zoom-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+         }
+
+         .zoom-overlay img {
+            max-width: 95vw;
+            max-height: 95vh;
+            width: auto;
+            height: auto;
+            cursor: zoom-out;
+         }
+
+         .zoom-overlay:target {
+            display: flex;
+         }
       </style>
    </head>
 
@@ -123,19 +159,25 @@
          time-step, also called 'tick'.
       </p>
 
-      <a href="./timeline.png"
-         ><img
-            style="margin: 0px auto; display: block"
-            src="./timeline.png"
-            alt="Timeline of events within each time step"
-      /></a>
+      <div class="responsive-image">
+         <a href="#zoom-timeline">
+            <img src="./timeline.png" alt="Timeline of events within each time step" />
+         </a>
+      </div>
+
+      <div id="zoom-timeline" class="zoom-overlay">
+         <a href="#">
+            <img src="./timeline.png" alt="Timeline of events within each time step" />
+         </a>
+      </div>
+
       <p style="text-align: center">
-         <i
-            >Sketch of the sequence of events within each time-step. Here we are assuming that all singles are
+         <i>
+            Sketch of the sequence of events within each time-step. Here we are assuming that all singles are
             immediately paired, i.e. <i class="parameter">ticks-until-rematching</i> = 0. Thus, the "Remaining Pairs"
             and "Singles" at the end of a time-step are identical to the "Existing Pairs" and "Singles" in the next
-            time-step.</i
-         >
+            time-step.
+         </i>
       </p>
 
       <p>
@@ -372,11 +414,21 @@
          </li>
       </ol>
 
+      <a id="how-to-use-it"></a>
       <h2>HOW TO USE IT</h2>
 
-      <a href="./ES-1-outcome-interface.png"
-         ><img style="margin: 0px auto; display: block" src="./ES-1-outcome-interface.png" alt="Interface of the model"
-      /></a>
+      <!-- Interface image -->
+      <div class="responsive-image">
+         <a href="#zoom-interface">
+            <img src="./ES-1-outcome-interface.png" alt="Interface of the model" />
+         </a>
+      </div>
+
+      <div id="zoom-interface" class="zoom-overlay">
+         <a href="#how-to-use-it">
+            <img src="./ES-1-outcome-interface.png" alt="Interface of the model" />
+         </a>
+      </div>
 
       <h3>Type of model: with or without the option to leave</h3>
       <p>
