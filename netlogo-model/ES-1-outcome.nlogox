@@ -212,12 +212,19 @@ to make-couples
     ]
     [ set new-partnership? false ]
   ]
-  ask players with [new-partnership? = true] [
-    if (mate = nobody) [
-      set mate one-of other players with [mate = nobody and new-partnership? = true]
-      ask mate [set mate myself]
-    ]
+  
+  let pool sort players with [new-partnership? = true]
+  let shuffled shuffle pool
+  
+  let i 0
+  while [i < length shuffled] [
+    let p1 item i shuffled
+    let p2 item (i + 1) shuffled
+    ask p1 [ set mate p2 ]
+    ask p2 [ set mate p1 ]
+    set i (i + 2)
   ]
+  
 end
 
 to update-action
@@ -716,7 +723,7 @@ end]]></code>
     <switch x="96" y="10" height="33" on="true" variable="option-to-leave?" display="option-to-leave?" width="161" sizeVersion="0"></switch>
     <monitor x="177" precision="17" y="609" height="53" fontSize="13" width="84" sizeVersion="0">ticks</monitor>
     <button x="13" y="628" height="33" disableUntilTicks="false" forever="false" kind="Observer" display="go once" width="81" sizeVersion="0">go</button>
-    <slider x="11" step="1" y="368" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="5.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
+    <slider x="11" step="1" y="368" max="10" display="ticks-until-rematching" height="36" min="0" direction="Horizontal" default="0.0" variable="ticks-until-rematching" width="250" sizeVersion="0"></slider>
     <slider x="12" step="1" y="410" max="5" display="out-payoff" height="37" min="0" direction="Horizontal" default="0.0" variable="out-payoff" width="250" sizeVersion="0"></slider>
     <input x="12" multiline="false" y="480" height="60" variable="initial-strategy" type="string" width="147" sizeVersion="0">random</input>
     <note x="155" y="465" backgroundDark="0" fontSize="11" width="116" markdown="false" height="86" textColorDark="-1" textColorLight="-16777216" backgroundLight="0">Examples of values:
