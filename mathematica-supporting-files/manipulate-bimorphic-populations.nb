@@ -3,17 +3,17 @@
 (*** Wolfram Notebook File ***)
 (* http://www.wolfram.com/nb *)
 
-(* CreatedBy='Mathematica 14.0' *)
+(* CreatedBy='Wolfram 15.0' *)
 
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
-NotebookDataPosition[       158,          7]
-NotebookDataLength[    145007,       3263]
-NotebookOptionsPosition[    144208,       3241]
-NotebookOutlinePosition[    144603,       3257]
-CellTagsIndexPosition[    144560,       3254]
+NotebookDataPosition[       154,          7]
+NotebookDataLength[    147433,       3319]
+NotebookOptionsPosition[    146632,       3297]
+NotebookOutlinePosition[    147025,       3313]
+CellTagsIndexPosition[    146982,       3310]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -289,7 +289,7 @@ Cell[BoxData[
              ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
            Center]}}, Alignment -> Left, Spacings -> {0, 0}]], 
       Manipulate`Dump`ThisIsNotAControl, ControlType -> None}}, 
-    Typeset`size$$ = {360., {104.53880006340397`, 110.27073365715397`}}, 
+    Typeset`size$$ = {360., {111.24192506340397`, 116.97385865715397`}}, 
     Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = False, 
     Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
     DynamicBox[Manipulate`ManipulateBoxes[
@@ -315,8 +315,9 @@ Cell[BoxData[
           "C" -> 0, "D" -> 1, "L" -> 
            2}, $CellContext`s1$, $CellContext`s2$, $CellContext`payoffs$, \
 $CellContext`L$, $CellContext`FMatrix$, $CellContext`listOfArrows$, \
-$CellContext`rest$, $CellContext`restPoints$, $CellContext`x1$, \
-$CellContext`height$ = 0.5}, $CellContext`s1$ = 
+$CellContext`rest$, $CellContext`restPoints$, $CellContext`restPointsX$, \
+$CellContext`continuumOfRestPoints$, $CellContext`x1$, $CellContext`height$ = 
+         0.5}, $CellContext`s1$ = 
          ReplaceAll[{$CellContext`b1$$, $CellContext`b2$$, $CellContext`b3$$, \
 $CellContext`b4$$, $CellContext`b5$$}, $CellContext`rules$]; $CellContext`s2$ = 
          ReplaceAll[{$CellContext`o1$$, $CellContext`o2$$, $CellContext`o3$$, \
@@ -347,8 +348,20 @@ $CellContext`payoffs$]], $CellContext`height$}}]}, {$CellContext`initx1, 0,
 $CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
 \[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
 $CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$, 
-           Reals]; $CellContext`restPoints$ = Select[{
-            ToRules[$CellContext`rest$]}, ListQ]; Show[
+           Reals]; $CellContext`continuumOfRestPoints$ = Not[
+           FreeQ[$CellContext`rest$, 
+            Alternatives[
+            Less, LessEqual, Greater, 
+             GreaterEqual]]]; $CellContext`restPoints$ = If[
+           
+           Or[$CellContext`continuumOfRestPoints$, $CellContext`rest$ === 
+            False], {}, 
+           Select[{
+             ToRules[$CellContext`rest$]}, ListQ]]; $CellContext`restPointsX$ = 
+         N[
+           Cases[$CellContext`restPoints$, Pattern[$CellContext`oneRestPoint$, 
+              Blank[List]] :> 
+            ReplaceAll[$CellContext`x1$, $CellContext`oneRestPoint$]]]; Show[
           Plot[
            Evaluate[
             $CellContext`Fx[$CellContext`x1$, $CellContext`s1$, \
@@ -363,9 +376,9 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
            MapThread[{
              EdgeForm[Thick], Red, 
              Disk[{#, $CellContext`height$}, 
-              Scaled[{0.02, 0.03}]]}& , {
-             N[
-              ReplaceAll[$CellContext`x1$, $CellContext`restPoints$]]}]]]], 
+              Scaled[{0.02, 0.03}]]}& , {$CellContext`restPointsX$}]], 
+          PlotLabel -> If[$CellContext`continuumOfRestPoints$, 
+            Style["Every state is a rest point", Red], ""]]], 
       "Specifications" :> {{{$CellContext`b1$$, "D"}, ControlType -> 
          None}, {{$CellContext`b2$$, "C"}, ControlType -> 
          None}, {{$CellContext`b3$$, "L"}, ControlType -> 
@@ -594,8 +607,7 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
               ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
             Center]}}, Alignment -> Left, Spacings -> {0, 0}]}, 
       "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{
-      415.89111328125, {310.83227235344305`, 316.56420594719305`}},
+     ImageSizeCache->{415.89111328125, {317.5354884963955, 323.2674220901455}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -730,6 +742,7 @@ $CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
            
            And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
+            
             1], {$CellContext`Tij, $CellContext`sequence} = \
 $CellContext`Match[$CellContext`i, $CellContext`ej]; 
            If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
@@ -1030,8 +1043,9 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.968568908012027*^9},
- CellLabel->"Out[96]=",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
+ CellChangeTimes->{3.998662774287384*^9},
+ CellLabel->
+  "Out[213]=",ExpressionUUID->"8bd9b42c-a058-4853-a0bc-f5a88c4fd4dc"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1055,7 +1069,8 @@ Cell[BoxData[
           RowBox[{"\"\<D\>\"", "->", "1"}], ",", 
           RowBox[{"\"\<L\>\"", "->", "2"}]}], "}"}]}], ",", "s1", ",", "s2", ",",
         "payoffs", ",", "L", ",", "FMatrix", ",", "listOfArrows", ",", "rest",
-        ",", "restPoints", ",", "x1", ",", 
+        ",", "restPoints", ",", "restPointsX", ",", "continuumOfRestPoints", ",",
+        "x1", ",", 
        RowBox[{"height", "=", "0.5"}]}], "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"s1", "=", 
@@ -1141,12 +1156,47 @@ Cell[BoxData[
             "0"}], ",", 
            RowBox[{"0", "<=", "x1", "<=", "1"}]}], "}"}], ",", "x1", ",", 
          "Reals"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"restPoints", "=", 
-       RowBox[{"Select", "[", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"Reduce", " ", "returns", " ", "an", " ", "inequality"}], ",",
+         " ", 
         RowBox[{
-         RowBox[{"List", "[", 
-          RowBox[{"ToRules", "[", "rest", "]"}], "]"}], ",", "ListQ"}], 
-        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        "not", " ", "a", " ", "disjunction", " ", "of", " ", "equations"}], ",",
+         " ", "when"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "every", " ", "state", " ", "is", " ", "a", " ", "rest", " ", 
+         "point"}], ",", " ", 
+        RowBox[{"and", " ", "ToRules", " ", "cannot", " ", "digest", " ", 
+         RowBox[{"that", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"continuumOfRestPoints", "=", 
+       RowBox[{"Not", "[", 
+        RowBox[{"FreeQ", "[", 
+         RowBox[{"rest", ",", 
+          RowBox[{
+          "Less", "|", "LessEqual", "|", "Greater", "|", "GreaterEqual"}]}], 
+         "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"restPoints", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"Or", "[", 
+          RowBox[{"continuumOfRestPoints", ",", 
+           RowBox[{"rest", "===", "False"}]}], "]"}], ",", 
+         RowBox[{"{", "}"}], ",", 
+         RowBox[{"Select", "[", 
+          RowBox[{
+           RowBox[{"List", "[", 
+            RowBox[{"ToRules", "[", "rest", "]"}], "]"}], ",", "ListQ"}], 
+          "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"restPointsX", "=", 
+       RowBox[{"N", "[", 
+        RowBox[{"Cases", "[", 
+         RowBox[{"restPoints", ",", 
+          RowBox[{"oneRestPoint_List", ":>", 
+           RowBox[{"(", 
+            RowBox[{"x1", "/.", "oneRestPoint"}], ")"}]}]}], "]"}], "]"}]}], ";",
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
       RowBox[{"Show", "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{"Plot", "[", 
@@ -1189,11 +1239,16 @@ Cell[BoxData[
                  RowBox[{"{", 
                   RowBox[{"0.02", ",", "0.03"}], "}"}]}]}], "]"}]}], "}"}], 
             "&"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"N", "[", 
-             RowBox[{"x1", "/.", "restPoints"}], "]"}], "}"}]}], "]"}], 
-         "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
-    "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", "restPointsX", "}"}]}], "]"}], "]"}], 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{"PlotLabel", "->", 
+         RowBox[{"If", "[", 
+          RowBox[{"continuumOfRestPoints", ",", 
+           RowBox[{"Style", "[", 
+            RowBox[{"\"\<Every state is a rest point\>\"", ",", "Red"}], 
+            "]"}], ",", "\"\<\>\""}], "]"}]}]}], "\[IndentingNewLine]", 
+       "]"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ",", 
+   "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{
     "End", " ", "of", " ", "Module", " ", "right", " ", "after", " ", 
@@ -3236,12 +3291,13 @@ Cell[BoxData[
    3.968568604170508*^9, 3.968568643771968*^9}, {3.968568686798975*^9, 
    3.968568707344803*^9}, {3.968568745070817*^9, 3.9685687516857243`*^9}, {
    3.968568828777876*^9, 3.968568833142386*^9}},
- CellLabel->"In[96]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+ CellLabel->
+  "In[213]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
 WindowMargins->{{31, Automatic}, {Automatic, 22}},
-FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
+FrontEndVersion->"15.0 for Mac OS X ARM (64-bit) (May 19, 2026)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"0624d9ff-abda-40e1-9cb7-5dece4c668eb"
 ]
@@ -3257,13 +3313,13 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
-Cell[824, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1912, 51, 48656, 982, 644, "Output",ExpressionUUID->"073c804e-c20a-4846-8b9a-8234d35715dc"]
+Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
+Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
+Cell[1908, 51, 49329, 996, 657, "Output",ExpressionUUID->"8bd9b42c-a058-4853-a0bc-f5a88c4fd4dc"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[50605, 1038, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[50757, 1043, 93435, 2195, 7287, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[51274, 1052, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[51426, 1057, 95190, 2237, 6851, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
