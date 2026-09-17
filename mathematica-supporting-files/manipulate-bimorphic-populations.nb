@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    151144,       3399]
-NotebookOptionsPosition[    150342,       3377]
-NotebookOutlinePosition[    150735,       3393]
-CellTagsIndexPosition[    150692,       3390]
+NotebookDataLength[    153227,       3442]
+NotebookOptionsPosition[    152425,       3420]
+NotebookOutlinePosition[    152818,       3436]
+CellTagsIndexPosition[    152775,       3433]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -283,7 +283,7 @@ Cell[BoxData[
              ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
            Center]}}, Alignment -> Left, Spacings -> {0, 0}]], 
       Manipulate`Dump`ThisIsNotAControl, ControlType -> None}}, 
-    Typeset`size$$ = {360., {111.24192506340397`, 116.97385865715397`}}, 
+    Typeset`size$$ = {360., {104.40598756340397`, 110.13792115715397`}}, 
     Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = False, 
     Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
     DynamicBox[Manipulate`ManipulateBoxes[
@@ -310,14 +310,20 @@ Cell[BoxData[
            2}, $CellContext`s1$, $CellContext`s2$, $CellContext`payoffs$, \
 $CellContext`L$, $CellContext`FMatrix$, $CellContext`listOfArrows$, \
 $CellContext`rest$, $CellContext`restPoints$, $CellContext`restPointsX$, \
-$CellContext`continuumOfRestPoints$, $CellContext`x1$, $CellContext`height$ = 
-         0.5}, $CellContext`s1$ = 
+$CellContext`continuumOfRestPoints$, $CellContext`x1$, $CellContext`height$, \
+$CellContext`payoffMin$, $CellContext`payoffMax$, $CellContext`payoffSpan$}, \
+$CellContext`s1$ = 
          ReplaceAll[{$CellContext`b1$$, $CellContext`b2$$, $CellContext`b3$$, \
 $CellContext`b4$$, $CellContext`b5$$}, $CellContext`rules$]; $CellContext`s2$ = 
          ReplaceAll[{$CellContext`o1$$, $CellContext`o2$$, $CellContext`o3$$, \
 $CellContext`o4$$, $CellContext`o5$$}, $CellContext`rules$]; \
 $CellContext`payoffs$ = {$CellContext`R$$, $CellContext`S$$, \
-$CellContext`T$$, $CellContext`P$$}; $CellContext`L$ = \
+$CellContext`T$$, $CellContext`P$$}; $CellContext`payoffMin$ = 
+         Min[$CellContext`payoffs$]; $CellContext`payoffMax$ = 
+         Max[$CellContext`payoffs$]; $CellContext`payoffSpan$ = 
+         Max[$CellContext`payoffMax$ - $CellContext`payoffMin$, 
+           1]; $CellContext`height$ = $CellContext`payoffMin$ - 
+          0.075 $CellContext`payoffSpan$; $CellContext`L$ = \
 $CellContext`Ls[$CellContext`s1$, $CellContext`s2$, \
 $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$]; $CellContext`FMatrix$ = {{
             $CellContext`F[$CellContext`s1$, $CellContext`s1$, $CellContext`\
@@ -362,7 +368,9 @@ $CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$,
 $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
 $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
 {$CellContext`x1$, 0, 1}, 
-           PlotRange -> {{0, 1}, {$CellContext`S$$, $CellContext`T$$}}, 
+           PlotRange -> {{0, 
+             1}, {$CellContext`payoffMin$ - 
+              0.125 $CellContext`payoffSpan$, $CellContext`payoffMax$}}, 
            AxesLabel -> {
              Style["% blue", Blue], "Exp. payoff"}], 
           Graphics[$CellContext`listOfArrows$], 
@@ -593,7 +601,7 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
               ImageSize -> {100, 20}]}, ImageSize -> 110, Alignment -> 
             Center]}}, Alignment -> Left, Spacings -> {0, 0}]}, 
       "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{415.89111328125, {317.5354884963955, 323.2674220901455}},
+     ImageSizeCache->{415.89111328125, {310.6995509963955, 316.4314845901455}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -1019,6 +1027,7 @@ $CellContext`avgPayoff > 0}},
 $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta], \
 $CellContext`L, $CellContext`FMatrix, $CellContext`payoffs]; (
             1 - $CellContext`m) $CellContext`ReplicatorMS[{$CellContext`x1, 
+              
               1 - $CellContext`x1}, $CellContext`\[CapitalPi]] + \
 $CellContext`m (
             ConstantArray[1/2, 2] - {$CellContext`x1, 
@@ -1035,9 +1044,9 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.99866428334137*^9},
+ CellChangeTimes->{3.998665046376625*^9},
  CellLabel->
-  "Out[217]=",ExpressionUUID->"cad57a66-dd73-4411-9865-448b0fd19db0"]
+  "Out[218]=",ExpressionUUID->"bed8c204-6498-4c62-b04c-9cdb42108d4a"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1062,8 +1071,8 @@ Cell[BoxData[
           RowBox[{"\"\<L\>\"", "->", "2"}]}], "}"}]}], ",", "s1", ",", "s2", ",",
         "payoffs", ",", "L", ",", "FMatrix", ",", "listOfArrows", ",", "rest",
         ",", "restPoints", ",", "restPointsX", ",", "continuumOfRestPoints", ",",
-        "x1", ",", 
-       RowBox[{"height", "=", "0.5"}]}], "}"}], ",", "\[IndentingNewLine]", 
+        "x1", ",", "height", ",", "payoffMin", ",", "payoffMax", ",", 
+       "payoffSpan"}], "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"s1", "=", 
        RowBox[{
@@ -1079,6 +1088,37 @@ Cell[BoxData[
        RowBox[{"{", 
         RowBox[{"R", ",", "S", ",", "T", ",", "P"}], "}"}]}], ";", 
       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "The", " ", "phase", " ", "line", " ", "is", " ", "drawn", " ", 
+        "below", " ", "the", " ", "payoff", " ", "range", " ", "so", " ", 
+        "that", " ", "it", " ", "is", " ", "always"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"visible", ",", " ", 
+        RowBox[{
+        "whatever", " ", "the", " ", "four", " ", "payoff", " ", "sliders", " ",
+          "are", " ", "set", " ", 
+         RowBox[{"to", ".", " ", "The"}], " ", "span", " ", "is"}]}], " ", 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "floored", " ", "at", " ", "1", " ", "to", " ", "cover", " ", "a", " ",
+         "game", " ", "whose", " ", "four", " ", "payoffs", " ", "all", " ", 
+        RowBox[{"coincide", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"payoffMin", "=", 
+       RowBox[{"Min", "[", "payoffs", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"payoffMax", "=", 
+       RowBox[{"Max", "[", "payoffs", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"payoffSpan", "=", 
+       RowBox[{"Max", "[", 
+        RowBox[{
+         RowBox[{"payoffMax", "-", "payoffMin"}], ",", "1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"height", "=", 
+       RowBox[{"payoffMin", "-", 
+        RowBox[{"0.075", "*", "payoffSpan"}]}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"L", "=", 
        RowBox[{"Ls", "[", 
         RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
@@ -1206,7 +1246,10 @@ Cell[BoxData[
              RowBox[{"{", 
               RowBox[{"0", ",", "1"}], "}"}], ",", 
              RowBox[{"{", 
-              RowBox[{"S", ",", "T"}], "}"}]}], "}"}]}], ",", 
+              RowBox[{
+               RowBox[{"payoffMin", "-", 
+                RowBox[{"0.125", "*", "payoffSpan"}]}], ",", "payoffMax"}], 
+              "}"}]}], "}"}]}], ",", 
           RowBox[{"AxesLabel", "->", 
            RowBox[{"{", 
             RowBox[{
@@ -3372,7 +3415,7 @@ Cell[BoxData[
    3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}, {
    3.99866427052026*^9, 3.998664273668681*^9}},
  CellLabel->
-  "In[217]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+  "In[218]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3393,15 +3436,17 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[576, 22, 241, 4, 130, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
+Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 48638, 988, 657, "Output",ExpressionUUID->"cad57a66-dd73-4411-9865-448b0fd19db0"]
+Cell[1908, 51, 49122, 997, 644, "Output",ExpressionUUID->"bed8c204-6498-4c62-b04c-9cdb42108d4a"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[50583, 1044, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[50735, 1049, 99591, 2325, 7107, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[51067, 1053, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[51219, 1058, 101190, 2359, 7270, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
 *)
+
+(* End of internal cache information *)
 
