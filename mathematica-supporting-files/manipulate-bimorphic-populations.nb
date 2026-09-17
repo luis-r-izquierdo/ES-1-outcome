@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    152988,       3433]
-NotebookOptionsPosition[    152185,       3411]
-NotebookOutlinePosition[    152578,       3427]
-CellTagsIndexPosition[    152535,       3424]
+NotebookDataLength[    151144,       3399]
+NotebookOptionsPosition[    150342,       3377]
+NotebookOutlinePosition[    150735,       3393]
+CellTagsIndexPosition[    150692,       3390]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -190,7 +190,7 @@ Cell[BoxData[
                 "leaver2"}, 
               "leaver3" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
                 "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
-                "C", $CellContext`b5$$ = "C", $CellContext`oName$$ = 
+                "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
                 "leaver3"}, 
               "allD" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
                 "D", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
@@ -211,10 +211,7 @@ Cell[BoxData[
                "grim" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
                 "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "grim"}, 
-              "grim2" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
-                "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
-                "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = "grim2"},
-               "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+              "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
                 "C", $CellContext`b5$$ = "D", $CellContext`bName$$ = "TFT"}, 
               "TFTlike" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
@@ -272,10 +269,7 @@ Cell[BoxData[
                "grim" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
                 "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "grim"}, 
-              "grim2" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
-                "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
-                "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = "grim2"},
-               "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+              "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
                 "C", $CellContext`o5$$ = "D", $CellContext`oName$$ = "TFT"}, 
               "TFTlike" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
@@ -504,7 +498,7 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
                  "leaver2"}, 
                "leaver3" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
                  "C", $CellContext`b3$$ = "L", $CellContext`b4$$ = 
-                 "C", $CellContext`b5$$ = "C", $CellContext`oName$$ = 
+                 "C", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
                  "leaver3"}, 
                "allD" :> {$CellContext`b1$$ = "D", $CellContext`b2$$ = 
                  "D", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
@@ -526,11 +520,7 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
                "grim" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
                  "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
                  "D", $CellContext`b5$$ = "D", $CellContext`bName$$ = "grim"},
-                "grim2" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
-                 "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
-                 "D", $CellContext`b5$$ = "C", $CellContext`bName$$ = 
-                 "grim2"}, 
-               "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
+                "TFT" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
                  "C", $CellContext`b3$$ = "D", $CellContext`b4$$ = 
                  "C", $CellContext`b5$$ = "D", $CellContext`bName$$ = "TFT"}, 
                "TFTlike" :> {$CellContext`b1$$ = "C", $CellContext`b2$$ = 
@@ -589,11 +579,7 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
                "grim" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
                  "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
                  "D", $CellContext`o5$$ = "D", $CellContext`oName$$ = "grim"},
-                "grim2" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
-                 "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
-                 "D", $CellContext`o5$$ = "C", $CellContext`oName$$ = 
-                 "grim2"}, 
-               "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
+                "TFT" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
                  "C", $CellContext`o3$$ = "D", $CellContext`o4$$ = 
                  "C", $CellContext`o5$$ = "D", $CellContext`oName$$ = "TFT"}, 
                "TFTlike" :> {$CellContext`o1$$ = "C", $CellContext`o2$$ = 
@@ -742,7 +728,6 @@ $CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
            
            And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
-            
             1], {$CellContext`Tij, $CellContext`sequence} = \
 $CellContext`Match[$CellContext`i, $CellContext`ej]; 
            If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
@@ -1050,9 +1035,9 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998664101822571*^9},
+ CellChangeTimes->{3.99866428334137*^9},
  CellLabel->
-  "Out[216]=",ExpressionUUID->"e76b0f6b-c65e-465c-b5da-4d0bf0523599"]
+  "Out[217]=",ExpressionUUID->"cad57a66-dd73-4411-9865-448b0fd19db0"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1565,7 +1550,7 @@ Cell[BoxData[
               RowBox[{"b3", "=", "\"\<L\>\""}], ",", 
               RowBox[{"b4", "=", "\"\<C\>\""}], ",", 
               RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"oName", "=", "\"\<leaver3\>\""}]}], "}"}]}], ",", 
+              RowBox[{"bName", "=", "\"\<leaver3\>\""}]}], "}"}]}], ",", 
            "\[IndentingNewLine]", 
            RowBox[{"\"\<allD\>\"", "\[RuleDelayed]", 
             RowBox[{"{", 
@@ -1626,16 +1611,6 @@ Cell[BoxData[
               RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
               RowBox[{"b5", "=", "\"\<D\>\""}], ",", 
               RowBox[{"bName", "=", "\"\<grim\>\""}]}], "}"}]}], ",", 
-           "\[IndentingNewLine]", 
-           RowBox[{"\"\<grim2\>\"", "\[RuleDelayed]", 
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{"b1", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"b2", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"b3", "=", "\"\<D\>\""}], ",", 
-              RowBox[{"b4", "=", "\"\<D\>\""}], ",", 
-              RowBox[{"b5", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"bName", "=", "\"\<grim2\>\""}]}], "}"}]}], ",", 
            "\[IndentingNewLine]", 
            RowBox[{"\"\<TFT\>\"", "\[RuleDelayed]", 
             RowBox[{"{", 
@@ -1779,16 +1754,6 @@ Cell[BoxData[
               RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
               RowBox[{"o5", "=", "\"\<D\>\""}], ",", 
               RowBox[{"oName", "=", "\"\<grim\>\""}]}], "}"}]}], ",", 
-           "\[IndentingNewLine]", 
-           RowBox[{"\"\<grim2\>\"", "\[RuleDelayed]", 
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{"o1", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"o2", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"o3", "=", "\"\<D\>\""}], ",", 
-              RowBox[{"o4", "=", "\"\<D\>\""}], ",", 
-              RowBox[{"o5", "=", "\"\<C\>\""}], ",", 
-              RowBox[{"oName", "=", "\"\<grim2\>\""}]}], "}"}]}], ",", 
            "\[IndentingNewLine]", 
            RowBox[{"\"\<TFT\>\"", "\[RuleDelayed]", 
             RowBox[{"{", 
@@ -3404,9 +3369,10 @@ Cell[BoxData[
    3.968568604170508*^9, 3.968568643771968*^9}, {3.968568686798975*^9, 
    3.968568707344803*^9}, {3.968568745070817*^9, 3.9685687516857243`*^9}, {
    3.968568828777876*^9, 3.968568833142386*^9}, {3.99866314415694*^9, 
-   3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}},
+   3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}, {
+   3.99866427052026*^9, 3.998664273668681*^9}},
  CellLabel->
-  "In[216]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+  "In[217]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3427,17 +3393,15 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
+Cell[576, 22, 241, 4, 130, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 49570, 1003, 657, "Output",ExpressionUUID->"e76b0f6b-c65e-465c-b5da-4d0bf0523599"]
+Cell[1908, 51, 48638, 988, 657, "Output",ExpressionUUID->"cad57a66-dd73-4411-9865-448b0fd19db0"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[51515, 1059, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[51667, 1064, 100502, 2344, 7148, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[50583, 1044, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[50735, 1049, 99591, 2325, 7107, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
 *)
-
-(* End of internal cache information *)
 
