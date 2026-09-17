@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    147433,       3319]
-NotebookOptionsPosition[    146632,       3297]
-NotebookOutlinePosition[    147025,       3313]
-CellTagsIndexPosition[    146982,       3310]
+NotebookDataLength[    148586,       3341]
+NotebookOptionsPosition[    147785,       3319]
+NotebookOutlinePosition[    148178,       3335]
+CellTagsIndexPosition[    148135,       3332]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1000,9 +1000,12 @@ $CellContext`ReplicatorMS[
          Pattern[$CellContext`\[CapitalPi], 
           Blank[]]] := 
        Module[{$CellContext`avgPayoff = 
-          Dot[$CellContext`x, $CellContext`\[CapitalPi]]}, ($CellContext`x \
-$CellContext`\[CapitalPi] - $CellContext`avgPayoff \
-$CellContext`x)/$CellContext`avgPayoff]; $CellContext`ExpectedChange[
+          Dot[$CellContext`x, $CellContext`\[CapitalPi]]}, 
+         Piecewise[{{($CellContext`x $CellContext`\[CapitalPi] - \
+$CellContext`avgPayoff $CellContext`x)/$CellContext`avgPayoff, \
+$CellContext`avgPayoff > 0}}, 
+          ConstantArray[0, 
+           Length[$CellContext`x]]]]; $CellContext`ExpectedChange[
          Pattern[$CellContext`x1, 
           Blank[]], 
          Pattern[$CellContext`s1, 
@@ -1043,9 +1046,9 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998662774287384*^9},
+ CellChangeTimes->{3.998663315426606*^9},
  CellLabel->
-  "Out[213]=",ExpressionUUID->"8bd9b42c-a058-4853-a0bc-f5a88c4fd4dc"]
+  "Out[214]=",ExpressionUUID->"f030296a-8bb7-49c5-84ab-b17d5ec6b038"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -3163,13 +3166,28 @@ Cell[BoxData[
           RowBox[{"avgPayoff", "=", 
            RowBox[{"x", ".", "\[CapitalPi]"}]}], "}"}], ",", 
          "\[IndentingNewLine]", 
-         FractionBox[
+         RowBox[{"(*", " ", 
           RowBox[{
-           RowBox[{"(", 
-            RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
-           RowBox[{"avgPayoff", " ", "x"}]}], "avgPayoff"]}], 
-        "\[IndentingNewLine]", 
-        RowBox[{"(*", 
+          "The", " ", "Maynard", " ", "Smith", " ", "replicator", " ", 
+           "divides", " ", "by", " ", "the", " ", "average", " ", 
+           RowBox[{"payoff", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "With", " ", "nonnegative", " ", "payoffs", " ", "the", " ", 
+           "numerator", " ", "vanishes", " ", "wherever", " ", "the"}], " ", 
+          "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+           RowBox[{"average", " ", "payoff", " ", "does"}], ",", " ", 
+           RowBox[{"so", " ", "the", " ", "quotient", " ", "is", " ", 
+            RowBox[{"0", "/", "0"}], " ", "there"}], ",", " ", 
+           RowBox[{"and", " ", "the"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "dynamic", " ", "is", " ", "then", " ", "taken", " ", "to", " ", 
+           "be", " ", 
+           RowBox[{"zero", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
          RowBox[{"Piecewise", "[", 
           RowBox[{
            RowBox[{"{", 
@@ -3180,9 +3198,12 @@ Cell[BoxData[
                 RowBox[{"(", 
                  RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
                 RowBox[{"avgPayoff", " ", "x"}]}], "avgPayoff"], ",", 
-              RowBox[{"avgPayoff", ">", "0"}]}], "}"}], "}"}], ",", "0"}], 
-          "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"avgPayoff", ">", "0"}]}], "}"}], "}"}], ",", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"0", ",", 
+             RowBox[{"Length", "[", "x", "]"}]}], "]"}]}], "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"ExpectedChange", "[", 
         RowBox[{
@@ -3290,10 +3311,11 @@ Cell[BoxData[
    3.968568459804532*^9}, {3.9685685341033163`*^9, 3.968568541530712*^9}, {
    3.968568604170508*^9, 3.968568643771968*^9}, {3.968568686798975*^9, 
    3.968568707344803*^9}, {3.968568745070817*^9, 3.9685687516857243`*^9}, {
-   3.968568828777876*^9, 3.968568833142386*^9}},
+   3.968568828777876*^9, 3.968568833142386*^9}, {3.99866314415694*^9, 
+   3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}},
  CellLabel->
-  "In[213]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
-}, Closed]]
+  "In[214]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Open  ]]
 },
 WindowSize->{1197, 818},
 WindowMargins->{{31, Automatic}, {Automatic, 22}},
@@ -3315,12 +3337,12 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 49329, 996, 657, "Output",ExpressionUUID->"8bd9b42c-a058-4853-a0bc-f5a88c4fd4dc"]
+Cell[1908, 51, 49447, 999, 657, "Output",ExpressionUUID->"f030296a-8bb7-49c5-84ab-b17d5ec6b038"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[51274, 1052, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[51426, 1057, 95190, 2237, 6851, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
-}, Closed]]
+Cell[51392, 1055, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[51544, 1060, 96225, 2256, 6903, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Open  ]]
 }
 ]
 *)
