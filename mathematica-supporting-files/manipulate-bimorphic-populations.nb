@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    148586,       3341]
-NotebookOptionsPosition[    147785,       3319]
-NotebookOutlinePosition[    148178,       3335]
-CellTagsIndexPosition[    148135,       3332]
+NotebookDataLength[    152483,       3424]
+NotebookOptionsPosition[    151683,       3402]
+NotebookOutlinePosition[    152076,       3418]
+CellTagsIndexPosition[    152033,       3415]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -936,9 +936,14 @@ $CellContext`x1, If[
               Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6)], 
              Print["Warning! Ls too close to each other"]]; 
            If[-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
-$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 
-             0, $CellContext`x1, ($CellContext`Lx + 
-              2 $CellContext`L22 $CellContext`x1 - 
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 0, 
+             
+             If[$CellContext`Lx + 
+               2 ($CellContext`L22 - $CellContext`Lx) $CellContext`x1 == 
+              0, $CellContext`x1, ($CellContext`x1 \
+$CellContext`L22)/($CellContext`Lx + 
+              2 ($CellContext`L22 - $CellContext`Lx) $CellContext`x1)], \
+($CellContext`Lx + 2 $CellContext`L22 $CellContext`x1 - 
               2 $CellContext`Lx $CellContext`x1 - 
               Sqrt[$CellContext`Lx^2 (1 - 2 $CellContext`x1)^2 - 
                4 $CellContext`L11 $CellContext`L22 (-1 + $CellContext`x1) \
@@ -973,9 +978,14 @@ $CellContext`x1, If[
                Abs[$CellContext`L11 - $CellContext`Lx] < 10^(-6)], 
               Print["Warning! Ls too close to each other"]]; 
             If[-$CellContext`L11 + $CellContext`Lx + ($CellContext`L11 + \
-$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 
-              0, $CellContext`x1, ($CellContext`Lx + 
-               2 $CellContext`L22 $CellContext`x1 - 
+$CellContext`L22 - 2 $CellContext`Lx) $CellContext`x1 == 0, 
+              
+              If[$CellContext`Lx + 
+                2 ($CellContext`L22 - $CellContext`Lx) $CellContext`x1 == 
+               0, $CellContext`x1, ($CellContext`x1 \
+$CellContext`L22)/($CellContext`Lx + 
+               2 ($CellContext`L22 - $CellContext`Lx) $CellContext`x1)], \
+($CellContext`Lx + 2 $CellContext`L22 $CellContext`x1 - 
                2 $CellContext`Lx $CellContext`x1 - 
                Sqrt[$CellContext`Lx^2 (1 - 2 $CellContext`x1)^2 - 
                 4 $CellContext`L11 $CellContext`L22 (-1 + $CellContext`x1) \
@@ -1046,9 +1056,9 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998663315426606*^9},
+ CellChangeTimes->{3.9986636632664623`*^9},
  CellLabel->
-  "Out[214]=",ExpressionUUID->"f030296a-8bb7-49c5-84ab-b17d5ec6b038"]
+  "Out[215]=",ExpressionUUID->"3da5d8a1-dfbf-4457-ae4f-dc561e85577c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2815,8 +2825,44 @@ Cell[BoxData[
                    RowBox[{"(", 
                     RowBox[{"L11", "+", "L22", "-", 
                     RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], ")"}], "==",
-                 "0"}], ",", "\[IndentingNewLine]", "x1", ",", 
+                 "0"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", " ", 
+                RowBox[{
+                 RowBox[{
+                 "The", " ", "quadratic", " ", "for", " ", "p1", " ", 
+                  "degenerates", " ", "to", " ", "a", " ", "linear", " ", 
+                  "equation", " ", "here"}], ",", " ", "and"}], " ", "*)"}], 
                "\[IndentingNewLine]", 
+               RowBox[{"(*", " ", 
+                RowBox[{
+                "the", " ", "closed", " ", "form", " ", "below", " ", "has", " ",
+                  "a", " ", "removable", " ", "singularity", " ", "at", " ", 
+                 "this", " ", 
+                 RowBox[{"point", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+               RowBox[{"(*", " ", 
+                RowBox[{
+                "Its", " ", "limit", " ", "is", " ", "the", " ", "root", " ", 
+                 "of", " ", "that", " ", "linear", " ", 
+                 RowBox[{"equation", "."}]}], " ", "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"Lx", "+", 
+                    RowBox[{"2", "*", 
+                    RowBox[{"(", 
+                    RowBox[{"L22", "-", "Lx"}], ")"}], "*", "x1"}]}], ")"}], "==",
+                   "0"}], ",", "x1", ",", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"x1", "*", "L22"}], ")"}], "/", 
+                  RowBox[{"(", 
+                   RowBox[{"Lx", "+", 
+                    RowBox[{"2", "*", 
+                    RowBox[{"(", 
+                    RowBox[{"L22", "-", "Lx"}], ")"}], "*", "x1"}]}], 
+                   ")"}]}]}], "]"}], ",", "\[IndentingNewLine]", 
                RowBox[{"(*", " ", 
                 RowBox[{"Formula", " ", "gives", " ", "errors", " ", "for", " ", 
                  RowBox[{"e", ".", "g", ".", " ", 
@@ -3024,8 +3070,45 @@ Cell[BoxData[
                     RowBox[{"(", 
                     RowBox[{"L11", "+", "L22", "-", 
                     RowBox[{"2", " ", "Lx"}]}], ")"}], " ", "x1"}]}], ")"}], "==",
-                  "0"}], ",", "\[IndentingNewLine]", "x1", ",", 
+                  "0"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{
+                  RowBox[{
+                  "The", " ", "quadratic", " ", "for", " ", "p1", " ", 
+                   "degenerates", " ", "to", " ", "a", " ", "linear", " ", 
+                   "equation", " ", "here"}], ",", " ", "and"}], " ", "*)"}], 
                 "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{
+                 "the", " ", "closed", " ", "form", " ", "below", " ", "has", 
+                  " ", "a", " ", "removable", " ", "singularity", " ", "at", " ",
+                   "this", " ", 
+                  RowBox[{"point", "."}]}], " ", "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{
+                 "Its", " ", "limit", " ", "is", " ", "the", " ", "root", " ",
+                   "of", " ", "that", " ", "linear", " ", 
+                  RowBox[{"equation", "."}]}], " ", "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"Lx", "+", 
+                    RowBox[{"2", "*", 
+                    RowBox[{"(", 
+                    RowBox[{"L22", "-", "Lx"}], ")"}], "*", "x1"}]}], ")"}], "==",
+                    "0"}], ",", "x1", ",", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"x1", "*", "L22"}], ")"}], "/", 
+                   RowBox[{"(", 
+                    RowBox[{"Lx", "+", 
+                    RowBox[{"2", "*", 
+                    RowBox[{"(", 
+                    RowBox[{"L22", "-", "Lx"}], ")"}], "*", "x1"}]}], 
+                    ")"}]}]}], "]"}], ",", "\[IndentingNewLine]", 
                 RowBox[{"(*", " ", 
                  RowBox[{"Formula", " ", "gives", " ", "errors", " ", "for", " ", 
                   RowBox[{"e", ".", "g", ".", " ", 
@@ -3314,8 +3397,8 @@ Cell[BoxData[
    3.968568828777876*^9, 3.968568833142386*^9}, {3.99866314415694*^9, 
    3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}},
  CellLabel->
-  "In[214]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
-}, Open  ]]
+  "In[215]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Closed]]
 },
 WindowSize->{1197, 818},
 WindowMargins->{{31, Automatic}, {Automatic, 22}},
@@ -3337,13 +3420,15 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 49447, 999, 657, "Output",ExpressionUUID->"f030296a-8bb7-49c5-84ab-b17d5ec6b038"]
+Cell[1908, 51, 49938, 1009, 657, "Output",ExpressionUUID->"3da5d8a1-dfbf-4457-ae4f-dc561e85577c"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[51392, 1055, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[51544, 1060, 96225, 2256, 6903, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
-}, Open  ]]
+Cell[51883, 1065, 149, 3, 70, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[52035, 1070, 99632, 2329, 70, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+}, Closed]]
 }
 ]
 *)
+
+(* End of internal cache information *)
 
