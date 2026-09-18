@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    153227,       3442]
-NotebookOptionsPosition[    152425,       3420]
-NotebookOutlinePosition[    152818,       3436]
-CellTagsIndexPosition[    152775,       3433]
+NotebookDataLength[    161583,       3624]
+NotebookOptionsPosition[    160780,       3602]
+NotebookOutlinePosition[    161173,       3618]
+CellTagsIndexPosition[    161130,       3615]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -310,9 +310,9 @@ Cell[BoxData[
            2}, $CellContext`s1$, $CellContext`s2$, $CellContext`payoffs$, \
 $CellContext`L$, $CellContext`FMatrix$, $CellContext`listOfArrows$, \
 $CellContext`rest$, $CellContext`restPoints$, $CellContext`restPointsX$, \
-$CellContext`continuumOfRestPoints$, $CellContext`x1$, $CellContext`height$, \
-$CellContext`payoffMin$, $CellContext`payoffMax$, $CellContext`payoffSpan$}, \
-$CellContext`s1$ = 
+$CellContext`restPointTypes$, $CellContext`continuumOfRestPoints$, \
+$CellContext`x1$, $CellContext`height$, $CellContext`payoffMin$, \
+$CellContext`payoffMax$, $CellContext`payoffSpan$}, $CellContext`s1$ = 
          ReplaceAll[{$CellContext`b1$$, $CellContext`b2$$, $CellContext`b3$$, \
 $CellContext`b4$$, $CellContext`b5$$}, $CellContext`rules$]; $CellContext`s2$ = 
          ReplaceAll[{$CellContext`o1$$, $CellContext`o2$$, $CellContext`o3$$, \
@@ -361,7 +361,12 @@ $CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$,
          N[
            Cases[$CellContext`restPoints$, Pattern[$CellContext`oneRestPoint$, 
               Blank[List]] :> 
-            ReplaceAll[$CellContext`x1$, $CellContext`oneRestPoint$]]]; Show[
+            ReplaceAll[$CellContext`x1$, $CellContext`oneRestPoint$]]]; \
+$CellContext`restPointTypes$ = 
+         Map[$CellContext`RestPointType[#, $CellContext`s1$, \
+$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
+$CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
+$CellContext`payoffs$]& , $CellContext`restPointsX$]; Show[
           Plot[
            Evaluate[
             $CellContext`Fx[$CellContext`x1$, $CellContext`s1$, \
@@ -376,10 +381,14 @@ $CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
           Graphics[$CellContext`listOfArrows$], 
           Graphics[
            MapThread[{
-             EdgeForm[Thick], Red, 
+             EdgeForm[Thick], 
+             $CellContext`RestPointColor[#2], 
              Disk[{#, $CellContext`height$}, 
-              Scaled[{0.02, 0.03}]]}& , {$CellContext`restPointsX$}]], 
-          PlotLabel -> If[$CellContext`continuumOfRestPoints$, 
+              
+              Scaled[{0.02, 
+               0.03}]]}& , {$CellContext`restPointsX$, \
+$CellContext`restPointTypes$}]], PlotLabel -> 
+          If[$CellContext`continuumOfRestPoints$, 
             Style["Every state is a rest point", Red], ""]]], 
       "Specifications" :> {{{$CellContext`b1$$, "D"}, ControlType -> 
          None}, {{$CellContext`b2$$, "C"}, ControlType -> 
@@ -736,6 +745,7 @@ $CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
            
            And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
+            
             1], {$CellContext`Tij, $CellContext`sequence} = \
 $CellContext`Match[$CellContext`i, $CellContext`ej]; 
            If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
@@ -998,11 +1008,9 @@ $CellContext`ReplicatorMS[
           Blank[]]] := 
        Module[{$CellContext`avgPayoff = 
           Dot[$CellContext`x, $CellContext`\[CapitalPi]]}, 
-         Piecewise[{{($CellContext`x $CellContext`\[CapitalPi] - \
-$CellContext`avgPayoff $CellContext`x)/$CellContext`avgPayoff, \
-$CellContext`avgPayoff > 0}}, 
-          ConstantArray[0, 
-           Length[$CellContext`x]]]]; $CellContext`ExpectedChange[
+         Piecewise[{{1/$CellContext`avgPayoff, $CellContext`avgPayoff > 0}}, 
+           0] ($CellContext`x $CellContext`\[CapitalPi] - \
+$CellContext`avgPayoff $CellContext`x)]; $CellContext`ExpectedChange[
          Pattern[$CellContext`x1, 
           Blank[]], 
          Pattern[$CellContext`s1, 
@@ -1027,11 +1035,49 @@ $CellContext`avgPayoff > 0}},
 $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\[Delta], \
 $CellContext`L, $CellContext`FMatrix, $CellContext`payoffs]; (
             1 - $CellContext`m) $CellContext`ReplicatorMS[{$CellContext`x1, 
-              
               1 - $CellContext`x1}, $CellContext`\[CapitalPi]] + \
 $CellContext`m (
             ConstantArray[1/2, 2] - {$CellContext`x1, 
-             1 - $CellContext`x1})]; $CellContext`allStrategies = Join[
+             1 - $CellContext`x1})]; $CellContext`RestPointType[
+         Pattern[$CellContext`x, 
+          Blank[]], 
+         Pattern[$CellContext`s1, 
+          Blank[List]], 
+         Pattern[$CellContext`s2, 
+          Blank[List]], 
+         Pattern[$CellContext`\[Epsilon], 
+          Blank[]], 
+         Pattern[$CellContext`\[Delta], 
+          Blank[]], 
+         Pattern[$CellContext`m, 
+          Blank[]], 
+         Pattern[$CellContext`L, 
+          Blank[List]], 
+         Pattern[$CellContext`FMatrix, 
+          Blank[]], 
+         Pattern[$CellContext`payoffs, 
+          Blank[]]] := 
+       Module[{$CellContext`h = 
+          10.^(-6), $CellContext`xBelow, $CellContext`xAbove, \
+$CellContext`slope}, $CellContext`xBelow = 
+          Max[0., $CellContext`x - $CellContext`h]; $CellContext`xAbove = 
+          Min[1., $CellContext`x + $CellContext`h]; $CellContext`slope = (
+            First[
+              $CellContext`ExpectedChange[$CellContext`xAbove, \
+$CellContext`s1, $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\
+\[Delta], $CellContext`m, $CellContext`L, $CellContext`FMatrix, \
+$CellContext`payoffs]] - First[
+             $CellContext`ExpectedChange[$CellContext`xBelow, \
+$CellContext`s1, $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\
+\[Delta], $CellContext`m, $CellContext`L, $CellContext`FMatrix, \
+$CellContext`payoffs]])/($CellContext`xAbove - $CellContext`xBelow); 
+         Which[$CellContext`slope < (-1) 10.^(-9), "sink", $CellContext`slope > 
+           10.^(-9), "source", True, 
+           "undetermined"]]; $CellContext`RestPointColor[
+         Pattern[$CellContext`type, 
+          Blank[]]] := Switch[$CellContext`type, "sink", 
+         Darker[Green], "source", Red, 
+         Blank[], Gray]; $CellContext`allStrategies = Join[
          Map[Prepend[#, 0]& , 
           Tuples[{0, 1, 2}, 4]], 
          Map[Prepend[#, 1]& , 
@@ -1044,9 +1090,8 @@ $CellContext`m (
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998665046376625*^9},
- CellLabel->
-  "Out[218]=",ExpressionUUID->"bed8c204-6498-4c62-b04c-9cdb42108d4a"]
+ CellChangeTimes->{3.99869021744895*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"90975da2-8089-4d68-a397-b354ec941f07"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1070,9 +1115,9 @@ Cell[BoxData[
           RowBox[{"\"\<D\>\"", "->", "1"}], ",", 
           RowBox[{"\"\<L\>\"", "->", "2"}]}], "}"}]}], ",", "s1", ",", "s2", ",",
         "payoffs", ",", "L", ",", "FMatrix", ",", "listOfArrows", ",", "rest",
-        ",", "restPoints", ",", "restPointsX", ",", "continuumOfRestPoints", ",",
-        "x1", ",", "height", ",", "payoffMin", ",", "payoffMax", ",", 
-       "payoffSpan"}], "}"}], ",", "\[IndentingNewLine]", 
+        ",", "restPoints", ",", "restPointsX", ",", "restPointTypes", ",", 
+       "continuumOfRestPoints", ",", "x1", ",", "height", ",", "payoffMin", ",",
+        "payoffMax", ",", "payoffSpan"}], "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"s1", "=", 
        RowBox[{
@@ -1229,6 +1274,27 @@ Cell[BoxData[
            RowBox[{"(", 
             RowBox[{"x1", "/.", "oneRestPoint"}], ")"}]}]}], "]"}], "]"}]}], ";",
        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "Each", " ", "rest", " ", "point", " ", "is", " ", "classified", " ", 
+        "by", " ", "the", " ", "slope", " ", "of", " ", "the", " ", 
+        "expected", " ", "change"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"there", ":", " ", 
+         RowBox[{"negative", " ", "is", " ", "a", " ", "sink"}]}], ",", " ", 
+        RowBox[{"positive", " ", "is", " ", "a", " ", 
+         RowBox[{"source", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"restPointTypes", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"RestPointType", "[", 
+           RowBox[{
+           "#", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
+             "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "&"}], ",",
+          "restPointsX"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"Show", "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{"Plot", "[", 
@@ -1265,17 +1331,19 @@ Cell[BoxData[
            RowBox[{
             RowBox[{"{", 
              RowBox[{
-              RowBox[{"EdgeForm", "[", "Thick", "]"}], ",", "Red", ",", 
+              RowBox[{"EdgeForm", "[", "Thick", "]"}], ",", 
+              RowBox[{"RestPointColor", "[", "#2", "]"}], ",", 
               RowBox[{"Disk", "[", 
                RowBox[{
                 RowBox[{"{", 
-                 RowBox[{"#", ",", "height"}], "}"}], ",", 
+                 RowBox[{"#1", ",", "height"}], "}"}], ",", 
                 RowBox[{"Scaled", "@", 
                  RowBox[{"{", 
                   RowBox[{"0.02", ",", "0.03"}], "}"}]}]}], "]"}]}], "}"}], 
             "&"}], ",", 
-           RowBox[{"{", "restPointsX", "}"}]}], "]"}], "]"}], 
-        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"restPointsX", ",", "restPointTypes"}], "}"}]}], "]"}], 
+         "]"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
         RowBox[{"PlotLabel", "->", 
          RowBox[{"If", "[", 
           RowBox[{"continuumOfRestPoints", ",", 
@@ -3270,38 +3338,51 @@ Cell[BoxData[
           RowBox[{
           "The", " ", "Maynard", " ", "Smith", " ", "replicator", " ", 
            "divides", " ", "by", " ", "the", " ", "average", " ", 
-           RowBox[{"payoff", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"payoff", ".", " ", "With"}]}], " ", "*)"}], 
+         "\[IndentingNewLine]", 
          RowBox[{"(*", " ", 
           RowBox[{
-          "With", " ", "nonnegative", " ", "payoffs", " ", "the", " ", 
-           "numerator", " ", "vanishes", " ", "wherever", " ", "the"}], " ", 
+          "nonnegative", " ", "payoffs", " ", "the", " ", "numerator", " ", 
+           "vanishes", " ", "wherever", " ", "the", " ", "average"}], " ", 
           "*)"}], "\[IndentingNewLine]", 
          RowBox[{"(*", " ", 
-          RowBox[{
-           RowBox[{"average", " ", "payoff", " ", "does"}], ",", " ", 
+          RowBox[{"does", ",", " ", 
            RowBox[{"so", " ", "the", " ", "quotient", " ", "is", " ", 
-            RowBox[{"0", "/", "0"}], " ", "there"}], ",", " ", 
-           RowBox[{"and", " ", "the"}]}], " ", "*)"}], "\[IndentingNewLine]", 
-         
+            RowBox[{"0", "/", "0"}], " ", "there", " ", "and", " ", "the", " ",
+             "dynamic", " ", "is", " ", "taken", " ", "to", " ", "be"}]}], 
+          " ", "*)"}], "\[IndentingNewLine]", 
          RowBox[{"(*", " ", 
           RowBox[{
-          "dynamic", " ", "is", " ", "then", " ", "taken", " ", "to", " ", 
-           "be", " ", 
-           RowBox[{"zero", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
-         RowBox[{"Piecewise", "[", 
+           RowBox[{"zero", ".", " ", "The"}], " ", "guard", " ", "is", " ", 
+           "a", " ", "scalar", " ", "factor", " ", "and", " ", "not", " ", 
+           "a", " ", "Piecewise", " ", "wrapped"}], " ", "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
           RowBox[{
-           RowBox[{"{", 
+           RowBox[{"around", " ", "the", " ", "whole", " ", "vector"}], ",", 
+           " ", 
+           RowBox[{
+           "because", " ", "Reduce", " ", "cannot", " ", "solve", " ", "a", " ",
+             "vector"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "Piecewise", " ", "equated", " ", "to", " ", "zero", " ", "and", " ",
+            "quietly", " ", "returns", " ", "no", " ", "rest", " ", 
+           RowBox[{"points", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Piecewise", "[", 
+           RowBox[{
             RowBox[{"{", 
-             RowBox[{
-              FractionBox[
-               RowBox[{
-                RowBox[{"(", 
-                 RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
-                RowBox[{"avgPayoff", " ", "x"}]}], "avgPayoff"], ",", 
-              RowBox[{"avgPayoff", ">", "0"}]}], "}"}], "}"}], ",", 
-           RowBox[{"ConstantArray", "[", 
-            RowBox[{"0", ",", 
-             RowBox[{"Length", "[", "x", "]"}]}], "]"}]}], "]"}]}], 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"1", "/", "avgPayoff"}], ",", 
+               RowBox[{"avgPayoff", ">", "0"}]}], "}"}], "}"}], ",", "0"}], 
+           "]"}], "*", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"x", "*", "\[CapitalPi]"}], ")"}], "-", 
+            RowBox[{"avgPayoff", "*", "x"}]}], ")"}]}]}], 
         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{
@@ -3344,6 +3425,107 @@ Cell[BoxData[
                RowBox[{"x1", ",", 
                 RowBox[{"1", "-", "x1"}]}], "}"}]}], ")"}]}]}]}]}], 
         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"DISPLAY", " ", "OF", " ", "THE", " ", "REST", " ", "POINTS"}],
+        " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "In", " ", "one", " ", "dimension", " ", "the", " ", "type", " ", "of",
+         " ", "a", " ", "rest", " ", "point", " ", "is", " ", "the", " ", 
+        "sign", " ", "of", " ", "the", " ", "slope"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "of", " ", "the", " ", "expected", " ", "change", " ", "at", " ", 
+        "that", " ", 
+        RowBox[{"point", ".", " ", "The"}], " ", "slope", " ", "is", " ", "a",
+         " ", "central"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"difference", ",", " ", 
+        RowBox[{
+        "one", " ", "sided", " ", "at", " ", "the", " ", "two", " ", "ends", " ",
+          "of", " ", "the", " ", "interval"}], ",", " ", 
+        RowBox[{"and", " ", "a", " ", "slope"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "indistinguishable", " ", "from", " ", "zero", " ", "is", " ", "left", 
+        " ", 
+        RowBox[{"undetermined", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"RestPointType", "[", 
+        RowBox[{
+        "x_", ",", "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", 
+         "\[Delta]_", ",", "m_", ",", "L_List", ",", "FMatrix_", ",", 
+         "payoffs_"}], "]"}], ":=", "\[IndentingNewLine]", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"h", "=", 
+            RowBox[{"10.", "^", 
+             RowBox[{"-", "6"}]}]}], ",", "xBelow", ",", "xAbove", ",", 
+           "slope"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"xBelow", "=", 
+           RowBox[{"Max", "[", 
+            RowBox[{"0.", ",", 
+             RowBox[{"x", "-", "h"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"xAbove", "=", 
+           RowBox[{"Min", "[", 
+            RowBox[{"1.", ",", 
+             RowBox[{"x", "+", "h"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"slope", "=", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"First", "[", 
+               RowBox[{"ExpectedChange", "[", 
+                RowBox[{
+                "xAbove", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
+                 "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
+                 "payoffs"}], "]"}], "]"}], "-", 
+              RowBox[{"First", "[", 
+               RowBox[{"ExpectedChange", "[", 
+                RowBox[{
+                "xBelow", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
+                 "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
+                 "payoffs"}], "]"}], "]"}]}], ")"}], "/", 
+            RowBox[{"(", 
+             RowBox[{"xAbove", "-", "xBelow"}], ")"}]}]}], ";", 
+          RowBox[{"Which", "[", 
+           RowBox[{
+            RowBox[{"slope", " ", "<", " ", 
+             RowBox[{"-", 
+              RowBox[{"10.", "^", 
+               RowBox[{"-", "9"}]}]}]}], ",", "\"\<sink\>\"", ",", 
+            RowBox[{"slope", " ", ">", " ", 
+             RowBox[{"10.", "^", 
+              RowBox[{"-", "9"}]}]}], ",", "\"\<source\>\"", ",", "True", 
+            ",", "\"\<undetermined\>\""}], "]"}]}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "Colours", " ", "follow", " ", "the", " ", "2", "pop", " ", 
+         "reference", " ", 
+         RowBox[{"program", ":", " ", 
+          RowBox[{
+          "dark", " ", "green", " ", "for", " ", "a", " ", "sink"}]}]}], 
+        ","}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"red", " ", "for", " ", "a", " ", "source"}], ",", " ", 
+        RowBox[{"gray", " ", "for", " ", "anything", " ", 
+         RowBox[{"undetermined", "."}]}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"RestPointColor", "[", "type_", "]"}], ":=", 
+       RowBox[{"Switch", "[", 
+        RowBox[{"type", ",", "\"\<sink\>\"", ",", 
+         RowBox[{"Darker", "[", "Green", "]"}], ",", "\"\<source\>\"", ",", 
+         "Red", ",", "_", ",", "Gray"}], "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{"allStrategies", "=", 
        RowBox[{"Join", "[", 
@@ -3413,9 +3595,9 @@ Cell[BoxData[
    3.968568707344803*^9}, {3.968568745070817*^9, 3.9685687516857243`*^9}, {
    3.968568828777876*^9, 3.968568833142386*^9}, {3.99866314415694*^9, 
    3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}, {
-   3.99866427052026*^9, 3.998664273668681*^9}},
- CellLabel->
-  "In[218]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+   3.99866427052026*^9, 3.998664273668681*^9}, {3.998690157612294*^9, 
+   3.998690165867816*^9}, {3.998690214455512*^9, 3.998690215757124*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3438,11 +3620,11 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 49122, 997, 644, "Output",ExpressionUUID->"bed8c204-6498-4c62-b04c-9cdb42108d4a"]
+Cell[1908, 51, 51208, 1042, 644, "Output",ExpressionUUID->"90975da2-8089-4d68-a397-b354ec941f07"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[51067, 1053, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[51219, 1058, 101190, 2359, 7270, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[53153, 1098, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[53305, 1103, 107459, 2496, 7745, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
