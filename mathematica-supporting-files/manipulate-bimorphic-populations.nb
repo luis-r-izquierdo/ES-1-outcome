@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    161583,       3624]
-NotebookOptionsPosition[    160780,       3602]
-NotebookOutlinePosition[    161173,       3618]
-CellTagsIndexPosition[    161130,       3615]
+NotebookDataLength[    165267,       3710]
+NotebookOptionsPosition[    164464,       3688]
+NotebookOutlinePosition[    164857,       3704]
+CellTagsIndexPosition[    164814,       3701]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -309,7 +309,9 @@ Cell[BoxData[
           "C" -> 0, "D" -> 1, "L" -> 
            2}, $CellContext`s1$, $CellContext`s2$, $CellContext`payoffs$, \
 $CellContext`L$, $CellContext`FMatrix$, $CellContext`listOfArrows$, \
-$CellContext`rest$, $CellContext`restPoints$, $CellContext`restPointsX$, \
+$CellContext`rest$, $CellContext`arrowStarts$, $CellContext`arrowChanges$, \
+$CellContext`fastestArrow$, $CellContext`maxArrowLength$, \
+$CellContext`restPoints$, $CellContext`restPointsX$, \
 $CellContext`restPointTypes$, $CellContext`continuumOfRestPoints$, \
 $CellContext`x1$, $CellContext`height$, $CellContext`payoffMin$, \
 $CellContext`payoffMax$, $CellContext`payoffSpan$}, $CellContext`s1$ = 
@@ -334,16 +336,25 @@ $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$]; $CellContext`FMatrix$ = {{
 \[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$], 
             $CellContext`F[$CellContext`s2$, $CellContext`s2$, $CellContext`\
 \[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$]}}; \
-$CellContext`listOfArrows$ = Table[{
-            Arrowheads[0.03], 
-            
-            Arrow[{{$CellContext`initx1, $CellContext`height$}, \
-{$CellContext`initx1 + First[
-                 $CellContext`ExpectedChange[$CellContext`initx1, \
-$CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
-\[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
-$CellContext`payoffs$]], $CellContext`height$}}]}, {$CellContext`initx1, 0, 
-            1, $CellContext`step$$}]; $CellContext`rest$ = 
+$CellContext`arrowStarts$ = If[$CellContext`step$$ > 1, {}, 
+           Range[0, 1, $CellContext`step$$]]; $CellContext`arrowChanges$ = 
+         Map[First[
+            $CellContext`ExpectedChange[#, $CellContext`s1$, \
+$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
+$CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
+$CellContext`payoffs$]]& , $CellContext`arrowStarts$]; \
+$CellContext`maxArrowLength$ = 
+         Min[0.8 $CellContext`step$$, 0.1]; $CellContext`fastestArrow$ = Max[
+           Append[
+            Abs[$CellContext`arrowChanges$], 
+            10.^(-12)]]; $CellContext`listOfArrows$ = 
+         MapThread[If[#2 == 0., Nothing, {
+             Arrowheads[0.03], 
+             
+             Arrow[{{#, $CellContext`height$}, {# + \
+$CellContext`maxArrowLength$ (#2/$CellContext`fastestArrow$), \
+$CellContext`height$}}]}]& , {$CellContext`arrowStarts$, \
+$CellContext`arrowChanges$}]; $CellContext`rest$ = 
          Reduce[{$CellContext`ExpectedChange[$CellContext`x1$, \
 $CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
 \[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
@@ -745,7 +756,6 @@ $CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
            
            And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
-            
             1], {$CellContext`Tij, $CellContext`sequence} = \
 $CellContext`Match[$CellContext`i, $CellContext`ej]; 
            If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
@@ -1090,8 +1100,8 @@ $CellContext`payoffs]])/($CellContext`xAbove - $CellContext`xBelow);
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.99869021744895*^9},
- CellLabel->"Out[1]=",ExpressionUUID->"90975da2-8089-4d68-a397-b354ec941f07"]
+ CellChangeTimes->{3.998690943991107*^9},
+ CellLabel->"Out[2]=",ExpressionUUID->"b0527fd1-63c9-43c0-b5cf-cfa0b1634e4c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1115,9 +1125,11 @@ Cell[BoxData[
           RowBox[{"\"\<D\>\"", "->", "1"}], ",", 
           RowBox[{"\"\<L\>\"", "->", "2"}]}], "}"}]}], ",", "s1", ",", "s2", ",",
         "payoffs", ",", "L", ",", "FMatrix", ",", "listOfArrows", ",", "rest",
-        ",", "restPoints", ",", "restPointsX", ",", "restPointTypes", ",", 
-       "continuumOfRestPoints", ",", "x1", ",", "height", ",", "payoffMin", ",",
-        "payoffMax", ",", "payoffSpan"}], "}"}], ",", "\[IndentingNewLine]", 
+        ",", "arrowStarts", ",", "arrowChanges", ",", "fastestArrow", ",", 
+       "maxArrowLength", ",", "restPoints", ",", "restPointsX", ",", 
+       "restPointTypes", ",", "continuumOfRestPoints", ",", "x1", ",", 
+       "height", ",", "payoffMin", ",", "payoffMax", ",", "payoffSpan"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"s1", "=", 
        RowBox[{
@@ -1196,30 +1208,104 @@ Cell[BoxData[
               FontSlant->"Italic"], ",", "\[Delta]", ",", "payoffs"}], 
             "]"}]}], "}"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
-      RowBox[{"listOfArrows", "=", 
-       RowBox[{"Table", "[", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"{", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "The", " ", "none", " ", "setting", " ", "of", " ", "the", " ", 
+        "arrows", " ", "control", " ", "is", " ", "a", " ", "step", " ", 
+        "wider", " ", "than", " ", "the"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"interval", ";", " ", 
+         RowBox[{
           RowBox[{
-           RowBox[{"Arrowheads", "[", "0.03", "]"}], ",", 
-           RowBox[{"Arrow", "[", 
+          "Table", " ", "would", " ", "still", " ", "emit", " ", "the", " ", 
+           "arrow", " ", "at", " ", "x1"}], "=", "0"}]}], ",", " ", 
+        RowBox[{"because", " ", "it"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      
+      RowBox[{"(*", " ", 
+       RowBox[{"always", " ", "includes", " ", "the", " ", "starting", " ", 
+        RowBox[{"value", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"arrowStarts", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"step", ">", "1"}], ",", 
+         RowBox[{"{", "}"}], ",", 
+         RowBox[{"Range", "[", 
+          RowBox[{"0", ",", "1", ",", "step"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"arrowChanges", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"First", "[", 
+           RowBox[{"ExpectedChange", "[", 
+            RowBox[{
+            "#", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
+              "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "]"}], 
+          "&"}], ",", "arrowStarts"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "Arrows", " ", "are", " ", "scaled", " ", "so", " ", "that", " ", 
+        "the", " ", "fastest", " ", "one", " ", "on", " ", "the", " ", "grid",
+         " ", "is"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"maxArrowLength", " ", 
+        RowBox[{"long", ".", " ", "That"}], " ", "keeps", " ", "the", " ", 
+        "relative", " ", "speeds", " ", "visible", " ", "while"}], " ", 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"bounding", " ", "the", " ", "arrows"}], ",", " ", 
+        RowBox[{
+        "which", " ", "the", " ", "raw", " ", "expected", " ", "change", " ", 
+         "did", " ", 
+         RowBox[{"not", ":", " ", "with"}]}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "a", " ", "payoff", " ", "spread", " ", "large", " ", "against", " ", 
+        "the", " ", "mean", " ", "it", " ", "reached", " ", "0.8", " ", "of", 
+        " ", "the", " ", 
+        RowBox[{"plot", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"maxArrowLength", "=", 
+       RowBox[{"Min", "[", 
+        RowBox[{
+         RowBox[{"0.8", "*", "step"}], ",", "0.1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"fastestArrow", "=", 
+       RowBox[{"Max", "[", 
+        RowBox[{"Append", "[", 
+         RowBox[{
+          RowBox[{"Abs", "[", "arrowChanges", "]"}], ",", 
+          RowBox[{"10.", "^", 
+           RowBox[{"-", "12"}]}]}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"listOfArrows", "=", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"#2", "==", "0."}], ",", "Nothing", ",", 
             RowBox[{"{", 
              RowBox[{
-              RowBox[{"{", 
-               RowBox[{"initx1", ",", "height"}], "}"}], ",", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"initx1", "+", 
-                 RowBox[{"First", "@", 
-                  RowBox[{"ExpectedChange", "[", 
-                   RowBox[{
-                   "initx1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
-                    "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
-                    "payoffs"}], "]"}]}]}], ",", "height"}], "}"}]}], "}"}], 
-            "]"}]}], "}"}], "\[IndentingNewLine]", ",", 
+              RowBox[{"Arrowheads", "[", "0.03", "]"}], ",", 
+              RowBox[{"Arrow", "[", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"#1", ",", "height"}], "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"#1", "+", 
+                    RowBox[{"maxArrowLength", "*", 
+                    RowBox[{"#2", "/", "fastestArrow"}]}]}], ",", "height"}], 
+                  "}"}]}], "}"}], "]"}]}], "}"}]}], "]"}], "&"}], ",", 
          RowBox[{"{", 
-          RowBox[{"initx1", ",", "0", ",", "1", ",", "step"}], "}"}]}], 
-        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"arrowStarts", ",", "arrowChanges"}], "}"}]}], "]"}]}], ";",
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
       RowBox[{"rest", "=", 
        RowBox[{"Reduce", "[", 
         RowBox[{
@@ -3496,11 +3582,11 @@ Cell[BoxData[
              RowBox[{"xAbove", "-", "xBelow"}], ")"}]}]}], ";", 
           RowBox[{"Which", "[", 
            RowBox[{
-            RowBox[{"slope", " ", "<", " ", 
+            RowBox[{"slope", "<", 
              RowBox[{"-", 
               RowBox[{"10.", "^", 
                RowBox[{"-", "9"}]}]}]}], ",", "\"\<sink\>\"", ",", 
-            RowBox[{"slope", " ", ">", " ", 
+            RowBox[{"slope", ">", 
              RowBox[{"10.", "^", 
               RowBox[{"-", "9"}]}]}], ",", "\"\<source\>\"", ",", "True", 
             ",", "\"\<undetermined\>\""}], "]"}]}]}], "\[IndentingNewLine]", 
@@ -3508,7 +3594,7 @@ Cell[BoxData[
       RowBox[{"(*", " ", 
        RowBox[{
         RowBox[{
-        "Colours", " ", "follow", " ", "the", " ", "2", "pop", " ", 
+        "Colors", " ", "follow", " ", "the", " ", "2", "pop", " ", 
          "reference", " ", 
          RowBox[{"program", ":", " ", 
           RowBox[{
@@ -3597,7 +3683,7 @@ Cell[BoxData[
    3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}, {
    3.99866427052026*^9, 3.998664273668681*^9}, {3.998690157612294*^9, 
    3.998690165867816*^9}, {3.998690214455512*^9, 3.998690215757124*^9}},
- CellLabel->"In[1]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+ CellLabel->"In[2]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3620,11 +3706,11 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 51208, 1042, 644, "Output",ExpressionUUID->"90975da2-8089-4d68-a397-b354ec941f07"]
+Cell[1908, 51, 51738, 1052, 644, "Output",ExpressionUUID->"b0527fd1-63c9-43c0-b5cf-cfa0b1634e4c"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[53153, 1098, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[53305, 1103, 107459, 2496, 7745, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[53683, 1108, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[53835, 1113, 110613, 2572, 7990, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
