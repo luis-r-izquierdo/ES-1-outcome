@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    156868,       3521]
-NotebookOptionsPosition[    156065,       3499]
-NotebookOutlinePosition[    156458,       3515]
-CellTagsIndexPosition[    156415,       3512]
+NotebookDataLength[    154385,       3460]
+NotebookOptionsPosition[    153583,       3438]
+NotebookOutlinePosition[    153976,       3454]
+CellTagsIndexPosition[    153933,       3451]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -339,10 +339,8 @@ $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$]; $CellContext`FMatrix$ = {{
 $CellContext`arrowStarts$ = If[$CellContext`step$$ > 1, {}, 
            Range[0, 1, $CellContext`step$$]]; $CellContext`arrowChanges$ = 
          Map[First[
-            $CellContext`ExpectedChange[#, $CellContext`s1$, \
-$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
-$CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
-$CellContext`payoffs$]]& , $CellContext`arrowStarts$]; \
+            $CellContext`ExpectedChange[#, $CellContext`m$$, $CellContext`L$, \
+$CellContext`FMatrix$]]& , $CellContext`arrowStarts$]; \
 $CellContext`maxArrowLength$ = 
          Min[0.8 $CellContext`step$$, 0.1]; $CellContext`fastestArrow$ = Max[
            Append[
@@ -356,9 +354,8 @@ $CellContext`maxArrowLength$ (#2/$CellContext`fastestArrow$), \
 $CellContext`height$}}]}]& , {$CellContext`arrowStarts$, \
 $CellContext`arrowChanges$}]; $CellContext`rest$ = 
          Reduce[{$CellContext`ExpectedChange[$CellContext`x1$, \
-$CellContext`s1$, $CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\
-\[Delta]$$, $CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
-$CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$, 
+$CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$] == 0, 
+            0 <= $CellContext`x1$ <= 1}, $CellContext`x1$, 
            Reals]; $CellContext`continuumOfRestPoints$ = Not[
            FreeQ[$CellContext`rest$, 
             Alternatives[
@@ -374,16 +371,12 @@ $CellContext`payoffs$] == 0, 0 <= $CellContext`x1$ <= 1}, $CellContext`x1$,
               Blank[List]] :> 
             ReplaceAll[$CellContext`x1$, $CellContext`oneRestPoint$]]]; \
 $CellContext`restPointTypes$ = 
-         Map[$CellContext`RestPointType[#, $CellContext`s1$, \
-$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
-$CellContext`m$$, $CellContext`L$, $CellContext`FMatrix$, \
-$CellContext`payoffs$]& , $CellContext`restPointsX$]; Show[
+         Map[$CellContext`RestPointType[#, $CellContext`m$$, $CellContext`L$, \
+$CellContext`FMatrix$]& , $CellContext`restPointsX$]; Show[
           Plot[
            Evaluate[
-            $CellContext`Fx[$CellContext`x1$, $CellContext`s1$, \
-$CellContext`s2$, $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$, \
-$CellContext`L$, $CellContext`FMatrix$, $CellContext`payoffs$]], \
-{$CellContext`x1$, 0, 1}, 
+            $CellContext`Fx[$CellContext`x1$, $CellContext`L$, \
+$CellContext`FMatrix$]], {$CellContext`x1$, 0, 1}, 
            PlotRange -> {{0, 
              1}, {$CellContext`payoffMin$ - 
               0.125 $CellContext`payoffSpan$, $CellContext`payoffMax$}}, 
@@ -884,17 +877,18 @@ $CellContext`outflow = Rest[
          Pattern[$CellContext`\[Epsilon], 
           Blank[]], 
          Pattern[$CellContext`\[Delta], 
-          Blank[]]] := FullSimplify[
-         Normalize[
-          Abs[
-           First[
-            Eigenvectors[
-             Transpose[
-              $CellContext`TransitionMatrix[$CellContext`s1, $CellContext`s2, \
-$CellContext`\[Epsilon], $CellContext`\[Delta]]], 1]]], Total], 
-         Assumptions -> {
-          0 <= $CellContext`\[Epsilon] <= 1, 0 <= $CellContext`\[Delta] <= 
-           1}]; $CellContext`ExpectedTimeUntilBreakUp[
+          Blank[]]] := Module[{$CellContext`M = Transpose[
+            $CellContext`TransitionMatrix[$CellContext`s1, $CellContext`s2, \
+$CellContext`\[Epsilon], $CellContext`\[Delta]]]}, 
+         FullSimplify[
+          Normalize[
+           Abs[
+            First[
+             NullSpace[$CellContext`M - IdentityMatrix[
+               Length[$CellContext`M]]]]], Total], 
+          Assumptions -> {
+           0 <= $CellContext`\[Epsilon] <= 1, 0 <= $CellContext`\[Delta] <= 
+            1}]]; $CellContext`ExpectedTimeUntilBreakUp[
          Pattern[$CellContext`s1, 
           Blank[List]], 
          Pattern[$CellContext`s2, 
@@ -971,21 +965,10 @@ $CellContext`PoolFromPop[
 \[Epsilon], $CellContext`\[Delta]]]; $CellContext`Fx[
          Pattern[$CellContext`x1, 
           Blank[]], 
-         Pattern[$CellContext`s1, 
-          Blank[]], 
-         Pattern[$CellContext`s2, 
-          Blank[]], 
-         Pattern[$CellContext`\[Epsilon], 
-          Blank[]], 
-         Pattern[$CellContext`\[Delta], 
-          Blank[]], 
          Pattern[$CellContext`L, 
           Blank[List]], 
          Pattern[$CellContext`FMatrix, 
-          Blank[]], 
-         Optional[
-          Pattern[$CellContext`payoffs, 
-           Blank[]], {3, 0, 4, 1}]] := 
+          Blank[]]] := 
        Module[{$CellContext`L11, $CellContext`Lx, $CellContext`L22, \
 $CellContext`p1}, {$CellContext`L11, $CellContext`Lx, $CellContext`L22} = \
 $CellContext`L; $CellContext`p1 = \
@@ -1008,27 +991,14 @@ $CellContext`L22}}]], {1, 1}]]; $CellContext`ReplicatorMS[
 $CellContext`avgPayoff $CellContext`x)]; $CellContext`ExpectedChange[
          Pattern[$CellContext`x1, 
           Blank[]], 
-         Pattern[$CellContext`s1, 
-          Blank[List]], 
-         Pattern[$CellContext`s2, 
-          Blank[List]], 
-         Pattern[$CellContext`\[Epsilon], 
-          Blank[]], 
-         Pattern[$CellContext`\[Delta], 
-          Blank[]], 
          Pattern[$CellContext`m, 
           Blank[]], 
          Pattern[$CellContext`L, 
           Blank[List]], 
          Pattern[$CellContext`FMatrix, 
-          Blank[]], 
-         Optional[
-          Pattern[$CellContext`payoffs, 
-           Blank[]], {3, 0, 4, 1}]] := 
+          Blank[]]] := 
        Module[{$CellContext`\[CapitalPi]}, $CellContext`\[CapitalPi] = \
-$CellContext`Fx[$CellContext`x1, $CellContext`s1, $CellContext`s2, \
-$CellContext`\[Epsilon], $CellContext`\[Delta], $CellContext`L, \
-$CellContext`FMatrix, $CellContext`payoffs]; (
+$CellContext`Fx[$CellContext`x1, $CellContext`L, $CellContext`FMatrix]; (
             1 - $CellContext`m) $CellContext`ReplicatorMS[{$CellContext`x1, 
               1 - $CellContext`x1}, $CellContext`\[CapitalPi]] + \
 $CellContext`m (
@@ -1036,21 +1006,11 @@ $CellContext`m (
              1 - $CellContext`x1})]; $CellContext`RestPointType[
          Pattern[$CellContext`x, 
           Blank[]], 
-         Pattern[$CellContext`s1, 
-          Blank[List]], 
-         Pattern[$CellContext`s2, 
-          Blank[List]], 
-         Pattern[$CellContext`\[Epsilon], 
-          Blank[]], 
-         Pattern[$CellContext`\[Delta], 
-          Blank[]], 
          Pattern[$CellContext`m, 
           Blank[]], 
          Pattern[$CellContext`L, 
           Blank[List]], 
          Pattern[$CellContext`FMatrix, 
-          Blank[]], 
-         Pattern[$CellContext`payoffs, 
           Blank[]]] := 
        Module[{$CellContext`h = 
           10.^(-6), $CellContext`xBelow, $CellContext`xAbove, \
@@ -1059,13 +1019,10 @@ $CellContext`slope}, $CellContext`xBelow =
           Min[1., $CellContext`x + $CellContext`h]; $CellContext`slope = (
             First[
               $CellContext`ExpectedChange[$CellContext`xAbove, \
-$CellContext`s1, $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\
-\[Delta], $CellContext`m, $CellContext`L, $CellContext`FMatrix, \
-$CellContext`payoffs]] - First[
-             $CellContext`ExpectedChange[$CellContext`xBelow, \
-$CellContext`s1, $CellContext`s2, $CellContext`\[Epsilon], $CellContext`\
-\[Delta], $CellContext`m, $CellContext`L, $CellContext`FMatrix, \
-$CellContext`payoffs]])/($CellContext`xAbove - $CellContext`xBelow); 
+$CellContext`m, $CellContext`L, $CellContext`FMatrix]] - First[
+             $CellContext`ExpectedChange[$CellContext`xBelow, $CellContext`m, \
+$CellContext`L, $CellContext`FMatrix]])/($CellContext`xAbove - \
+$CellContext`xBelow); 
          Which[$CellContext`slope < (-1) 10.^(-9), "sink", $CellContext`slope > 
            10.^(-9), "source", True, 
            "undetermined"]]; $CellContext`RestPointColor[
@@ -1080,8 +1037,8 @@ $CellContext`payoffs]])/($CellContext`xAbove - $CellContext`xBelow);
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998691836232675*^9},
- CellLabel->"Out[3]=",ExpressionUUID->"94a954cb-c829-4e70-a6b9-fca83ed1be07"]
+ CellChangeTimes->{3.998692833798998*^9},
+ CellLabel->"Out[4]=",ExpressionUUID->"b5e2e268-112c-4b02-b3e5-ded814fda2fd"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1220,9 +1177,7 @@ Cell[BoxData[
          RowBox[{
           RowBox[{"First", "[", 
            RowBox[{"ExpectedChange", "[", 
-            RowBox[{
-            "#", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
-              "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "]"}], 
+            RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "]"}], 
           "&"}], ",", "arrowStarts"}], "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
@@ -1293,9 +1248,7 @@ Cell[BoxData[
           RowBox[{
            RowBox[{
             RowBox[{"ExpectedChange", "[", 
-             RowBox[{
-             "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
-               "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "==", 
+             RowBox[{"x1", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "==", 
             "0"}], ",", 
            RowBox[{"0", "<=", "x1", "<=", "1"}]}], "}"}], ",", "x1", ",", 
          "Reals"}], "]"}]}], ";", "\[IndentingNewLine]", 
@@ -1356,9 +1309,7 @@ Cell[BoxData[
         RowBox[{
          RowBox[{
           RowBox[{"RestPointType", "[", 
-           RowBox[{
-           "#", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
-             "m", ",", "L", ",", "FMatrix", ",", "payoffs"}], "]"}], "&"}], ",",
+           RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "&"}], ",",
           "restPointsX"}], "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{"Show", "[", "\[IndentingNewLine]", 
@@ -1367,9 +1318,7 @@ Cell[BoxData[
          RowBox[{
           RowBox[{"Evaluate", "@", 
            RowBox[{"Fx", "[", 
-            RowBox[{
-            "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
-              "L", ",", "FMatrix", ",", "payoffs"}], "]"}]}], ",", 
+            RowBox[{"x1", ",", "L", ",", "FMatrix"}], "]"}]}], ",", 
           RowBox[{"{", 
            RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
           RowBox[{"PlotRange", "->", 
@@ -2821,26 +2770,41 @@ Cell[BoxData[
         RowBox[{
         "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", "\[Delta]_"}], 
         "]"}], ":=", 
-       RowBox[{"FullSimplify", "[", 
+       RowBox[{"Module", "[", 
         RowBox[{
-         RowBox[{"Normalize", "[", 
-          RowBox[{
-           RowBox[{"Abs", "@", 
-            RowBox[{"First", "@", 
-             RowBox[{"Eigenvectors", "[", 
-              RowBox[{
-               RowBox[{
-                RowBox[{"TransitionMatrix", "[", 
-                 RowBox[{
-                 "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], "]"}],
-                 "\[Transpose]"}], ",", "1"}], "]"}]}]}], ",", "Total"}], 
-          "]"}], ",", " ", 
-         RowBox[{"Assumptions", "->", 
-          RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"M", "=", 
            RowBox[{
-            RowBox[{"0", "<=", "\[Epsilon]", "<=", "1"}], ",", 
-            RowBox[{"0", "<=", "\[Delta]", "<=", "1"}]}], "}"}]}]}], "]"}]}], 
-      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"TransitionMatrix", "[", 
+             RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
+             "]"}], "\[Transpose]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "The", " ", "stationary", " ", "distribution", " ", "is", " ", 
+           "the", " ", "eigenvector", " ", "for", " ", "eigenvalue", " ", 
+           "1."}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "NullSpace", " ", "selects", " ", "it", " ", "by", " ", "that", " ", 
+           RowBox[{"property", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"FullSimplify", "[", 
+          RowBox[{
+           RowBox[{"Normalize", "[", 
+            RowBox[{
+             RowBox[{"Abs", "[", 
+              RowBox[{"First", "[", 
+               RowBox[{"NullSpace", "[", 
+                RowBox[{"M", "-", 
+                 RowBox[{"IdentityMatrix", "[", 
+                  RowBox[{"Length", "[", "M", "]"}], "]"}]}], "]"}], "]"}], 
+              "]"}], ",", "Total"}], "]"}], ",", 
+           RowBox[{"Assumptions", "->", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"0", "<=", "\[Epsilon]", "<=", "1"}], ",", 
+              RowBox[{"0", "<=", "\[Delta]", "<=", "1"}]}], "}"}]}]}], 
+          "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
        RowBox[{
         RowBox[{"Theorem", " ", "11.5"}], ",", " ", 
@@ -2920,15 +2884,7 @@ Cell[BoxData[
         "and", " ", "is", " ", "the", " ", "only", " ", "place", " ", 
          "it"}]}], " ", "*)"}], "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"lives", ".", " ", "PoolFromPop"}], " ", "and", " ", "Fx", " ",
-          "both", " ", "go", " ", "through", " ", "it"}], ",", " ", 
-        RowBox[{"so", " ", "a", " ", "correction", " ", "here"}]}], " ", 
-       "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"(*", " ", 
-       RowBox[{"reaches", " ", 
-        RowBox[{"both", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"lives", "."}], " ", "*)"}], "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"PoolFromPopGivenL", "[", 
         RowBox[{"x1_", ",", "L_List"}], "]"}], ":=", 
@@ -3188,12 +3144,7 @@ Cell[BoxData[
           "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"Fx", "[", 
-        RowBox[{
-        "x1_", ",", "s1_", ",", "s2_", ",", "\[Epsilon]_", ",", "\[Delta]_", ",",
-          "L_List", ",", "FMatrix_", ",", 
-         RowBox[{"payoffs_", ":", 
-          RowBox[{"{", 
-           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+        RowBox[{"x1_", ",", "L_List", ",", "FMatrix_"}], "]"}], ":=", 
        RowBox[{"Module", "[", 
         RowBox[{
          RowBox[{"{", 
@@ -3312,21 +3263,14 @@ Cell[BoxData[
       "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"ExpectedChange", "[", 
-        RowBox[{
-        "x1_", ",", "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", 
-         "\[Delta]_", ",", "m_", ",", "L_List", ",", "FMatrix_", ",", 
-         RowBox[{"payoffs_", ":", 
-          RowBox[{"{", 
-           RowBox[{"3", ",", "0", ",", "4", ",", "1"}], "}"}]}]}], "]"}], ":=", 
+        RowBox[{"x1_", ",", "m_", ",", "L_List", ",", "FMatrix_"}], "]"}], ":=", 
        RowBox[{"Module", "[", 
         RowBox[{
          RowBox[{"{", "\[CapitalPi]", "}"}], ",", "\[IndentingNewLine]", 
          RowBox[{
           RowBox[{"\[CapitalPi]", "=", 
            RowBox[{"Fx", "[", 
-            RowBox[{
-            "x1", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]", ",",
-              "L", ",", "FMatrix", ",", "payoffs"}], "]"}]}], ";", 
+            RowBox[{"x1", ",", "L", ",", "FMatrix"}], "]"}]}], ";", 
           "\[IndentingNewLine]", 
           RowBox[{
            RowBox[{
@@ -3378,10 +3322,8 @@ Cell[BoxData[
         RowBox[{"undetermined", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"RestPointType", "[", 
-        RowBox[{
-        "x_", ",", "s1_List", ",", "s2_List", ",", "\[Epsilon]_", ",", 
-         "\[Delta]_", ",", "m_", ",", "L_List", ",", "FMatrix_", ",", 
-         "payoffs_"}], "]"}], ":=", "\[IndentingNewLine]", 
+        RowBox[{"x_", ",", "m_", ",", "L_List", ",", "FMatrix_"}], "]"}], ":=",
+        "\[IndentingNewLine]", 
        RowBox[{"Module", "[", 
         RowBox[{
          RowBox[{"{", 
@@ -3405,16 +3347,12 @@ Cell[BoxData[
              RowBox[{
               RowBox[{"First", "[", 
                RowBox[{"ExpectedChange", "[", 
-                RowBox[{
-                "xAbove", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
-                 "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
-                 "payoffs"}], "]"}], "]"}], "-", 
+                RowBox[{"xAbove", ",", "m", ",", "L", ",", "FMatrix"}], "]"}],
+                "]"}], "-", 
               RowBox[{"First", "[", 
                RowBox[{"ExpectedChange", "[", 
-                RowBox[{
-                "xBelow", ",", "s1", ",", "s2", ",", "\[Epsilon]", ",", 
-                 "\[Delta]", ",", "m", ",", "L", ",", "FMatrix", ",", 
-                 "payoffs"}], "]"}], "]"}]}], ")"}], "/", 
+                RowBox[{"xBelow", ",", "m", ",", "L", ",", "FMatrix"}], "]"}],
+                "]"}]}], ")"}], "/", 
             RowBox[{"(", 
              RowBox[{"xAbove", "-", "xBelow"}], ")"}]}]}], ";", 
           RowBox[{"Which", "[", 
@@ -3493,8 +3431,9 @@ Cell[BoxData[
    3.968568828777876*^9, 3.968568833142386*^9}, {3.99866314415694*^9, 
    3.998663208125923*^9}, {3.9986632637052917`*^9, 3.998663305886746*^9}, {
    3.99866427052026*^9, 3.998664273668681*^9}, {3.998690157612294*^9, 
-   3.998690165867816*^9}, {3.998690214455512*^9, 3.998690215757124*^9}},
- CellLabel->"In[3]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+   3.998690165867816*^9}, {3.998690214455512*^9, 3.998690215757124*^9}, {
+   3.99869276163766*^9, 3.9986928006838512`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3517,11 +3456,11 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 50748, 1032, 644, "Output",ExpressionUUID->"94a954cb-c829-4e70-a6b9-fca83ed1be07"]
+Cell[1908, 51, 49089, 989, 644, "Output",ExpressionUUID->"b5e2e268-112c-4b02-b3e5-ded814fda2fd"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[52693, 1088, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[52845, 1093, 103204, 2403, 7631, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[51034, 1045, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[51186, 1050, 102381, 2385, 7631, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
