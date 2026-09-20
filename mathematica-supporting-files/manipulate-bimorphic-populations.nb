@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    158705,       3549]
-NotebookOptionsPosition[    157902,       3527]
-NotebookOutlinePosition[    158295,       3543]
-CellTagsIndexPosition[    158252,       3540]
+NotebookDataLength[    160736,       3594]
+NotebookOptionsPosition[    159933,       3572]
+NotebookOutlinePosition[    160326,       3588]
+CellTagsIndexPosition[    160283,       3585]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -339,9 +339,8 @@ $CellContext`\[Epsilon]$$, $CellContext`\[Delta]$$]; $CellContext`FMatrix$ = {{
 \[Epsilon]$$, $CellContext`\[Delta]$$, $CellContext`payoffs$]}}; \
 $CellContext`arrowStarts$ = If[$CellContext`step$$ > 1, {}, 
            Range[0, 1, $CellContext`step$$]]; $CellContext`arrowChanges$ = 
-         Map[First[
-            $CellContext`ExpectedChange[#, $CellContext`m$$, $CellContext`L$, \
-$CellContext`FMatrix$]]& , $CellContext`arrowStarts$]; \
+         Map[$CellContext`ChangeInX1[#, $CellContext`m$$, $CellContext`L$, \
+$CellContext`FMatrix$]& , $CellContext`arrowStarts$]; \
 $CellContext`maxArrowLength$ = 
          Min[0.8 $CellContext`step$$, 0.1]; $CellContext`fastestArrow$ = Max[
            Append[
@@ -1005,7 +1004,18 @@ $CellContext`Fx[$CellContext`x1, $CellContext`L, $CellContext`FMatrix]; (
               1 - $CellContext`x1}, $CellContext`\[CapitalPi]] + \
 $CellContext`m (
             ConstantArray[1/2, 2] - {$CellContext`x1, 
-             1 - $CellContext`x1})]; $CellContext`RationalBetween[
+             1 - $CellContext`x1})]; $CellContext`ChangeInX1[
+         Pattern[$CellContext`x1, 
+          Blank[]], 
+         Pattern[$CellContext`m, 
+          Blank[]], 
+         Pattern[$CellContext`L, 
+          Blank[List]], 
+         Pattern[$CellContext`FMatrix, 
+          Blank[]]] := Together[
+         First[
+          $CellContext`ExpectedChange[$CellContext`x1, $CellContext`m, \
+$CellContext`L, $CellContext`FMatrix]]]; $CellContext`RationalBetween[
          Pattern[$CellContext`a, 
           Blank[]], 
          Pattern[$CellContext`b, 
@@ -1039,9 +1049,8 @@ $CellContext`signs, $CellContext`k, $CellContext`below, $CellContext`above},
              Part[$CellContext`bounds, $CellContext`i + 1]], {$CellContext`i, 
              Length[$CellContext`bounds] - 1}]; $CellContext`signs = 
           Map[Sign[
-             First[
-              $CellContext`ExpectedChange[#, $CellContext`m, $CellContext`L, \
-$CellContext`FMatrix]]]& , $CellContext`separators]; 
+             $CellContext`ChangeInX1[#, $CellContext`m, $CellContext`L, \
+$CellContext`FMatrix]]& , $CellContext`separators]; 
          Table[$CellContext`k = First[
               
               FirstPosition[$CellContext`bounds, $CellContext`r]]; \
@@ -1074,8 +1083,8 @@ $CellContext`RestPointColor[
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998694045914165*^9, 3.998694100621088*^9},
- CellLabel->"Out[53]=",ExpressionUUID->"9769b55b-9baf-4c73-a8ba-a79543d43503"]
+ CellChangeTimes->{{3.998890381032446*^9, 3.998890393781066*^9}},
+ CellLabel->"Out[2]=",ExpressionUUID->"9ac13bf4-64e6-4e9d-b04b-d3a2dfde8415"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1213,10 +1222,9 @@ Cell[BoxData[
        RowBox[{"Map", "[", 
         RowBox[{
          RowBox[{
-          RowBox[{"First", "[", 
-           RowBox[{"ExpectedChange", "[", 
-            RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "]"}], 
-          "&"}], ",", "arrowStarts"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"ChangeInX1", "[", 
+           RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "&"}], ",",
+          "arrowStarts"}], "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
        RowBox[{
@@ -3239,6 +3247,44 @@ Cell[BoxData[
         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "ChangeInX1", " ", "is", " ", "the", " ", "rate", " ", "of", " ", 
+         "change", " ", "of", " ", "the", " ", "share", " ", "of", " ", "the",
+          " ", "blue", " ", "strategy"}], ","}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "with", " ", "its", " ", "cancellations", " ", "carried", " ", 
+        RowBox[{"out", ".", " ", "They"}], " ", "matter", " ", "when", " ", 
+        "the", " ", "two"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "strategies", " ", "earn", " ", "the", " ", "same", " ", "payoff", " ",
+         "against", " ", "every", " ", 
+        RowBox[{"mixture", ":", " ", 
+         RowBox[{"the", " ", "replicator"}]}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"term", " ", "is", " ", "zero", " ", "there"}], ",", " ", 
+        RowBox[{
+        "but", " ", "it", " ", "is", " ", "written", " ", "as", " ", "a", " ",
+          "difference", " ", "of", " ", "two", " ", "equal"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"radicals", ",", " ", 
+        RowBox[{"which", " ", "numerical", " ", "evaluation", " ", "cannot", " ", 
+         RowBox[{"resolve", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ChangeInX1", "[", 
+        RowBox[{"x1_", ",", "m_", ",", "L_List", ",", "FMatrix_"}], "]"}], ":=", 
+       RowBox[{"Together", "[", 
+        RowBox[{"First", "[", 
+         RowBox[{"ExpectedChange", "[", 
+          RowBox[{"x1", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], "]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
        RowBox[{"DISPLAY", " ", "OF", " ", "THE", " ", "REST", " ", "POINTS"}],
         " ", "*)"}], "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
@@ -3393,10 +3439,9 @@ Cell[BoxData[
             RowBox[{
              RowBox[{
               RowBox[{"Sign", "[", 
-               RowBox[{"First", "[", 
-                RowBox[{"ExpectedChange", "[", 
-                 RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], 
-                "]"}], "]"}], "&"}], ",", "separators"}], "]"}]}], ";", 
+               RowBox[{"ChangeInX1", "[", 
+                RowBox[{"#", ",", "m", ",", "L", ",", "FMatrix"}], "]"}], 
+               "]"}], "&"}], ",", "separators"}], "]"}]}], ";", 
           "\[IndentingNewLine]", 
           RowBox[{"Table", "[", 
            RowBox[{
@@ -3522,7 +3567,7 @@ Cell[BoxData[
    3.998690165867816*^9}, {3.998690214455512*^9, 3.998690215757124*^9}, {
    3.99869276163766*^9, 3.9986928006838512`*^9}, {3.998693417842819*^9, 
    3.99869344871537*^9}, {3.998694013323762*^9, 3.9986940430654593`*^9}},
- CellLabel->"In[53]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+ CellLabel->"In[2]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 },
 WindowSize->{1197, 818},
@@ -3545,11 +3590,11 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 50941, 1026, 644, "Output",ExpressionUUID->"9769b55b-9baf-4c73-a8ba-a79543d43503"]
+Cell[1908, 51, 51290, 1035, 644, "Output",ExpressionUUID->"9ac13bf4-64e6-4e9d-b04b-d3a2dfde8415"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[52886, 1082, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[53038, 1087, 104848, 2437, 7860, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[53235, 1091, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[53387, 1096, 106530, 2473, 8003, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
