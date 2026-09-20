@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[   1480606,      24944]
-NotebookOptionsPosition[   1475720,      24854]
-NotebookOutlinePosition[   1476324,      24876]
-CellTagsIndexPosition[   1476281,      24873]
+NotebookDataLength[   1480587,      24944]
+NotebookOptionsPosition[   1475698,      24854]
+NotebookOutlinePosition[   1476302,      24876]
+CellTagsIndexPosition[   1476259,      24873]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -21915,7 +21915,7 @@ allowed to compute the rest points.\>\"", ",", "\"\<\>\""}], "]"}]}], ",",
      "Manipulate"}], " ", "*)"}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
-    RowBox[{"MANIPULATE", " ", "PARAMETERES"}], " ", "*)"}], 
+    RowBox[{"MANIPULATE", " ", "PARAMETERS"}], " ", "*)"}], 
    "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{
@@ -24847,9 +24847,9 @@ probability of CD-error \[Epsilon] = \>\"", "<>",
             "\[IndentingNewLine]", "}"}], ",", "x", ",", "Reals", ",", 
            RowBox[{"Backsubstitution", "->", "True"}]}], "]"}]}], 
         "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
-     ")"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
- CellLabel->"In[5]:=",ExpressionUUID->"ebe497d7-c6bb-4946-9a6d-3dd577d63d4d"]
-}, Closed]]
+     ")"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->\
+"ebe497d7-c6bb-4946-9a6d-3dd577d63d4d"]
+}, Open  ]]
 }, Open  ]]
 },
 ScreenStyleEnvironment->"Working",
@@ -24943,8 +24943,8 @@ Cell[1303502, 20995, 2072, 42, 70, "Text",ExpressionUUID->"3e570553-cd0b-47f0-bf
 }, Closed]],
 Cell[CellGroupData[{
 Cell[1305611, 21042, 85, 0, 51, "Section",ExpressionUUID->"d7fc9b4c-924e-445b-8538-aebcffdbf017"],
-Cell[1305699, 21044, 169993, 3806, 70, "Input",ExpressionUUID->"ebe497d7-c6bb-4946-9a6d-3dd577d63d4d"]
-}, Closed]]
+Cell[1305699, 21044, 169971, 3806, 17788, "Input",ExpressionUUID->"ebe497d7-c6bb-4946-9a6d-3dd577d63d4d"]
+}, Open  ]]
 }, Open  ]]
 }
 ]
