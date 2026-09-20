@@ -3,17 +3,17 @@
 (*** Wolfram Notebook File ***)
 (* http://www.wolfram.com/nb *)
 
-(* CreatedBy='Wolfram 14.2' *)
+(* CreatedBy='Wolfram 15.0' *)
 
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    281424,       5370]
+NotebookDataLength[    281430,       5371]
 NotebookOptionsPosition[    277413,       5292]
-NotebookOutlinePosition[    277840,       5309]
-CellTagsIndexPosition[    277797,       5306]
+NotebookOutlinePosition[    277861,       5310]
+CellTagsIndexPosition[    277818,       5307]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -5292,8 +5292,9 @@ FontSlant->\"Italic\"]\)\>\""}], " ", ";"}], "\[IndentingNewLine]",
 },
 WindowSize->{1274, 1303},
 WindowMargins->{{6, Automatic}, {Automatic, -360}},
+CellContext->Notebook,
 Magnification:>1.5 Inherited,
-FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
+FrontEndVersion->"15.0 for Mac OS X ARM (64-bit) (May 19, 2026)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"5faf5e07-dfea-4870-9e88-9fee43ff8c68"
 ]
@@ -5328,46 +5329,46 @@ Cell[CellGroupData[{
 Cell[195155, 3414, 181, 4, 144, "Title",ExpressionUUID->"282b4acf-8c86-4bec-a8a2-ea3043ded9a2",
  InitializationCell->True],
 Cell[CellGroupData[{
-Cell[195361, 3422, 1400, 21, 101, "Chapter",ExpressionUUID->"6c14e0c1-848d-436a-b996-fe844d9d0019",
+Cell[195361, 3422, 1400, 21, 70, "Chapter",ExpressionUUID->"6c14e0c1-848d-436a-b996-fe844d9d0019",
  CellGroupingRules->{"GroupTogetherGrouping", 10000.},
  InitializationCell->True],
-Cell[196764, 3445, 7036, 155, 1201, "Input",ExpressionUUID->"670427d3-fd12-4888-9e03-c5bc7e209481",
+Cell[196764, 3445, 7036, 155, 70, "Input",ExpressionUUID->"670427d3-fd12-4888-9e03-c5bc7e209481",
  CellGroupingRules->{"GroupTogetherGrouping", 10000.},
  InitializationCell->True]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[203837, 3605, 1630, 28, 104, "Chapter",ExpressionUUID->"cfa2840e-e56f-49aa-98cf-d8da349b4e3e",
+Cell[203837, 3605, 1630, 28, 70, "Chapter",ExpressionUUID->"cfa2840e-e56f-49aa-98cf-d8da349b4e3e",
  CellGroupingRules->{"GroupTogetherGrouping", 10001.},
  InitializationCell->True],
-Cell[205470, 3635, 33136, 807, 4912, "Input",ExpressionUUID->"6482c720-9c83-4c70-b467-66a9d0f4eba0",
+Cell[205470, 3635, 33136, 807, 70, "Input",ExpressionUUID->"6482c720-9c83-4c70-b467-66a9d0f4eba0",
  CellGroupingRules->{"GroupTogetherGrouping", 10001.},
  InitializationCell->True]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[238643, 4447, 1676, 30, 101, "Chapter",ExpressionUUID->"4569dde3-fbf8-49b2-9521-67ff9fccbbb7",
+Cell[238643, 4447, 1676, 30, 70, "Chapter",ExpressionUUID->"4569dde3-fbf8-49b2-9521-67ff9fccbbb7",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[240322, 4479, 6987, 150, 772, "Input",ExpressionUUID->"b29505e5-75cf-4bd4-ba8e-937163515c8d",
+Cell[240322, 4479, 6987, 150, 70, "Input",ExpressionUUID->"b29505e5-75cf-4bd4-ba8e-937163515c8d",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[247312, 4631, 1684, 29, 101, "Chapter",ExpressionUUID->"973eb246-1cd6-4fc0-ab85-d5e4db3f39f5",
+Cell[247312, 4631, 1684, 29, 70, "Chapter",ExpressionUUID->"973eb246-1cd6-4fc0-ab85-d5e4db3f39f5",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[248999, 4662, 5052, 110, 405, "Input",ExpressionUUID->"8d35ac7a-db1b-4a74-86a2-fe53b38ec50d",
+Cell[248999, 4662, 5052, 110, 70, "Input",ExpressionUUID->"8d35ac7a-db1b-4a74-86a2-fe53b38ec50d",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[254088, 4777, 1496, 23, 101, "Chapter",ExpressionUUID->"9e44b5f1-e1c4-4c27-bd29-abc8e83c25e2",
+Cell[254088, 4777, 1496, 23, 70, "Chapter",ExpressionUUID->"9e44b5f1-e1c4-4c27-bd29-abc8e83c25e2",
  CellGroupingRules->{"GroupTogetherGrouping", 10003.},
  InitializationCell->True],
-Cell[255587, 4802, 7247, 173, 733, "Input",ExpressionUUID->"f1f4a26c-3db7-4baf-9c7c-4b23b2703969",
+Cell[255587, 4802, 7247, 173, 70, "Input",ExpressionUUID->"f1f4a26c-3db7-4baf-9c7c-4b23b2703969",
  CellGroupingRules->{"GroupTogetherGrouping", 10003.},
  InitializationCell->True],
-Cell[262837, 4977, 1541, 23, 101, "Chapter",ExpressionUUID->"2428903f-d137-42f3-b764-3aaa3c541d11",
+Cell[262837, 4977, 1541, 23, 70, "Chapter",ExpressionUUID->"2428903f-d137-42f3-b764-3aaa3c541d11",
  CellGroupingRules->{"GroupTogetherGrouping", 10003.},
  InitializationCell->True],
-Cell[264381, 5002, 13004, 286, 1921, "Input",ExpressionUUID->"86fb4755-006b-48ec-b448-d400f6fee840",
+Cell[264381, 5002, 13004, 286, 70, "Input",ExpressionUUID->"86fb4755-006b-48ec-b448-d400f6fee840",
  CellGroupingRules->{"GroupTogetherGrouping", 10003.},
  InitializationCell->True]
 }, Open  ]]
@@ -5375,4 +5376,6 @@ Cell[264381, 5002, 13004, 286, 1921, "Input",ExpressionUUID->"86fb4755-006b-48ec
 }
 ]
 *)
+
+(* End of internal cache information *)
 
