@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    160861,       3598]
-NotebookOptionsPosition[    160034,       3575]
-NotebookOutlinePosition[    160450,       3592]
-CellTagsIndexPosition[    160407,       3589]
+NotebookDataLength[    161814,       3619]
+NotebookOptionsPosition[    160988,       3596]
+NotebookOutlinePosition[    161404,       3613]
+CellTagsIndexPosition[    161361,       3610]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -880,16 +880,14 @@ $CellContext`outflow = Rest[
          Pattern[$CellContext`\[Delta], 
           Blank[]]] := Module[{$CellContext`M = Transpose[
             $CellContext`TransitionMatrix[$CellContext`s1, $CellContext`s2, \
-$CellContext`\[Epsilon], $CellContext`\[Delta]]]}, 
-         FullSimplify[
-          Normalize[
-           Abs[
-            First[
-             NullSpace[$CellContext`M - IdentityMatrix[
-               Length[$CellContext`M]]]]], Total], 
-          Assumptions -> {
-           0 <= $CellContext`\[Epsilon] <= 1, 0 <= $CellContext`\[Delta] <= 
-            1}]]; $CellContext`ExpectedTimeUntilBreakUp[
+$CellContext`\[Epsilon], $CellContext`\[Delta]]], $CellContext`v}, \
+$CellContext`v = First[
+            NullSpace[$CellContext`M - IdentityMatrix[
+              Length[$CellContext`M]]]]; 
+         FullSimplify[$CellContext`v/Total[$CellContext`v], 
+           Assumptions -> {
+            0 <= $CellContext`\[Epsilon] <= 1, 0 <= $CellContext`\[Delta] <= 
+             1}]]; $CellContext`ExpectedTimeUntilBreakUp[
          Pattern[$CellContext`s1, 
           Blank[List]], 
          Pattern[$CellContext`s2, 
@@ -1083,8 +1081,8 @@ $CellContext`RestPointColor[
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998901585274283*^9},
- CellLabel->"Out[1]=",ExpressionUUID->"7d33f8e0-4827-4adc-bac5-6e66e68e6925"]
+ CellChangeTimes->{3.998927548237849*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"57c8782b-a008-4a06-9178-42cc10f5e38c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2779,38 +2777,61 @@ Cell[BoxData[
        RowBox[{"Module", "[", 
         RowBox[{
          RowBox[{"{", 
-          RowBox[{"M", "=", 
+          RowBox[{
+           RowBox[{"M", "=", 
+            TemplateBox[{
+              RowBox[{"TransitionMatrix", "[", 
+                RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}],
+                 "]"}]},
+             "Transpose"]}], ",", "v"}], "}"}], ",", 
+         RowBox[{"(*", " ", 
+          RowBox[{
            RowBox[{
-            RowBox[{"TransitionMatrix", "[", 
-             RowBox[{"s1", ",", "s2", ",", "\[Epsilon]", ",", "\[Delta]"}], 
-             "]"}], "\[Transpose]"}]}], "}"}], ",", "\[IndentingNewLine]", 
-         RowBox[{"(*", " ", 
-          RowBox[{
-          "The", " ", "stationary", " ", "distribution", " ", "is", " ", 
-           "the", " ", "eigenvector", " ", "for", " ", "eigenvalue", " ", 
-           "1."}], " ", "*)"}], "\[IndentingNewLine]", 
-         RowBox[{"(*", " ", 
-          RowBox[{
-          "NullSpace", " ", "selects", " ", "it", " ", "by", " ", "that", " ", 
-           RowBox[{"property", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
-         RowBox[{"FullSimplify", "[", 
-          RowBox[{
-           RowBox[{"Normalize", "[", 
-            RowBox[{
-             RowBox[{"Abs", "[", 
-              RowBox[{"First", "[", 
-               RowBox[{"NullSpace", "[", 
-                RowBox[{"M", "-", 
-                 RowBox[{"IdentityMatrix", "[", 
-                  RowBox[{"Length", "[", "M", "]"}], "]"}]}], "]"}], "]"}], 
-              "]"}], ",", "Total"}], "]"}], ",", 
-           RowBox[{"Assumptions", "->", 
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{"0", "<=", "\[Epsilon]", "<=", "1"}], ",", 
-              RowBox[{"0", "<=", "\[Delta]", "<=", "1"}]}], "}"}]}]}], 
-          "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]",
-       "\[IndentingNewLine]", 
+           "The", " ", "stationary", " ", "distribution", " ", "is", " ", 
+            "the", " ", "eigenvector", " ", "for", " ", "eigenvalue", " ", 
+            "1"}], ",", " ", 
+           RowBox[{
+           "and", " ", "NullSpace", " ", "selects", " ", "it", " ", "by", " ",
+             "that", " ", 
+            RowBox[{"property", ".", " ", "Its"}], " ", "overall", " ", 
+            "sign", " ", "is", " ", "up", " ", "to", " ", "NullSpace"}], ",", 
+           " ", 
+           RowBox[{
+           "and", " ", "dividing", " ", "by", " ", "the", " ", "total", " ", 
+            "absorbs", " ", 
+            RowBox[{"it", ":", " ", 
+             RowBox[{"no", " ", "Abs", " ", "is", " ", "needed"}]}]}], ",", 
+           " ", 
+           RowBox[{"and", " ", "no", " ", 
+            RowBox[{"Normalize", "[", 
+             RowBox[{"...", ",", " ", "Total"}], "]"}]}], ",", " ", 
+           RowBox[{
+           "which", " ", "refuses", " ", "to", " ", "evaluate", " ", "and", " ",
+             "issues", " ", 
+            RowBox[{"Normalize", "::", "nlnfa"}], " ", "whenever", " ", "the",
+             " ", "total", " ", "comes", " ", "out", " ", 
+            RowBox[{"negative", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"v", "=", 
+           RowBox[{"First", "[", 
+            RowBox[{"NullSpace", "[", 
+             RowBox[{"M", "-", 
+              RowBox[{"IdentityMatrix", "[", 
+               RowBox[{"Length", "[", "M", "]"}], "]"}]}], "]"}], "]"}]}], ";", 
+          RowBox[{"FullSimplify", "[", 
+           RowBox[{
+            FractionBox["v", 
+             RowBox[{"Total", "[", "v", "]"}]], ",", 
+            RowBox[{"Assumptions", "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+               "0", "\[LessEqual]", "\[Epsilon]", "\[LessEqual]", "1"}], ",", 
+               
+               RowBox[{
+               "0", "\[LessEqual]", "\[Delta]", "\[LessEqual]", "1"}]}], 
+              "}"}]}]}], "]"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
        RowBox[{
         RowBox[{"Theorem", " ", "11.5"}], ",", " ", 
@@ -3592,15 +3613,17 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[576, 22, 241, 4, 130, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
+Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 51266, 1035, 644, "Output",ExpressionUUID->"7d33f8e0-4827-4adc-bac5-6e66e68e6925"]
+Cell[1908, 51, 51281, 1033, 644, "Output",ExpressionUUID->"57c8782b-a008-4a06-9178-42cc10f5e38c"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[53211, 1091, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[53363, 1096, 106655, 2476, 8003, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[53226, 1089, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[53378, 1094, 107594, 2499, 8048, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
 *)
+
+(* End of internal cache information *)
 
