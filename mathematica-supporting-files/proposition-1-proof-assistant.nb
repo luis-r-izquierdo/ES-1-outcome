@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[     60532,       1396]
-NotebookOptionsPosition[     58959,       1356]
-NotebookOutlinePosition[     59405,       1374]
-CellTagsIndexPosition[     59362,       1371]
+NotebookDataLength[     63829,       1479]
+NotebookOptionsPosition[     62256,       1439]
+NotebookOutlinePosition[     62702,       1457]
+CellTagsIndexPosition[     62659,       1454]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -254,7 +254,7 @@ Cell[BoxData[{
    3.9685778093611383`*^9}, {3.96857787410283*^9, 3.968577923774713*^9}, {
    3.9685780088592863`*^9, 3.9685780256052027`*^9}, {3.9685780882109756`*^9, 
    3.968578092910144*^9}, {3.9688095781430197`*^9, 3.968809804496892*^9}},
- CellLabel->"In[34]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"],
+ CellLabel->"In[36]:=",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"],
 
 Cell[BoxData[
  RowBox[{"-", 
@@ -324,8 +324,9 @@ Cell[BoxData[
    3.968577595584681*^9, 3.968577635488431*^9}, {3.9685776731756067`*^9, 
    3.968577697135705*^9}, {3.968577810185318*^9, 3.96857782939942*^9}, 
    3.968577925280908*^9, {3.9685780101304007`*^9, 3.96857801574712*^9}, 
-   3.968578096878537*^9, 3.998927663530802*^9, 3.998961659400599*^9},
- CellLabel->"Out[39]=",ExpressionUUID->"9319b8be-f450-44ca-9674-0dbe2b60768b"],
+   3.968578096878537*^9, 3.998927663530802*^9, 3.998961659400599*^9, 
+   3.998964477971099*^9},
+ CellLabel->"Out[41]=",ExpressionUUID->"bf1e1803-6875-4ff7-8726-caa7b86fc57e"],
 
 Cell[BoxData["False"], "Output",
  CellChangeTimes->{
@@ -342,8 +343,9 @@ Cell[BoxData["False"], "Output",
    3.968577595584681*^9, 3.968577635488431*^9}, {3.9685776731756067`*^9, 
    3.968577697135705*^9}, {3.968577810185318*^9, 3.96857782939942*^9}, 
    3.968577925280908*^9, {3.9685780101304007`*^9, 3.96857801574712*^9}, 
-   3.968578096878537*^9, 3.998927663530802*^9, 3.998961659735495*^9},
- CellLabel->"Out[40]=",ExpressionUUID->"1c15a101-6656-472a-a1e3-5996efbc619e"]
+   3.968578096878537*^9, 3.998927663530802*^9, 3.998961659400599*^9, 
+   3.998964478471876*^9},
+ CellLabel->"Out[42]=",ExpressionUUID->"d1819618-750b-40a0-b838-d35451bb318b"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -749,8 +751,11 @@ Cell[BoxData[
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
-          RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
-          RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"\[Epsilon]", "==", "0"}], "]"}], "&&", 
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"\[Delta]", "==", "1"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
          RowBox[{
           RowBox[{"sequence", "=", 
            RowBox[{"{", 
@@ -874,46 +879,116 @@ Cell[BoxData[
       "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{
+     StyleBox[
+      RowBox[{"FirstOutcomeDistribution", "::", "opening"}], "MessageName"], 
+     "=", "\"\<Strategy `1` opens with L; the first action of a strategy must \
+be C (0) or D (1).\>\""}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
      RowBox[{"FirstOutcomeDistribution", "[", 
       RowBox[{"s1_", ",", "s2_", ",", 
+       RowBox[{"\[Epsilon]_", ":", "0"}]}], "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"o1", "=", 
+          RowBox[{"First", "[", "s1", "]"}]}], ",", 
+         RowBox[{"o2", "=", 
+          RowBox[{"First", "[", "s2", "]"}]}], ",", "v1", ",", "v2"}], "}"}], 
+       ",", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"UnitVector", "[", 
+           RowBox[{"2", ",", " ", 
+            RowBox[{"1", " ", "+", " ", "a"}]}], "]"}], " ", "encodes", " ", 
+          "the", " ", "opening", " ", "action"}], ",", " ", 
+         RowBox[{
+          RowBox[{
+          "so", " ", "the", " ", "action", " ", "has", " ", "to", " ", "be", " ",
+            "C", " ", 
+           RowBox[{"(", "0", ")"}], " ", "or", " ", "D", " ", 
+           RowBox[{
+            RowBox[{"(", "1", ")"}], ".", " ", "A"}], " ", "strategy", " ", 
+           "that", " ", "opens", " ", "with", " ", "L", " ", "would", " ", 
+           "ask", " ", "for", " ", 
+           RowBox[{"UnitVector", "[", 
+            RowBox[{"2", ",", " ", "3"}], "]"}]}], ";", " ", 
+          RowBox[{
+          "say", " ", "so", " ", "rather", " ", "than", " ", "let", " ", 
+           "that", " ", "error", " ", "surface", " ", "from", " ", "three", " ",
+            "levels", " ", 
+           RowBox[{"down", "."}]}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
        RowBox[{
-        StyleBox["\[Epsilon]_",
-         FontSlant->"Italic"], ":", "0"}]}], "]"}], ":=", 
-     "\[IndentingNewLine]", 
-     RowBox[{"Flatten", "@", 
-      RowBox[{"Outer", "[", 
-       RowBox[{"Times", ",", 
-        RowBox[{
+        RowBox[{"If", "[", 
          RowBox[{
-          RowBox[{"(", 
-           RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
-          RowBox[{"UnitVector", "[", 
-           RowBox[{"1", "+", 
-            RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], "+", 
-         RowBox[{"\[Epsilon]", 
-          RowBox[{"(", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"1", ",", "1"}], "}"}], "-", 
-            RowBox[{"UnitVector", "[", 
-             RowBox[{"1", "+", 
-              RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], ")"}]}]}], ",", 
-        RowBox[{
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "1"}], "}"}], ",", "o1"}], "]"}]}], "||", 
+           RowBox[{"!", 
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "1"}], "}"}], ",", "o2"}], "]"}]}]}], ",", 
+          RowBox[{
+           RowBox[{"Message", "[", 
+            RowBox[{
+             StyleBox[
+              RowBox[{"FirstOutcomeDistribution", "::", "opening"}], 
+              "MessageName"], ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"MemberQ", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", "1"}], "}"}], ",", "o1"}], "]"}], ",", 
+               "s2", ",", "s1"}], "]"}]}], "]"}], ";", 
+           RowBox[{"Return", "[", "$Failed", "]"}]}]}], "]"}], ";", 
+        RowBox[{"v1", "=", 
          RowBox[{
-          RowBox[{"(", 
-           RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
-          RowBox[{"UnitVector", "[", 
-           RowBox[{"1", "+", 
-            RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], "+", 
-         RowBox[{"\[Epsilon]", 
-          RowBox[{"(", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"1", ",", "1"}], "}"}], "-", 
-            RowBox[{"UnitVector", "[", 
-             RowBox[{"1", "+", 
-              RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], ")"}]}]}]}], 
-       "]"}]}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "-", "\[Epsilon]"}], ")"}], " ", 
+           RowBox[{"UnitVector", "[", 
+            RowBox[{"2", ",", 
+             RowBox[{"1", "+", "o1"}]}], "]"}]}], "+", 
+          RowBox[{"\[Epsilon]", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"1", ",", "1"}], "}"}], "-", 
+             RowBox[{"UnitVector", "[", 
+              RowBox[{"2", ",", 
+               RowBox[{"1", "+", "o1"}]}], "]"}]}], ")"}]}]}]}], ";", 
+        RowBox[{"v2", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "-", "\[Epsilon]"}], ")"}], " ", 
+           RowBox[{"UnitVector", "[", 
+            RowBox[{"2", ",", 
+             RowBox[{"1", "+", "o2"}]}], "]"}]}], "+", 
+          RowBox[{"\[Epsilon]", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"1", ",", "1"}], "}"}], "-", 
+             RowBox[{"UnitVector", "[", 
+              RowBox[{"2", ",", 
+               RowBox[{"1", "+", "o2"}]}], "]"}]}], ")"}]}]}]}], ";", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Outer", "[", 
+          RowBox[{"Times", ",", "v1", ",", "v2"}], "]"}], "]"}]}]}], "]"}]}], 
+    ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     StyleBox[
+      RowBox[{"Payoff", "::", "outcome"}], "MessageName"], 
+     "=", "\"\<`1` is not one of the four game outcomes 1..4.\>\""}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{
      RowBox[{"Payoff", "[", 
@@ -945,9 +1020,14 @@ Cell[BoxData[
            "*)"}], "\[IndentingNewLine]", "1", ",", "R", ",", 
           "\[IndentingNewLine]", "2", ",", "S", ",", "\[IndentingNewLine]", 
           "3", ",", "T", ",", "\[IndentingNewLine]", "4", ",", "P", ",", 
-          "\[IndentingNewLine]", "_", ",", "\"\<no\>\""}], 
-         "\[IndentingNewLine]", "]"}]}]}], "]"}]}], ";"}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", "_", ",", 
+          RowBox[{
+           RowBox[{"Message", "[", 
+            RowBox[{
+             StyleBox[
+              RowBox[{"Payoff", "::", "outcome"}], "MessageName"], ",", "o"}],
+             "]"}], ";", "$Failed"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{
      RowBox[{"F", "[", 
@@ -987,8 +1067,11 @@ Cell[BoxData[
         RowBox[{"If", "[", 
          RowBox[{
           RowBox[{
-           RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
-           RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"TrueQ", "[", 
+            RowBox[{"\[Epsilon]", "==", "0"}], "]"}], "&&", 
+           RowBox[{"TrueQ", "[", 
+            RowBox[{"\[Delta]", "==", "1"}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
           RowBox[{
            RowBox[{
             RowBox[{"{", 
@@ -1375,25 +1458,25 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 11781, 234, 1246, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"],
-Cell[12360, 258, 2704, 69, 81, "Output",ExpressionUUID->"9319b8be-f450-44ca-9674-0dbe2b60768b"],
-Cell[15067, 329, 1149, 16, 50, "Output",ExpressionUUID->"1c15a101-6656-472a-a1e3-5996efbc619e"]
+Cell[12360, 258, 2730, 70, 81, "Output",ExpressionUUID->"bf1e1803-6875-4ff7-8726-caa7b86fc57e"],
+Cell[15093, 330, 1175, 17, 50, "Output",ExpressionUUID->"d1819618-750b-40a0-b838-d35451bb318b"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16253, 350, 181, 4, 144, "Title",ExpressionUUID->"e7ccb1d4-3364-4626-88a7-8ed79c8ea320",
+Cell[16305, 352, 181, 4, 144, "Title",ExpressionUUID->"e7ccb1d4-3364-4626-88a7-8ed79c8ea320",
  InitializationCell->True],
 Cell[CellGroupData[{
-Cell[16459, 358, 1400, 21, 70, "Chapter",ExpressionUUID->"edd25958-fef8-4bd8-a3ad-b55a00dafcab",
+Cell[16511, 360, 1400, 21, 70, "Chapter",ExpressionUUID->"edd25958-fef8-4bd8-a3ad-b55a00dafcab",
  CellGroupingRules->{"GroupTogetherGrouping", 10000.},
  InitializationCell->True],
-Cell[17862, 381, 6666, 146, 70, "Input",ExpressionUUID->"8beeb83c-37e4-4637-84a2-e046bbbf0f57",
+Cell[17914, 383, 6666, 146, 70, "Input",ExpressionUUID->"8beeb83c-37e4-4637-84a2-e046bbbf0f57",
  CellGroupingRules->{"GroupTogetherGrouping", 10000.},
  InitializationCell->True]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[24565, 532, 1630, 27, 70, "Chapter",ExpressionUUID->"d9f2c8ab-f6f8-47b5-8fe8-28091972c9a0",
+Cell[24617, 534, 1630, 27, 70, "Chapter",ExpressionUUID->"d9f2c8ab-f6f8-47b5-8fe8-28091972c9a0",
  CellGroupingRules->{"GroupTogetherGrouping", 10001.},
  InitializationCell->True],
-Cell[26198, 561, 32733, 791, 70, "Input",ExpressionUUID->"77b919e2-43fa-4b27-957f-f762228bee62",
+Cell[26250, 563, 35978, 872, 70, "Input",ExpressionUUID->"77b919e2-43fa-4b27-957f-f762228bee62",
  CellGroupingRules->{"GroupTogetherGrouping", 10001.},
  InitializationCell->True]
 }, Open  ]]

@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    161814,       3619]
-NotebookOptionsPosition[    160988,       3596]
-NotebookOutlinePosition[    161404,       3613]
-CellTagsIndexPosition[    161361,       3610]
+NotebookDataLength[    165547,       3709]
+NotebookOptionsPosition[    164721,       3686]
+NotebookOutlinePosition[    165137,       3703]
+CellTagsIndexPosition[    165094,       3700]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -673,9 +673,9 @@ $CellContext`step$$}}, "DefaultOptions" :> {}],
           0, $CellContext`sequence, $CellContext`pos, $CellContext`M, \
 $CellContext`initial}, 
          If[
-          
-          And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
-           1], $CellContext`sequence = {
+          And[
+           TrueQ[$CellContext`\[Epsilon] == 0], 
+           TrueQ[$CellContext`\[Delta] == 1]], $CellContext`sequence = {
              $CellContext`Outcome[$CellContext`a1, $CellContext`a2]}; While[
             
             And[$CellContext`Outcome[$CellContext`a1, $CellContext`a2] != 
@@ -716,16 +716,29 @@ $CellContext`FirstOutcomeDistribution[
           Blank[]], 
          Optional[
           Pattern[$CellContext`\[Epsilon], 
-           Blank[]], 0]] := Flatten[
-         Outer[
-         Times, (1 - $CellContext`\[Epsilon]) 
-           UnitVector[
-            1 + First[$CellContext`s1]] + $CellContext`\[Epsilon] ({1, 1} - 
-            UnitVector[1 + First[$CellContext`s1]]), (
-            1 - $CellContext`\[Epsilon]) 
-           UnitVector[
-            1 + First[$CellContext`s2]] + $CellContext`\[Epsilon] ({1, 1} - 
-            UnitVector[1 + First[$CellContext`s2]])]]; $CellContext`Payoff[
+           Blank[]], 0]] := 
+       Module[{$CellContext`o1 = First[$CellContext`s1], $CellContext`o2 = 
+          First[$CellContext`s2], $CellContext`v1, $CellContext`v2}, If[
+           Or[
+            Not[
+             MemberQ[{0, 1}, $CellContext`o1]], 
+            Not[
+             MemberQ[{0, 1}, $CellContext`o2]]], Message[
+             MessageName[$CellContext`FirstOutcomeDistribution, "opening"], 
+             If[
+              
+              MemberQ[{0, 
+               1}, $CellContext`o1], $CellContext`s2, $CellContext`s1]]; 
+           Return[$Failed]]; $CellContext`v1 = (1 - $CellContext`\[Epsilon]) 
+            UnitVector[
+             2, 1 + $CellContext`o1] + $CellContext`\[Epsilon] ({1, 1} - 
+             UnitVector[2, 1 + $CellContext`o1]); $CellContext`v2 = (
+             1 - $CellContext`\[Epsilon]) 
+            UnitVector[
+             2, 1 + $CellContext`o2] + $CellContext`\[Epsilon] ({1, 1} - 
+             UnitVector[2, 1 + $CellContext`o2]); Flatten[
+           Outer[
+           Times, $CellContext`v1, $CellContext`v2]]]; $CellContext`Payoff[
          Pattern[$CellContext`o, 
           Blank[]], 
          Optional[
@@ -736,7 +749,10 @@ $CellContext`P}, {$CellContext`R, $CellContext`S, $CellContext`T, \
 $CellContext`P} = $CellContext`payoffs; 
          Switch[$CellContext`o, 1, $CellContext`R, 2, $CellContext`S, 
            3, $CellContext`T, 4, $CellContext`P, 
-           Blank[], "no"]]; $CellContext`F[
+           Blank[], Message[
+             
+             MessageName[$CellContext`Payoff, 
+              "outcome"], $CellContext`o]; $Failed]]; $CellContext`F[
          Pattern[$CellContext`i, 
           Blank[]], 
          Pattern[$CellContext`ej, 
@@ -754,9 +770,11 @@ $CellContext`P} = $CellContext`payoffs;
 $CellContext`initialPhase, $CellContext`cycle, $CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P}, {$CellContext`R, \
 $CellContext`S, $CellContext`T, $CellContext`P} = $CellContext`payoffs; If[
-           
-           And[$CellContext`\[Epsilon] === 0, $CellContext`\[Delta] === 
-            1], {$CellContext`Tij, $CellContext`sequence} = \
+           And[
+            TrueQ[$CellContext`\[Epsilon] == 0], 
+            
+            TrueQ[$CellContext`\[Delta] == 
+             1]], {$CellContext`Tij, $CellContext`sequence} = \
 $CellContext`Match[$CellContext`i, $CellContext`ej]; 
            If[$CellContext`Tij < Infinity, (1/$CellContext`Tij) Sum[
                $CellContext`Payoff[
@@ -1081,8 +1099,8 @@ $CellContext`RestPointColor[
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.998927548237849*^9},
- CellLabel->"Out[1]=",ExpressionUUID->"57c8782b-a008-4a06-9178-42cc10f5e38c"]
+ CellChangeTimes->{3.998962447164445*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"f9b71e2e-40b2-4d48-9742-6ebec00face4"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2242,8 +2260,11 @@ Cell[BoxData[
          RowBox[{"If", "[", 
           RowBox[{
            RowBox[{
-            RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
-            RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"\[Epsilon]", "==", "0"}], "]"}], "&&", 
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"\[Delta]", "==", "1"}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{"sequence", "=", 
              RowBox[{"{", 
@@ -2370,45 +2391,105 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"FirstOutcomeDistribution", "[", 
         RowBox[{"s1_", ",", "s2_", ",", 
+         RowBox[{"\[Epsilon]_", ":", "0"}]}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"o1", "=", 
+            RowBox[{"First", "[", "s1", "]"}]}], ",", 
+           RowBox[{"o2", "=", 
+            RowBox[{"First", "[", "s2", "]"}]}], ",", "v1", ",", "v2"}], 
+          "}"}], ",", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"UnitVector", "[", 
+             RowBox[{"2", ",", " ", 
+              RowBox[{"1", " ", "+", " ", "a"}]}], "]"}], " ", "encodes", " ",
+             "the", " ", "opening", " ", "action"}], ",", " ", 
+           RowBox[{
+            RowBox[{
+            "so", " ", "the", " ", "action", " ", "has", " ", "to", " ", "be",
+              " ", "C", " ", 
+             RowBox[{"(", "0", ")"}], " ", "or", " ", "D", " ", 
+             RowBox[{
+              RowBox[{"(", "1", ")"}], ".", " ", "A"}], " ", "strategy", " ", 
+             "that", " ", "opens", " ", "with", " ", "L", " ", "would", " ", 
+             "ask", " ", "for", " ", 
+             RowBox[{"UnitVector", "[", 
+              RowBox[{"2", ",", " ", "3"}], "]"}]}], ";", " ", 
+            RowBox[{
+            "say", " ", "so", " ", "rather", " ", "than", " ", "let", " ", 
+             "that", " ", "error", " ", "surface", " ", "from", " ", "three", 
+             " ", "levels", " ", 
+             RowBox[{"down", "."}]}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         
          RowBox[{
-          StyleBox["\[Epsilon]_",
-           FontSlant->"Italic"], ":", "0"}]}], "]"}], ":=", 
-       "\[IndentingNewLine]", 
-       RowBox[{"Flatten", "@", 
-        RowBox[{"Outer", "[", 
-         RowBox[{"Times", ",", 
-          RowBox[{
+          RowBox[{"If", "[", 
            RowBox[{
-            RowBox[{"(", 
-             RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
-            RowBox[{"UnitVector", "[", 
-             RowBox[{"1", "+", 
-              RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], "+", 
-           RowBox[{"\[Epsilon]", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"{", 
-               RowBox[{"1", ",", "1"}], "}"}], "-", 
-              RowBox[{"UnitVector", "[", 
-               RowBox[{"1", "+", 
-                RowBox[{"First", "[", "s1", "]"}]}], "]"}]}], ")"}]}]}], ",", 
-          
-          RowBox[{
+            RowBox[{
+             RowBox[{"!", 
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "1"}], "}"}], ",", "o1"}], "]"}]}], "||", 
+             RowBox[{"!", 
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "1"}], "}"}], ",", "o2"}], "]"}]}]}], ",", 
+            
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{
+               StyleBox[
+                RowBox[{"FirstOutcomeDistribution", "::", "opening"}], 
+                "MessageName"], ",", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"MemberQ", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "1"}], "}"}], ",", "o1"}], "]"}], ",", 
+                 "s2", ",", "s1"}], "]"}]}], "]"}], ";", 
+             RowBox[{"Return", "[", "$Failed", "]"}]}]}], "]"}], ";", 
+          RowBox[{"v1", "=", 
            RowBox[{
-            RowBox[{"(", 
-             RowBox[{"1", "-", "\[Epsilon]"}], ")"}], 
-            RowBox[{"UnitVector", "[", 
-             RowBox[{"1", "+", 
-              RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], "+", 
-           RowBox[{"\[Epsilon]", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"{", 
-               RowBox[{"1", ",", "1"}], "}"}], "-", 
-              RowBox[{"UnitVector", "[", 
-               RowBox[{"1", "+", 
-                RowBox[{"First", "[", "s2", "]"}]}], "]"}]}], ")"}]}]}]}], 
-         "]"}]}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"1", "-", "\[Epsilon]"}], ")"}], " ", 
+             RowBox[{"UnitVector", "[", 
+              RowBox[{"2", ",", 
+               RowBox[{"1", "+", "o1"}]}], "]"}]}], "+", 
+            RowBox[{"\[Epsilon]", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"1", ",", "1"}], "}"}], "-", 
+               RowBox[{"UnitVector", "[", 
+                RowBox[{"2", ",", 
+                 RowBox[{"1", "+", "o1"}]}], "]"}]}], ")"}]}]}]}], ";", 
+          RowBox[{"v2", "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"1", "-", "\[Epsilon]"}], ")"}], " ", 
+             RowBox[{"UnitVector", "[", 
+              RowBox[{"2", ",", 
+               RowBox[{"1", "+", "o2"}]}], "]"}]}], "+", 
+            RowBox[{"\[Epsilon]", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"1", ",", "1"}], "}"}], "-", 
+               RowBox[{"UnitVector", "[", 
+                RowBox[{"2", ",", 
+                 RowBox[{"1", "+", "o2"}]}], "]"}]}], ")"}]}]}]}], ";", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Outer", "[", 
+            RowBox[{"Times", ",", "v1", ",", "v2"}], "]"}], "]"}]}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"Payoff", "[", 
         RowBox[{"o_", ",", 
@@ -2438,9 +2519,15 @@ Cell[BoxData[
              "*)"}], "\[IndentingNewLine]", "1", ",", "R", ",", 
             "\[IndentingNewLine]", "2", ",", "S", ",", "\[IndentingNewLine]", 
             "3", ",", "T", ",", "\[IndentingNewLine]", "4", ",", "P", ",", 
-            "\[IndentingNewLine]", "_", ",", "\"\<no\>\""}], 
-           "\[IndentingNewLine]", "]"}]}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            "\[IndentingNewLine]", "_", ",", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{
+               StyleBox[
+                RowBox[{"Payoff", "::", "outcome"}], "MessageName"], ",", 
+               "o"}], "]"}], ";", "$Failed"}]}], "\[IndentingNewLine]", 
+           "]"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
        RowBox[{
         RowBox[{"F", "[", 
@@ -2478,8 +2565,11 @@ Cell[BoxData[
           RowBox[{"If", "[", 
            RowBox[{
             RowBox[{
-             RowBox[{"\[Epsilon]", "===", "0"}], "&&", 
-             RowBox[{"\[Delta]", "===", "1"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"TrueQ", "[", 
+              RowBox[{"\[Epsilon]", "==", "0"}], "]"}], "&&", 
+             RowBox[{"TrueQ", "[", 
+              RowBox[{"\[Delta]", "==", "1"}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
             RowBox[{
              RowBox[{
               RowBox[{"{", 
@@ -3615,11 +3705,11 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 241, 4, 96, "Title",ExpressionUUID->"9c3381b5-674f-4efe-ae3e-93d5b51fcfad"],
 Cell[820, 28, 1085, 21, 208, "Text",ExpressionUUID->"4551b46e-2323-49fd-b026-0d75fec47e8a"],
-Cell[1908, 51, 51281, 1033, 644, "Output",ExpressionUUID->"57c8782b-a008-4a06-9178-42cc10f5e38c"]
+Cell[1908, 51, 52061, 1051, 644, "Output",ExpressionUUID->"f9b71e2e-40b2-4d48-9742-6ebec00face4"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[53226, 1089, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
-Cell[53378, 1094, 107594, 2499, 8048, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
+Cell[54006, 1107, 149, 3, 96, "Title",ExpressionUUID->"08ff96db-2645-434f-a134-0c0ff8cef20e"],
+Cell[54158, 1112, 110547, 2571, 8171, "Input",ExpressionUUID->"46bf8aa4-94a8-435c-b470-0d02fd5208cc"]
 }, Closed]]
 }
 ]
