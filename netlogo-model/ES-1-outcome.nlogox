@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<model version="NetLogo 7.0.3" snapToGrid="false">
+<model version="NetLogo 7.0.4" snapToGrid="false">
   <code><![CDATA[;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; GNU GENERAL PUBLIC LICENSE ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -351,6 +351,9 @@ to adjust-num-players
     [
       create-players adjustment [
         set mate nobody
+        set ticks-out ticks-until-rematching   
+          ;; as in setup-players: a newborn has not just
+          ;; separated from anyone, so it is available at once
         set strategy-number ifelse-value (initial-strategy = "random")
           [ifelse-value option-to-leave?
             [random 162]
